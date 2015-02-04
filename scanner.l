@@ -1,28 +1,37 @@
-%{  
-    This is the lex file for Adele.
-%}
+    /*  
+        declaration:
+            1. global variables
+            2. shorthand REs
+    */ 
+    int n_w = 0, n_n = 0, n_l = 0;
 
-%{  
-    declaration
-    1. global variables
-    2. shorthand REs
-%}
-int n_w = 0, n_n = 0, n_l = 0;
-word    [A-Za-z]+
-num     [1-9]+[0-9]*
-
-%{  
-    translation rules
-%}
+SPACE   [ \t]
+NAME    [_A-Za-z][_A-Za-z0-9]*
+INT     [\+?\-?][1-9][0-9]*
+COMMENT ^[ \t]*#.*$
+    /*
+        translation rules
+    */
 %%
-{word}  {++n_w;}
-{num}   {++n_n;}
-\n      {++n_l;}
-.       {}
-
-%{  
-    aux functions
-%}                                                                                        
+{COMMENT}   {
+                printf ("comment: %s\n", yytext);
+            }
+{NAME}      {
+                ++n_w; 
+                printf ("word: %s\n", yytext); 
+            }
+{INT}       {
+                ++n_n;
+                printf ("num: %s\n", yytext);
+            }
+\n          {++n_l;}
+.           {
+                printf ("char: %s\n", yytext);
+            }
+            
+    /*
+        aux functions
+    */
 %%
     int main (void) {
         yylex ();
