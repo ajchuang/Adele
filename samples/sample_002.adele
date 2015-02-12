@@ -1,0 +1,23 @@
+# Adele v0.1
+# ---
+# a simple program painting a screen
+# ---
+# 80 x 24 standard console
+define canvas c: 
+    .width  = 80;
+    .height = 24;
+enddef
+
+begin int main ()
+    
+    int i;
+    int j;
+    
+    c.print (10, 20, "Hello");
+    
+    for (i = 0; i < 80; ++i)
+        for (j = 0; j < 24; ++j)
+            c.setPixel (i, j, color.blue);
+        endfor
+    endfor
+end
