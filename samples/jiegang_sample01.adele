@@ -1,0 +1,23 @@
+Canvas(80,24) c:
+clear c
+Graph g1 = read(“testgraph1.txt”)
+Graph g2 = {‘\’, ‘\’, ‘\’, ‘\’; ’ ‘, ‘\’, ‘\’, ‘\’}
+Graph g3 = g1.copy()
+c.drawlist = [g1, g2, g3] // default is the order of declaration
+
+put g1@c(40,10) // g1.center
+put g2.lefttop@c(center)
+put g3.rightbottom@c(79, 23)
+draw c
+wait 2000
+put g1@c(40,20)
+draw c
+for i in [0:1:20] {
+	wait 500
+	put g1@c(40+i, 20)
+	draw c
+}
+let g1 cover g2 // c.drawlist = [g2, g1, g3]
+let g3 behind g2 // c.drawlist = [g3, g2, g1]
+draw c
+endCanvas
