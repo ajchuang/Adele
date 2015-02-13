@@ -1,0 +1,34 @@
+# ---
+# draw heart
+# ---
+
+CANVAS.setSize(400,320);
+CANVAS.setBgColor('#CFC');
+
+CANVAS.draw = func(x, y, obj) {
+  sw, sh = obj.getSize();
+  for (i = x; i < x+sw-1; i++)
+    for (j = y; j < y+sh-1; j++) {
+      CANVAS.setPixel(i, j, obj.getPixel(i-x, j-y));
+    }
+}
+
+Object heart;
+heart.getPixel = func(x, y) {
+  tx = (x - @width/2)/@width;
+  ty = (y - @height/2)/@height;
+  if (tx^2+(ty-(tx^2)^(1/3))^2<=1) {
+    return "r*";
+  } else {
+    return "b ";
+  }
+}
+
+heart.setSize(200,160);
+
+another_heart = heart.clone();
+
+another_heart.setSize(50, 40);
+
+CANVAS.draw(100,100,heart);
+CANVAS.draw(140,120,another_heart);
