@@ -1,0 +1,14 @@
+canvas => Canvas(100, 100);
+walk[] => Graph[2];
+walk[0] = a;
+walk[1] = b;
+
+int x = 0
+while (x < canvas.width) {
+	walk[0] // canvas @ (x, 0)
+	draw();
+	x++;
+	walk[1] // canvas @ (x, 0)
+	draw();
+	x++;
+}

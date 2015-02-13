@@ -1,0 +1,26 @@
+Class HorizontalLine {
+	int length;
+
+	HorizontalLine(Graph g, int length) {
+		this.length = length;
+
+		line = g;
+		(length-1) times {
+			line = line - g;
+		}
+
+		return line;
+	}
+}
+
+Class Rectangular {
+	Rectangular(Graph[] border, Graph[] corner){
+		rect = corners[0] - border[0] - corner[1];
+		rect = rect | border[1] @ rect.end;
+		rect = s...
+	}
+
+	fill(Graph pattern) {
+
+	}
+}

@@ -1,0 +1,24 @@
+#Kifu
+
+border_hor => HorizonatlLine('╤', 17);
+border_ver => VerticalLine('║', 17);
+
+board => Rectangular {
+	border: border_hor, border_ver;
+	corner: '╔', '╗', '╚', '╝';
+};
+
+board.pattern_fill('+');
+board // canvas @ (0, 0);
+draw();
+
+white = '○';
+black = '●';
+
+Graph put(Graph board, Graph stone, int i, int j) {
+	board = stone // board @ (i, j);
+}
+
+put(board, black, 2, 3);
+put(board, white, 16, 15);
+draw();
