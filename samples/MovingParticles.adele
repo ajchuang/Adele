@@ -1,0 +1,44 @@
+// By Yuan Lin
+
+
+graph particle.initialize(...); // is it cooler than those in Pac_Man.adele?
+
+canvas c;
+
+int particleNum = 10;
+
+void randomizeParticle()
+{
+	for (int i = 0; i < particleNum; i++)
+	{
+		pos = (rand(), rand());
+		speed = (rand(), rand());
+		c.add(particle@pos$speed);
+	}
+}
+
+void timer()
+{
+	for (int i = 0; i < particleNum; i++)
+		for (int j = i + 1; j < particleNum; j++)
+		{
+			if (collision(c.graphs[i], c.graphs[j]))
+			{
+				// use the physical formulas to get the results...
+			}
+		}
+
+	// compute what the canvas will look like after a small timestep
+	for (int i = 0; i < partricleNum; i++)
+	{
+		updateParticle(c.graphs[i]);
+	}
+
+	// finally draw the canvas
+	c.draw();
+}
+
+int main()
+{
+	registerCallBack(timer(), interval = 0.1s);
+}
