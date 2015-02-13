@@ -1,0 +1,24 @@
+# ---
+# Maze draw
+# ---
+
+CANVAS.setSize(800, 600);
+
+Object maze;
+
+maze.loadMat = func(fn) {
+  mat = readFile(fn);
+  @mat = mat.split("\n");
+  @height = mat.length;
+  @width = mat.length;
+}
+
+maze.getPixel = func(x, y) {
+  if (mat[y][x]==" ") {
+    return " ";
+  } else {
+    return "b#";
+  }
+}
+
+CANVAS.draw(0,0,maze);
