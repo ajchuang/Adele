@@ -1,0 +1,115 @@
+// By Yuan Lin
+
+
+// those are units to build a map
+// start here
+graph candy;
+candy.initialize(/* fill with size, color, etc. */);
+
+graph border;
+border.initialize(...);
+// end here
+
+// this is the one that user control
+graph spirit@(//a initial position);
+
+// this is what we need to render and draw
+canvas c;
+
+State = {CHOOSE_A_MAP, PLAYING, PAUSED, GOODEND, BADEND}
+
+
+struct pattern
+{
+	int height;
+	int width;
+	int description[2000][2000]; 
+};
+
+pattern patternSet[10];
+
+graph generateMap(int p_idx) // return a graph object: map according to a specific pattern
+{
+	graph generatedMap;
+
+	for (int i = 0; i < pattern[p_idx].height; i++)
+		for (int j = 0; j < pattern[p_idx].width; j++)
+		{
+			switch (pattern[p_idx].description[i][j])
+			{
+				case CANDY:
+					generatedMap.add(candy@(i, j));
+				case BORDER:
+					generatedMap.add(border@(i, j));
+			}
+		}
+	return generatedMap;
+}
+
+void generateAllMaps()
+{
+	// use the function generateMap...
+}
+
+int Collision(point2D pos, graph map)
+{
+	// to be soon...
+}
+
+void eventHandler(event e)
+{
+	if (e.type == CLICK)
+	{
+		switch (state)
+		{
+			case CHOOSE_A_MAP:
+				// find the corresponding map by (e.x, e.y);
+				c.add(//the corresponding map);
+				state = PLAYING;
+			case PLAYING:
+				state = PAUSED;
+			case PAUSED:
+				state = PLAYING;
+			...
+		}
+	}
+
+	if (e.type == keyboard)
+	{
+		if (state == PLAYING)
+		{
+			switch (e.key)
+			{
+				point2D newPos = (spirit.x, spirit.y + 2);
+				case UP:
+					// Judge the collision
+					renderPool.add(spirit.moveto(spirit.x, spirit.y + 2, duration = 0.1s));// moveto can generate a small animation object into the renderPool.
+
+				// similar for left, right and down.
+			}
+		}
+	}
+}
+
+void timer()
+{
+	// move the ghost
+	// update spirit position according to what in the renderPool
+	// judge the collisions
+	// update the state and draw the canvas.
+}
+
+int main()
+{
+	generatePattern; // actually we can just type it by our hand, or convert from existing pac-mac maps
+
+	generateAllMaps();
+
+	registerCallBack(eventHandler(event));
+
+	registerCallBack(timer(), interval = 0.1s);
+}
+
+
+
+
