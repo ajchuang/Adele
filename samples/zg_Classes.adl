@@ -13,6 +13,9 @@ Class HorizontalLine {
 	}
 }
 
+# Excuese me, I didn't finsh this definition, it's really 
+# hard to describe a graph in my version of Adele T^T
+
 Class Rectangular {
 	Rectangular(Graph[] border, Graph[] corner){
 		rect = corners[0] - border[0] - corner[1];

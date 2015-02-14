@@ -1,3 +1,12 @@
+# maybe our language supports array, so that each element is a
+# graph that is slightly different from the prev one, and when
+# we iterate the array, it's an animation. 
+# E.g. the following array:
+#  0    1
+#  ●    ●
+# /■\  /■\ 
+#  ╯\  /\
+
 canvas => Canvas(100, 100);
 walk[] => Graph[2];
 walk[0] = a;

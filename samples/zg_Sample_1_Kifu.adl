@@ -1,4 +1,25 @@
-#Kifu
+#Zixuan Gong - Kifu
+#the symbols are not in fullwidth, so the output looks somewhat wierd:
+╔╤╤╤╤╤╤╤╤╤╤╤╤╤╤╤╤╤╗
+╟┼┼●┼●┼┼┼┼┼┼┼┼┼┼┼┼╢
+╟┼┼●○○┼●●┼┼┼┼┼┼┼┼┼╢
+╟┼┼○┼┼○┼○┼┼┼┼┼┼┼┼┼╢
+╟┼○●┼┼┼┼┼┼┼┼┼┼┼┼┼┼╢
+╟┼●┼○┼┼┼┼┼┼┼┼┼┼┼┼┼╢
+╟┼○●┼┼┼┼┼┼┼┼┼┼┼┼┼┼╢
+
+
+import <zg_Classes>;
+
+# I'm confused about objects and classes in our language, it
+# seems like everything is a 'Graph', so e.g. if there are 
+# params passing to a function, the function maybe doesn't 
+# need to check if the param extends class Line or Square or else...
+# Anyway, I didn't put a type before the variable when 
+# defining it
+
+# '=>' is like '= new'
+canvas => Canvas(100, 100);
 
 border_hor => HorizonatlLine('╤', 17);
 border_ver => VerticalLine('║', 17);
