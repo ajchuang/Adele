@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+   <!-- CSS style setting -->
+   <style>
+      #canvas {
+         overflow: hidden;
+         display: inline-block;
+      }
+      #ascii {
+         font-family: monospace;
+         white-space: pre;
+         display: inline-block;
+      }
+   </style>
+
+   <!-- Control Script -->
+   <script>
+      function draw() {
+         var ascii = document.getElementById("ascii");
+         var w = 15;
+         var h = 7;
+
+         var cat = ["  A_A          ",
+                    " (-.-)         ",
+                    "  |-|          ",
+                    " /   \\         ",
+                    "|     |   __   ",
+                    "|  || |  /  \\__",
+                    " \\_||_/_/      "];
+         var moon = ["  __  ",
+                     " /  \\ ",
+                     "|    |",
+                     " \\__/ "];
+         var m_w = 6;
+         var m_h = 4;
+         var spans = new Array(h);
+
+         for (i = 0; i < h; i++) {
+            spans[i] = new Array(w);
+            for (j = 0; j < w; j++) {
+               spans[i][j] = document.createElement("span");
+               if (i < m_h && j >= w - m_w) {
+                  spans[i][j].innerHTML = moon[i][j-(w-m_w)];
+               } else {
+                  spans[i][j].innerHTML = cat[i][j];
+               }
+               ascii.appendChild(spans[i][j]);
+            }
+            spans[i].push(document.createElement("br"));
+            ascii.appendChild(spans[i][w]);
+         }
+      }
+   </script>
+
+<!-- Body -->
+<body onload="draw();">
+   <div id="canvas">
+      <div id="ascii"></div>
+   </div>
+</body>
+</html>
