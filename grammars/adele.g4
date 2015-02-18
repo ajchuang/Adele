@@ -1,10 +1,20 @@
 grammar adele;
 
-// generating matching rules
-r  : 'main' ID ;                // match keyword hello followed by an identifier
+/******************************************************************************/
+/* generating matching rules                                                  */
+/******************************************************************************/
+prog:   expr ';';
 
+expr:   expr ('*' | '/') expr   |
+        expr ('+' | '-') expr   |
+        NUM                     |
+        ID;
 
-// generating tokens
-ID : [a-zA-Z]+[_0-9a-zA-Z]* ;   // match lower-case identifiers
-INT: [-]?[1-9]+[0-9]* ;         // integers
-WS : [ \t\r\n]+ -> skip ;       // skip spaces, tabs, newlines
+/******************************************************************************/
+/* tokens                                                                     */
+/******************************************************************************/
+ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;  // match lower-case identifiers
+FLOAT:  [-]?[0-9]+ '.' [0-9]+ ; // floating numbers
+INT:    [-]?[1-9]+[0-9]* | [0] ;   // integers
+NUM:    FLOAT | INT ;
+WS :    [ \t\r\n]+ -> skip ;       // skip spaces, tabs, newlines
