@@ -1,0 +1,34 @@
+Some grammar to be defined:
+
+1. program
+	
+	prog: [expression, function definition, class definition]*
+
+2. field
+
+	field: [expression, identifier(actually this is for calling a function), if, loop]*
+
+3. function definition, parameter list
+	
+	function definition: type identifier newline field newline end
+
+	parameter list: [identifier]*
+
+4. class/structure definition
+
+	class/structure: (what would you guys like?)
+
+5. if, loop(switch)?
+
+	if: if expression newline field end | if expression newline field newline else newline field newline end
+
+	loop: 
+
+6. types(array, primitive types, or ...?)
+
+7. identifier
+
+8. expression
+
+9. default class/function(system-level, such as call-back for mouse click)
+
