@@ -1,23 +1,21 @@
-Canvas(80,24) c:
-clear c
-Graph g1 = read(“testgraph1.txt”)
-Graph g2 = {‘\’, ‘\’, ‘\’, ‘\’; ’ ‘, ‘\’, ‘\’, ‘\’}
-Graph g3 = g1.copy()
-c.drawlist = [g1, g2, g3] // default is the order of declaration
+Canvas(100, 100) c:
+Graph g1 = read(“testgraph2.txt”)
+Graph g2 = {‘#’}
+Graph g3 = {‘$’}
 
-put g1@c(40,10) // g1.center
-put g2.lefttop@c(center)
-put g3.rightbottom@c(79, 23)
+put g1@c
+put g2@c(lefttop)
+put g3@c(lefttop)
+hide g3
 draw c
-wait 2000
-put g1@c(40,20)
-draw c
-for i in [0:1:20] {
-	wait 500
-	put g1@c(40+i, 20)
-	draw c
+for i in [0:1:10] {
+	wait 1000
+	if i/3 == 0 {
+		show g3
+		draw c
+	} if g3 shown {
+		hide g3
+		draw c
+	}
 }
-let g1 cover g2 // c.drawlist = [g2, g1, g3]
-let g3 behind g2 // c.drawlist = [g3, g2, g1]
-draw c
 endCanvas
