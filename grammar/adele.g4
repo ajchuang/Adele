@@ -8,8 +8,11 @@ prog:   expr ';';
 func:   TYPE ID '(' plist ')' 
         expr 
         END;
-        
-plist:  ID | ID plist;
+
+plist:  ID | ID ',' plist;
+
+if_s:   'if' '(' expr ')' expr END ;
+
    
 expr:   expr ('*' | '/') expr   |
         expr ('+' | '-') expr   |
