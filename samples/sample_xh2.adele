@@ -13,6 +13,8 @@ maze.loadMat = func(fn) {
   @width = mat.length;
 }
 
+maze.loadMat('maze.txt');
+
 maze.getPixel = func(x, y) {
   if (mat[y][x]==" ") {
     return " ";
