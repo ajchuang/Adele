@@ -1,0 +1,90 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+var canvas = {
+  width: 40,
+  height: 30,
+  buffer: [],
+  draw: function () {
+    for (var i = 0; i < canvas.height; i++) {
+      for (var j = 0; j < canvas.width; j++) {
+        var p = this.buffer[i][j];
+        p.div.html(p.chr);
+      }
+    }
+  }
+};
+
+var Pixel = function() {
+  this.chr = '';
+};
+
+var pixeldiv = $('<div>').addClass('pixel').css({
+  "width": "20px",
+  "height": "20px",
+  "font-size": "20px",
+  "float": "left",
+  "text-align": "center"
+});
+
+var Graph = function(w, h) {
+  this.buffer = [];
+  this.w = w;
+  this.h = h;
+  for (var i = 0; i < this.h; i++) {
+    this.buffer[i] = [];
+    for (var j = 0; j < this.w; j++) {
+      this.buffer[i][j] = new Pixel();
+    }
+  }
+  this.at = function(r,c) {
+    for (var i = 0; i <this.h; i++) {
+      for (var j = 0; j < this.w; j++) {
+        canvas.buffer[i+r][j+c].chr = this.buffer[i][j].chr;
+      }
+    }
+  }
+}
+
+
+var init = function() {
+  $(document.body).css('width', canvas.width*20 +'px').css('height', canvas.height*20 +'px');
+  for (var i = 0; i < canvas.height; i++) {
+    canvas.buffer[i] = [];
+    for (var j = 0; j < canvas.width; j++) {
+      var p = new Pixel();
+      p.div = pixeldiv.clone().addClass('row-'+i).addClass('col-'+j).appendTo(document.body);
+      canvas.buffer[i][j] = p;
+    }
+  }
+};
+
+//Convert string to graph
+var str2graph = function (str) {
+  var g = new Graph(str.length, 1);
+  for (i in str) {
+    var cr = 0, cc = Number(i);
+    g.buffer[cr][cc].chr = str[i];
+  }
+  return g;
+}
+
+
+var print_str = function(r, c, str) {
+  var g = str2graph(str);
+  g.at(r, c);
+  canvas.draw();
+};
+
+$(document).ready(function(){
+  init();
+  print_str(0, 0, "Hello world!");
+  print_str(20, 10, "Test it at (20, 10)");
+  print_str(10, 20, "(10, 20)");
+
+});
+
+</script>
+<body>
+</body>
+</html>
