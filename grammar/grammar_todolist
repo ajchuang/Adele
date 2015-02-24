@@ -32,3 +32,6 @@ Some grammar to be defined:
 
 9. keywords
 
+10. statement
+	
+	statement: identifier '=' expression
