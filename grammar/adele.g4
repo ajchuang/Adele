@@ -5,18 +5,24 @@ grammar adele;
 /******************************************************************************/
 prog:   func ;       /* @lfred: to fix */
 
-func:   TYPE ID LPAREN plist RPAREN stmts END;
+/* function and parameters */
+func:   TYPE ID LPAREN plist RPAREN stmts END ;
+plist:  | TYPE ID | TYPE ID COMMA plist_non_empty ;
+plist_non_empty: TYPE ID | TYPE ID COMMA plist_non_empty ;
 
-plist:  | TYPE ID | TYPE ID ',' plist_non_empty;
-plist_non_empty: TYPE ID | TYPE ID ',' plist_non_empty ;
-
+/* if and while statements */
 if_stmt:    IF LPAREN expr RPAREN expr END ;
 while_stmt: WHILE LPAREN expr RPAREN stmts END ;
  
 stmts:  if_stmt        |
         while_stmt     |
-        expr SEMICOLON ;      
+        expr SEMICOLON |
+        declaration ;      
 
+/* declare a variable */
+declaration: TYPE ID | TYPE ID EQUAL expr ;
+
+/* expressions */
 expr:   ID '=' expr                 |   /* assignment */
         expr ( MULTI | DIV ) expr   |   /* multiplication, division */
         expr ( ADD | SUB) expr      |   /* addition, substraction */
@@ -29,7 +35,7 @@ expr:   ID '=' expr                 |   /* assignment */
 /******************************************************************************/
 
 /* types */
-PTYPE:  'int' | 'fload' | 'char' ;        // primitive type supported.
+PTYPE:  'int' | 'fload' | 'char' ;  // primitive type supported.
 ATYPE:  PTYPE'[' ']' ;              // array type
 TYPE:   PTYPE | ATYPE;
 
@@ -55,7 +61,7 @@ LPAREN: '(' ;
 RPAREN: ')' ;
 COMMA:  ',' ;
 SEMICOLON:  ';' ;
-
+EQUAL:  '=' ;
 
 /* spaces, tabs.. */
 WS:     [ \t\r\n]+ -> skip ;        // skip spaces, tabs, newlines

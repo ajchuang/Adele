@@ -78,6 +78,16 @@ public interface adeleListener extends ParseTreeListener {
 	 */
 	void exitStmts(adeleParser.StmtsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link adeleParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclaration(adeleParser.DeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link adeleParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclaration(adeleParser.DeclarationContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link adeleParser#expr}.
 	 * @param ctx the parse tree
 	 */
