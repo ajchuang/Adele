@@ -31,9 +31,13 @@ expr:   ID EQUAL expr               |   /* assignment */
         expr ( MULTI | DIV ) expr   |   /* multiplication, division */
         expr ( ADD | SUB) expr      |   /* addition, substraction */
         LPAREN expr RPAREN          |   /* parenthesis */
-        ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN |  /* @lfred: to fix - lame overlay */ 
+        ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN |  /* @lfred: to fix - lame overlay */
+        ID LPAREN func_plist RPAREN |   /* function call */ 
         NUM                         |   
         ID                          ;
+        
+func_plist:         | ID | NUM | STR | ID COMMA func_plist_non_empty ;
+func_plist_non_empty: ID | NUM | STR ;
 
 /******************************************************************************/
 /* tokens                                                                     */
@@ -42,7 +46,7 @@ expr:   ID EQUAL expr               |   /* assignment */
 /* types */
 PTYPE:  'int' | 'fload' | 'char' ;  // primitive type supported.
 ATYPE:  PTYPE'[' ']' ;              // array type
-TYPE:   PTYPE | ATYPE;
+TYPE:   PTYPE | ATYPE | 'void' ;
 
 /* identifiers */
 ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;   // match lower-case identifiers
@@ -51,6 +55,8 @@ ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;   // match lower-case identifiers
 FLOAT:  [-]?[0-9]+ '.' [0-9]+ ;     // floating numbers
 INT:    [-]?[1-9]+[0-9]* | [0] ;    // integers
 NUM:    FLOAT | INT ;
+CHAR:   [A-Za-z0-9_] ;
+STR:    '"' CHAR* '"' ;
 
 /* keywords */
 IF:     'if' ;

@@ -97,4 +97,24 @@ public interface adeleListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpr(adeleParser.ExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link adeleParser#func_plist}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunc_plist(adeleParser.Func_plistContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link adeleParser#func_plist}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunc_plist(adeleParser.Func_plistContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link adeleParser#func_plist_non_empty}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunc_plist_non_empty(adeleParser.Func_plist_non_emptyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link adeleParser#func_plist_non_empty}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunc_plist_non_empty(adeleParser.Func_plist_non_emptyContext ctx);
 }
