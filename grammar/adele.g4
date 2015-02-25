@@ -5,30 +5,34 @@ grammar adele;
 /******************************************************************************/
 prog:   func ;       /* @lfred: to fix */
 
-/* function and parameters */
+/* function and its parameters */
+/******************************************************************************/
 func:   TYPE ID LPAREN plist RPAREN stmts END ;
 plist:  | TYPE ID | TYPE ID COMMA plist_non_empty ;
 plist_non_empty: TYPE ID | TYPE ID COMMA plist_non_empty ;
 
-/* if and while statements */
+/* statments: if, while, declarations */
+/******************************************************************************/
 if_stmt:    IF LPAREN expr RPAREN expr END ;
 while_stmt: WHILE LPAREN expr RPAREN stmts END ;
  
-stmts:  if_stmt        |
-        while_stmt     |
-        expr SEMICOLON |
-        declaration ;      
+stmts:  if_stmt         |
+        while_stmt      |
+        expr SEMICOLON  |
+        declaration     ;      
 
 /* declare a variable */
+/******************************************************************************/
 declaration: TYPE ID | TYPE ID EQUAL expr ;
 
 /* expressions */
-expr:   ID '=' expr                 |   /* assignment */
+/******************************************************************************/
+expr:   ID EQUAL expr               |   /* assignment */
         expr ( MULTI | DIV ) expr   |   /* multiplication, division */
         expr ( ADD | SUB) expr      |   /* addition, substraction */
         LPAREN expr RPAREN          |   /* parenthesis */
         NUM                         |   
-        ID ;
+        ID                          ;
 
 /******************************************************************************/
 /* tokens                                                                     */

@@ -570,6 +570,7 @@ public class adeleParser extends Parser {
 
 	public static class ExprContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(adeleParser.ID, 0); }
+		public TerminalNode EQUAL() { return getToken(adeleParser.EQUAL, 0); }
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
