@@ -17,7 +17,9 @@ RPAREN=16
 COMMA=17
 SEMICOLON=18
 EQUAL=19
-WS=20
+OVERLAY=20
+AT=21
+WS=22
 'if'=8
 'end'=9
 'while'=10
@@ -30,3 +32,5 @@ WS=20
 ','=17
 ';'=18
 '='=19
+'//'=20
+'@'=21

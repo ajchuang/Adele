@@ -18,7 +18,7 @@ public class adeleParser extends Parser {
 	public static final int
 		PTYPE=1, ATYPE=2, TYPE=3, ID=4, FLOAT=5, INT=6, NUM=7, IF=8, END=9, WHILE=10, 
 		ADD=11, SUB=12, MULTI=13, DIV=14, LPAREN=15, RPAREN=16, COMMA=17, SEMICOLON=18, 
-		EQUAL=19, WS=20;
+		EQUAL=19, OVERLAY=20, AT=21, WS=22;
 	public static final int
 		RULE_prog = 0, RULE_func = 1, RULE_plist = 2, RULE_plist_non_empty = 3, 
 		RULE_if_stmt = 4, RULE_while_stmt = 5, RULE_stmts = 6, RULE_declaration = 7, 
@@ -30,12 +30,13 @@ public class adeleParser extends Parser {
 
 	private static final String[] _LITERAL_NAMES = {
 		null, null, null, null, null, null, null, null, "'if'", "'end'", "'while'", 
-		"'+'", "'-'", "'*'", "'/'", "'('", "')'", "','", "';'", "'='"
+		"'+'", "'-'", "'*'", "'/'", "'('", "')'", "','", "';'", "'='", "'//'", 
+		"'@'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, "PTYPE", "ATYPE", "TYPE", "ID", "FLOAT", "INT", "NUM", "IF", "END", 
 		"WHILE", "ADD", "SUB", "MULTI", "DIV", "LPAREN", "RPAREN", "COMMA", "SEMICOLON", 
-		"EQUAL", "WS"
+		"EQUAL", "OVERLAY", "AT", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -569,7 +570,10 @@ public class adeleParser extends Parser {
 	}
 
 	public static class ExprContext extends ParserRuleContext {
-		public TerminalNode ID() { return getToken(adeleParser.ID, 0); }
+		public List<TerminalNode> ID() { return getTokens(adeleParser.ID); }
+		public TerminalNode ID(int i) {
+			return getToken(adeleParser.ID, i);
+		}
 		public TerminalNode EQUAL() { return getToken(adeleParser.EQUAL, 0); }
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
@@ -579,7 +583,13 @@ public class adeleParser extends Parser {
 		}
 		public TerminalNode LPAREN() { return getToken(adeleParser.LPAREN, 0); }
 		public TerminalNode RPAREN() { return getToken(adeleParser.RPAREN, 0); }
-		public TerminalNode NUM() { return getToken(adeleParser.NUM, 0); }
+		public TerminalNode OVERLAY() { return getToken(adeleParser.OVERLAY, 0); }
+		public TerminalNode AT() { return getToken(adeleParser.AT, 0); }
+		public List<TerminalNode> NUM() { return getTokens(adeleParser.NUM); }
+		public TerminalNode NUM(int i) {
+			return getToken(adeleParser.NUM, i);
+		}
+		public TerminalNode COMMA() { return getToken(adeleParser.COMMA, 0); }
 		public TerminalNode MULTI() { return getToken(adeleParser.MULTI, 0); }
 		public TerminalNode DIV() { return getToken(adeleParser.DIV, 0); }
 		public TerminalNode ADD() { return getToken(adeleParser.ADD, 0); }
@@ -614,7 +624,7 @@ public class adeleParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(85);
+			setState(94);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				{
@@ -623,7 +633,7 @@ public class adeleParser extends Parser {
 				setState(77);
 				match(EQUAL);
 				setState(78);
-				expr(6);
+				expr(7);
 				}
 				break;
 			case 2:
@@ -639,18 +649,40 @@ public class adeleParser extends Parser {
 			case 3:
 				{
 				setState(83);
+				match(ID);
+				setState(84);
+				match(OVERLAY);
+				setState(85);
+				match(ID);
+				setState(86);
+				match(AT);
+				setState(87);
+				match(LPAREN);
+				setState(88);
 				match(NUM);
+				setState(89);
+				match(COMMA);
+				setState(90);
+				match(NUM);
+				setState(91);
+				match(RPAREN);
 				}
 				break;
 			case 4:
 				{
-				setState(84);
+				setState(92);
+				match(NUM);
+				}
+				break;
+			case 5:
+				{
+				setState(93);
 				match(ID);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(95);
+			setState(104);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -658,46 +690,46 @@ public class adeleParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(93);
+					setState(102);
 					switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 					case 1:
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(87);
-						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(88);
+						setState(96);
+						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
+						setState(97);
 						_la = _input.LA(1);
 						if ( !(_la==MULTI || _la==DIV) ) {
 						_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(89);
-						expr(6);
+						setState(98);
+						expr(7);
 						}
 						break;
 					case 2:
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(90);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(91);
+						setState(99);
+						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+						setState(100);
 						_la = _input.LA(1);
 						if ( !(_la==ADD || _la==SUB) ) {
 						_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(92);
-						expr(5);
+						setState(101);
+						expr(6);
 						}
 						break;
 					}
 					} 
 				}
-				setState(97);
+				setState(106);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			}
@@ -724,39 +756,41 @@ public class adeleParser extends Parser {
 	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 5);
+			return precpred(_ctx, 6);
 		case 1:
-			return precpred(_ctx, 4);
+			return precpred(_ctx, 5);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\26e\4\2\t\2\4\3\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\30n\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\3\2\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4&\n\4\3\5"+
 		"\3\5\3\5\3\5\3\5\3\5\5\5.\n\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3\7"+
 		"\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\b\5\bD\n\b\3\t\3\t\3\t\3\t\3\t"+
-		"\3\t\5\tL\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5\nX\n\n\3\n\3\n"+
-		"\3\n\3\n\3\n\3\n\7\n`\n\n\f\n\16\nc\13\n\3\n\2\3\22\13\2\4\6\b\n\f\16"+
-		"\20\22\2\4\3\2\17\20\3\2\r\16g\2\24\3\2\2\2\4\26\3\2\2\2\6%\3\2\2\2\b"+
-		"-\3\2\2\2\n/\3\2\2\2\f\66\3\2\2\2\16C\3\2\2\2\20K\3\2\2\2\22W\3\2\2\2"+
-		"\24\25\5\4\3\2\25\3\3\2\2\2\26\27\7\5\2\2\27\30\7\6\2\2\30\31\7\21\2\2"+
-		"\31\32\5\6\4\2\32\33\7\22\2\2\33\34\5\16\b\2\34\35\7\13\2\2\35\5\3\2\2"+
-		"\2\36&\3\2\2\2\37 \7\5\2\2 &\7\6\2\2!\"\7\5\2\2\"#\7\6\2\2#$\7\23\2\2"+
-		"$&\5\b\5\2%\36\3\2\2\2%\37\3\2\2\2%!\3\2\2\2&\7\3\2\2\2\'(\7\5\2\2(.\7"+
-		"\6\2\2)*\7\5\2\2*+\7\6\2\2+,\7\23\2\2,.\5\b\5\2-\'\3\2\2\2-)\3\2\2\2."+
-		"\t\3\2\2\2/\60\7\n\2\2\60\61\7\21\2\2\61\62\5\22\n\2\62\63\7\22\2\2\63"+
-		"\64\5\22\n\2\64\65\7\13\2\2\65\13\3\2\2\2\66\67\7\f\2\2\678\7\21\2\28"+
-		"9\5\22\n\29:\7\22\2\2:;\5\16\b\2;<\7\13\2\2<\r\3\2\2\2=D\5\n\6\2>D\5\f"+
-		"\7\2?@\5\22\n\2@A\7\24\2\2AD\3\2\2\2BD\5\20\t\2C=\3\2\2\2C>\3\2\2\2C?"+
-		"\3\2\2\2CB\3\2\2\2D\17\3\2\2\2EF\7\5\2\2FL\7\6\2\2GH\7\5\2\2HI\7\6\2\2"+
-		"IJ\7\25\2\2JL\5\22\n\2KE\3\2\2\2KG\3\2\2\2L\21\3\2\2\2MN\b\n\1\2NO\7\6"+
-		"\2\2OP\7\25\2\2PX\5\22\n\bQR\7\21\2\2RS\5\22\n\2ST\7\22\2\2TX\3\2\2\2"+
-		"UX\7\t\2\2VX\7\6\2\2WM\3\2\2\2WQ\3\2\2\2WU\3\2\2\2WV\3\2\2\2Xa\3\2\2\2"+
-		"YZ\f\7\2\2Z[\t\2\2\2[`\5\22\n\b\\]\f\6\2\2]^\t\3\2\2^`\5\22\n\7_Y\3\2"+
-		"\2\2_\\\3\2\2\2`c\3\2\2\2a_\3\2\2\2ab\3\2\2\2b\23\3\2\2\2ca\3\2\2\2\t"+
-		"%-CKW_a";
+		"\3\t\5\tL\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n"+
+		"\3\n\3\n\3\n\3\n\3\n\5\na\n\n\3\n\3\n\3\n\3\n\3\n\3\n\7\ni\n\n\f\n\16"+
+		"\nl\13\n\3\n\2\3\22\13\2\4\6\b\n\f\16\20\22\2\4\3\2\17\20\3\2\r\16q\2"+
+		"\24\3\2\2\2\4\26\3\2\2\2\6%\3\2\2\2\b-\3\2\2\2\n/\3\2\2\2\f\66\3\2\2\2"+
+		"\16C\3\2\2\2\20K\3\2\2\2\22`\3\2\2\2\24\25\5\4\3\2\25\3\3\2\2\2\26\27"+
+		"\7\5\2\2\27\30\7\6\2\2\30\31\7\21\2\2\31\32\5\6\4\2\32\33\7\22\2\2\33"+
+		"\34\5\16\b\2\34\35\7\13\2\2\35\5\3\2\2\2\36&\3\2\2\2\37 \7\5\2\2 &\7\6"+
+		"\2\2!\"\7\5\2\2\"#\7\6\2\2#$\7\23\2\2$&\5\b\5\2%\36\3\2\2\2%\37\3\2\2"+
+		"\2%!\3\2\2\2&\7\3\2\2\2\'(\7\5\2\2(.\7\6\2\2)*\7\5\2\2*+\7\6\2\2+,\7\23"+
+		"\2\2,.\5\b\5\2-\'\3\2\2\2-)\3\2\2\2.\t\3\2\2\2/\60\7\n\2\2\60\61\7\21"+
+		"\2\2\61\62\5\22\n\2\62\63\7\22\2\2\63\64\5\22\n\2\64\65\7\13\2\2\65\13"+
+		"\3\2\2\2\66\67\7\f\2\2\678\7\21\2\289\5\22\n\29:\7\22\2\2:;\5\16\b\2;"+
+		"<\7\13\2\2<\r\3\2\2\2=D\5\n\6\2>D\5\f\7\2?@\5\22\n\2@A\7\24\2\2AD\3\2"+
+		"\2\2BD\5\20\t\2C=\3\2\2\2C>\3\2\2\2C?\3\2\2\2CB\3\2\2\2D\17\3\2\2\2EF"+
+		"\7\5\2\2FL\7\6\2\2GH\7\5\2\2HI\7\6\2\2IJ\7\25\2\2JL\5\22\n\2KE\3\2\2\2"+
+		"KG\3\2\2\2L\21\3\2\2\2MN\b\n\1\2NO\7\6\2\2OP\7\25\2\2Pa\5\22\n\tQR\7\21"+
+		"\2\2RS\5\22\n\2ST\7\22\2\2Ta\3\2\2\2UV\7\6\2\2VW\7\26\2\2WX\7\6\2\2XY"+
+		"\7\27\2\2YZ\7\21\2\2Z[\7\t\2\2[\\\7\23\2\2\\]\7\t\2\2]a\7\22\2\2^a\7\t"+
+		"\2\2_a\7\6\2\2`M\3\2\2\2`Q\3\2\2\2`U\3\2\2\2`^\3\2\2\2`_\3\2\2\2aj\3\2"+
+		"\2\2bc\f\b\2\2cd\t\2\2\2di\5\22\n\tef\f\7\2\2fg\t\3\2\2gi\5\22\n\bhb\3"+
+		"\2\2\2he\3\2\2\2il\3\2\2\2jh\3\2\2\2jk\3\2\2\2k\23\3\2\2\2lj\3\2\2\2\t"+
+		"%-CK`hj";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

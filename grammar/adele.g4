@@ -31,6 +31,7 @@ expr:   ID EQUAL expr               |   /* assignment */
         expr ( MULTI | DIV ) expr   |   /* multiplication, division */
         expr ( ADD | SUB) expr      |   /* addition, substraction */
         LPAREN expr RPAREN          |   /* parenthesis */
+        ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN |  /* @lfred: to fix - lame overlay */ 
         NUM                         |   
         ID                          ;
 
@@ -57,15 +58,17 @@ END:    'end' ;
 WHILE:  'while' ;
 
 /* symbols */
-ADD:    '+' ;
-SUB:    '-' ;
-MULTI:  '*' ;
-DIV:    '/' ;
-LPAREN: '(' ;
-RPAREN: ')' ;
-COMMA:  ',' ;
-SEMICOLON:  ';' ;
-EQUAL:  '=' ;
+ADD:        '+'  ;
+SUB:        '-'  ;
+MULTI:      '*'  ;
+DIV:        '/'  ;
+LPAREN:     '('  ;
+RPAREN:     ')'  ;
+COMMA:      ','  ;
+SEMICOLON:  ';'  ;
+EQUAL:      '='  ;
+OVERLAY:    '//' ;
+AT:         '@'  ;
 
 /* spaces, tabs.. */
 WS:     [ \t\r\n]+ -> skip ;        // skip spaces, tabs, newlines
