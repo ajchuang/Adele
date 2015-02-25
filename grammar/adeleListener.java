@@ -38,15 +38,45 @@ public interface adeleListener extends ParseTreeListener {
 	 */
 	void exitPlist(adeleParser.PlistContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link adeleParser#if_s}.
+	 * Enter a parse tree produced by {@link adeleParser#plist_non_empty}.
 	 * @param ctx the parse tree
 	 */
-	void enterIf_s(adeleParser.If_sContext ctx);
+	void enterPlist_non_empty(adeleParser.Plist_non_emptyContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link adeleParser#if_s}.
+	 * Exit a parse tree produced by {@link adeleParser#plist_non_empty}.
 	 * @param ctx the parse tree
 	 */
-	void exitIf_s(adeleParser.If_sContext ctx);
+	void exitPlist_non_empty(adeleParser.Plist_non_emptyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link adeleParser#if_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterIf_stmt(adeleParser.If_stmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link adeleParser#if_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitIf_stmt(adeleParser.If_stmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link adeleParser#while_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhile_stmt(adeleParser.While_stmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link adeleParser#while_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhile_stmt(adeleParser.While_stmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link adeleParser#stmts}.
+	 * @param ctx the parse tree
+	 */
+	void enterStmts(adeleParser.StmtsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link adeleParser#stmts}.
+	 * @param ctx the parse tree
+	 */
+	void exitStmts(adeleParser.StmtsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link adeleParser#expr}.
 	 * @param ctx the parse tree
