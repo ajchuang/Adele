@@ -1,0 +1,4 @@
+
+void main ()
+    print_str (10, 10, "hello world");
+end

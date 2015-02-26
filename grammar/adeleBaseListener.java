@@ -64,6 +64,30 @@ public class adeleBaseListener implements adeleListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterStmts(adeleParser.StmtsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStmts(adeleParser.StmtsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStmt(adeleParser.StmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStmt(adeleParser.StmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIf_stmt(adeleParser.If_stmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -83,18 +107,6 @@ public class adeleBaseListener implements adeleListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitWhile_stmt(adeleParser.While_stmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterStmts(adeleParser.StmtsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStmts(adeleParser.StmtsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -143,6 +155,18 @@ public class adeleBaseListener implements adeleListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunc_plist_non_empty(adeleParser.Func_plist_non_emptyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFpitem(adeleParser.FpitemContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFpitem(adeleParser.FpitemContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

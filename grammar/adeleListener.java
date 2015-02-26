@@ -48,6 +48,26 @@ public interface adeleListener extends ParseTreeListener {
 	 */
 	void exitPlist_non_empty(adeleParser.Plist_non_emptyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link adeleParser#stmts}.
+	 * @param ctx the parse tree
+	 */
+	void enterStmts(adeleParser.StmtsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link adeleParser#stmts}.
+	 * @param ctx the parse tree
+	 */
+	void exitStmts(adeleParser.StmtsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link adeleParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterStmt(adeleParser.StmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link adeleParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitStmt(adeleParser.StmtContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link adeleParser#if_stmt}.
 	 * @param ctx the parse tree
 	 */
@@ -67,16 +87,6 @@ public interface adeleListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitWhile_stmt(adeleParser.While_stmtContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link adeleParser#stmts}.
-	 * @param ctx the parse tree
-	 */
-	void enterStmts(adeleParser.StmtsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link adeleParser#stmts}.
-	 * @param ctx the parse tree
-	 */
-	void exitStmts(adeleParser.StmtsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link adeleParser#declaration}.
 	 * @param ctx the parse tree
@@ -117,4 +127,14 @@ public interface adeleListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunc_plist_non_empty(adeleParser.Func_plist_non_emptyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link adeleParser#fpitem}.
+	 * @param ctx the parse tree
+	 */
+	void enterFpitem(adeleParser.FpitemContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link adeleParser#fpitem}.
+	 * @param ctx the parse tree
+	 */
+	void exitFpitem(adeleParser.FpitemContext ctx);
 }
