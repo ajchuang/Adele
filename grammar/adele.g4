@@ -28,7 +28,8 @@ declaration:    TYPE ID ;
 expr:                               |   /* empty expression */
         ID EQUAL expr               |   /* assignment */
         expr ( MULTI | DIV ) expr   |   /* multiplication, division */
-        expr ( ADD | SUB) expr      |   /* addition, substraction */
+        expr ( ADD   | SUB ) expr   |   /* addition, substraction */
+        expr ( GT    | LT  ) expr   |   /* greater or less than */
         LPAREN expr RPAREN          |   /* parenthesis */
         ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN |  /* @lfred: to fix - lame overlay */
         ID LPAREN func_plist RPAREN |   /* function call */
@@ -59,6 +60,8 @@ SEMICOLON:  ';'  ;
 EQUAL:      '='  ;
 OVERLAY:    '//' ;
 AT:         '@'  ;
+GT:         '>'  ;
+LT:         '<'  ;
 
 
 /* types */
