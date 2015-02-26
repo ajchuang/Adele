@@ -216,7 +216,7 @@ public class adeleParser extends Parser {
 			stmts();
 			setState(38);
 			match(END);
-			 System.out.println ((((FuncContext)_localctx).ID!=null?((FuncContext)_localctx).ID.getText():null) + " is implemented"); 
+			 System.out.println ("func: " + (((FuncContext)_localctx).ID!=null?((FuncContext)_localctx).ID.getText():null) + " is implemented"); 
 			}
 		}
 		catch (RecognitionException re) {
@@ -596,7 +596,7 @@ public class adeleParser extends Parser {
 			match(TYPE);
 			setState(86);
 			((DeclarationContext)_localctx).ID = match(ID);
-			 System.out.println ("var " + (((DeclarationContext)_localctx).ID!=null?((DeclarationContext)_localctx).ID.getText():null) + " is declared"); 
+			 System.out.println ("var: " + (((DeclarationContext)_localctx).ID!=null?((DeclarationContext)_localctx).ID.getText():null) + " is declared"); 
 			}
 		}
 		catch (RecognitionException re) {
@@ -743,7 +743,7 @@ public class adeleParser extends Parser {
 				func_plist();
 				setState(113);
 				match(RPAREN);
-				 System.out.println ((((ExprContext)_localctx).ID!=null?((ExprContext)_localctx).ID.getText():null) + " is called"); 
+				 System.out.println ("func: " + (((ExprContext)_localctx).ID!=null?((ExprContext)_localctx).ID.getText():null) + " is called"); 
 				}
 				break;
 			case 8:

@@ -7,8 +7,9 @@ prog:   | ( func | declaration )* ;
 
 /* function and its parameters */
 /******************************************************************************/
-func:   TYPE ID LPAREN plist RPAREN stmts END { System.out.println ($ID.text + " is implemented"); } ;
-plist:  | (TYPE ID COMMA)* TYPE ID ;
+func:   TYPE ID LPAREN plist RPAREN stmts END 
+            { System.out.println ("func: " + $ID.text + " is implemented"); } ;
+plist:  | ( TYPE ID COMMA )* TYPE ID ;
 
 /* statments: if, while, declarations */
 /******************************************************************************/
@@ -22,29 +23,29 @@ stmt:       SEMICOLON
 
 if_stmt:        IF LPAREN expr RPAREN expr END ;
 while_stmt:     WHILE LPAREN expr RPAREN stmts END ;
-declaration:    TYPE ID { System.out.println ("var " + $ID.text + " is declared"); } ;
+declaration:    TYPE ID { System.out.println ("var: " + $ID.text + " is declared"); } ;
 
 /* expressions */
 /******************************************************************************/
 expr:   |                               /* empty expression */
-        |   ID EQUAL expr               /* assignment */
-        |   expr MULTI expr             /* multiplication */
-        |   expr DIV expr               /* division */
-        |   expr ADD expr               /* addition */
-        |   expr SUB expr               /* substraction */
-        |   expr GT expr                /* less than */
-        |   expr LT expr                /* less than */
-        |   expr GET expr               /* less than */
-        |   expr LET expr               /* less than */
-        |   LPAREN expr RPAREN          /* parenthesis */
+        |   ID      EQUAL   expr        /* assignment */
+        |   expr    MULTI   expr        /* multiplication */
+        |   expr    DIV     expr        /* division */
+        |   expr    ADD     expr        /* addition */
+        |   expr    SUB     expr        /* substraction */
+        |   expr    GT      expr        /* less than */
+        |   expr    LT      expr        /* less than */
+        |   expr    GET     expr        /* less than */
+        |   expr    LET     expr        /* less than */
+        |   LPAREN  expr    RPAREN      /* parenthesis */
         |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN /* @lfred: to fix - lame overlay */
         |   ID LPAREN func_plist RPAREN /* function call */
-                { System.out.println ($ID.text + " is called"); }
+                { System.out.println ("func: " + $ID.text + " is called"); }
         |   RETURN expr
         |   ID                        
         |   NUM ; 
 
-func_plist:  | (fpitem COMMA)* fpitem;
+func_plist:  | ( fpitem COMMA )* fpitem;
 fpitem:     ID | NUM | STR ;
 
 /******************************************************************************/
