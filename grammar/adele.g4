@@ -8,8 +8,7 @@ prog:   func ;       /* @lfred: to fix */
 /* function and its parameters */
 /******************************************************************************/
 func:   TYPE ID LPAREN plist RPAREN stmts END ;
-plist:  | TYPE ID | TYPE ID COMMA plist_non_empty ;
-plist_non_empty: TYPE ID | TYPE ID COMMA plist_non_empty ;
+plist:  | (TYPE ID COMMA)* TYPE ID ;
 
 /* statments: if, while, declarations */
 /******************************************************************************/
@@ -18,14 +17,11 @@ stmt:   SEMICOLON       |
         if_stmt         |
         while_stmt      |
         expr SEMICOLON  |
-        declaration     ;
+        declaration SEMICOLON ;
 
-if_stmt:    IF LPAREN expr RPAREN expr END ;
-while_stmt: WHILE LPAREN expr RPAREN stmts END ;
-
-/* declare a variable */
-/******************************************************************************/
-declaration: TYPE ID | TYPE ID EQUAL expr ;
+if_stmt:        IF LPAREN expr RPAREN expr END ;
+while_stmt:     WHILE LPAREN expr RPAREN stmts END ;
+declaration:    TYPE ID ;
 
 /* expressions */
 /******************************************************************************/
@@ -37,10 +33,9 @@ expr:                               |   /* empty expression */
         ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN |  /* @lfred: to fix - lame overlay */
         ID LPAREN func_plist RPAREN |   /* function call */
         ID                          |
-        NUM; 
+        NUM ; 
 
-func_plist:  | fpitem | fpitem COMMA func_plist_non_empty ;
-func_plist_non_empty: fpitem | fpitem COMMA func_plist_non_empty;
+func_plist:  | (fpitem COMMA)* fpitem;
 fpitem:     ID | NUM | STR ;
 
 /******************************************************************************/
@@ -65,24 +60,23 @@ EQUAL:      '='  ;
 OVERLAY:    '//' ;
 AT:         '@'  ;
 
+
 /* types */
-PTYPE:  INT | FLOAT | CHAR ;  // primitive type supported.
-ATYPE:  PTYPE'[' ']' ;              // array type
-TYPE:   PTYPE | ATYPE | VOID ;
-INT:    'int'   ;
-FLOAT:  'float' ;
-CHAR:   'char'  ;
-VOID:   'void'  ;
+fragment INT:   'int'   ;
+fragment FLOAT: 'float' ;
+fragment CHAR:  'char'  ;
+fragment VOID:  'void'  ;
+TYPE:   INT | FLOAT | CHAR | VOID ;
 
 /* identifiers */
 ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;   // match lower-case identifiers
 
 /* primitive types */
-FLOAT_NUM:  [-]?[0-9]+ '.' [0-9]+ ;     // floating numbers
-INT_NUM:    [-]?[1-9]+[0-9]* | [0] ;    // integers
-NUM:    FLOAT_NUM | INT_NUM ;
-CHR:    [A-Za-z0-9_] ;
-STR:    '"' CHR* '"' ;
+fragment FLOAT_NUM:  [-]?[0-9]+ '.' [0-9]+ ;     // floating numbers
+fragment INT_NUM:    [-]?[1-9]+[0-9]* | [0] ;    // integers
+fragment CHR:        [A-Za-z0-9_] ;
+NUM:        FLOAT_NUM | INT_NUM ;
+STR:        '"' CHR* '"' ;
 
 /* spaces, tabs.. */
 WS:     [ \t\r\n]+ -> skip ;        // skip spaces, tabs, newlines

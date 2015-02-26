@@ -17,30 +17,25 @@ public class adeleParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		IF=1, END=2, WHILE=3, ADD=4, SUB=5, MULTI=6, DIV=7, LPAREN=8, RPAREN=9, 
-		COMMA=10, SEMICOLON=11, EQUAL=12, OVERLAY=13, AT=14, PTYPE=15, ATYPE=16, 
-		TYPE=17, INT=18, FLOAT=19, CHAR=20, VOID=21, ID=22, FLOAT_NUM=23, INT_NUM=24, 
-		NUM=25, CHR=26, STR=27, WS=28;
+		COMMA=10, SEMICOLON=11, EQUAL=12, OVERLAY=13, AT=14, TYPE=15, ID=16, NUM=17, 
+		STR=18, WS=19;
 	public static final int
-		RULE_prog = 0, RULE_func = 1, RULE_plist = 2, RULE_plist_non_empty = 3, 
-		RULE_stmts = 4, RULE_stmt = 5, RULE_if_stmt = 6, RULE_while_stmt = 7, 
-		RULE_declaration = 8, RULE_expr = 9, RULE_func_plist = 10, RULE_func_plist_non_empty = 11, 
-		RULE_fpitem = 12;
+		RULE_prog = 0, RULE_func = 1, RULE_plist = 2, RULE_stmts = 3, RULE_stmt = 4, 
+		RULE_if_stmt = 5, RULE_while_stmt = 6, RULE_declaration = 7, RULE_expr = 8, 
+		RULE_func_plist = 9, RULE_fpitem = 10;
 	public static final String[] ruleNames = {
-		"prog", "func", "plist", "plist_non_empty", "stmts", "stmt", "if_stmt", 
-		"while_stmt", "declaration", "expr", "func_plist", "func_plist_non_empty", 
-		"fpitem"
+		"prog", "func", "plist", "stmts", "stmt", "if_stmt", "while_stmt", "declaration", 
+		"expr", "func_plist", "fpitem"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
 		null, "'if'", "'end'", "'while'", "'+'", "'-'", "'*'", "'/'", "'('", "')'", 
-		"','", "';'", "'='", "'//'", "'@'", null, null, null, "'int'", "'float'", 
-		"'char'", "'void'"
+		"','", "';'", "'='", "'//'", "'@'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, "IF", "END", "WHILE", "ADD", "SUB", "MULTI", "DIV", "LPAREN", "RPAREN", 
-		"COMMA", "SEMICOLON", "EQUAL", "OVERLAY", "AT", "PTYPE", "ATYPE", "TYPE", 
-		"INT", "FLOAT", "CHAR", "VOID", "ID", "FLOAT_NUM", "INT_NUM", "NUM", "CHR", 
-		"STR", "WS"
+		"COMMA", "SEMICOLON", "EQUAL", "OVERLAY", "AT", "TYPE", "ID", "NUM", "STR", 
+		"WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -115,7 +110,7 @@ public class adeleParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(26);
+			setState(22);
 			func();
 			}
 		}
@@ -162,19 +157,19 @@ public class adeleParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(28);
+			setState(24);
 			match(TYPE);
-			setState(29);
+			setState(25);
 			match(ID);
-			setState(30);
+			setState(26);
 			match(LPAREN);
-			setState(31);
+			setState(27);
 			plist();
-			setState(32);
+			setState(28);
 			match(RPAREN);
-			setState(33);
+			setState(29);
 			stmts();
-			setState(34);
+			setState(30);
 			match(END);
 			}
 		}
@@ -190,11 +185,17 @@ public class adeleParser extends Parser {
 	}
 
 	public static class PlistContext extends ParserRuleContext {
-		public TerminalNode TYPE() { return getToken(adeleParser.TYPE, 0); }
-		public TerminalNode ID() { return getToken(adeleParser.ID, 0); }
-		public TerminalNode COMMA() { return getToken(adeleParser.COMMA, 0); }
-		public Plist_non_emptyContext plist_non_empty() {
-			return getRuleContext(Plist_non_emptyContext.class,0);
+		public List<TerminalNode> TYPE() { return getTokens(adeleParser.TYPE); }
+		public TerminalNode TYPE(int i) {
+			return getToken(adeleParser.TYPE, i);
+		}
+		public List<TerminalNode> ID() { return getTokens(adeleParser.ID); }
+		public TerminalNode ID(int i) {
+			return getToken(adeleParser.ID, i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(adeleParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(adeleParser.COMMA, i);
 		}
 		public PlistContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -214,97 +215,45 @@ public class adeleParser extends Parser {
 		PlistContext _localctx = new PlistContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_plist);
 		try {
+			int _alt;
 			setState(43);
-			switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
-			case 1:
+			switch (_input.LA(1)) {
+			case RPAREN:
 				enterOuterAlt(_localctx, 1);
 				{
 				}
 				break;
-			case 2:
+			case TYPE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(37);
-				match(TYPE);
 				setState(38);
-				match(ID);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
+				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+					if ( _alt==1 ) {
+						{
+						{
+						setState(33);
+						match(TYPE);
+						setState(34);
+						match(ID);
+						setState(35);
+						match(COMMA);
+						}
+						} 
+					}
+					setState(40);
+					_errHandler.sync(this);
+					_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 				}
-				break;
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(39);
-				match(TYPE);
-				setState(40);
-				match(ID);
 				setState(41);
-				match(COMMA);
+				match(TYPE);
 				setState(42);
-				plist_non_empty();
-				}
-				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class Plist_non_emptyContext extends ParserRuleContext {
-		public TerminalNode TYPE() { return getToken(adeleParser.TYPE, 0); }
-		public TerminalNode ID() { return getToken(adeleParser.ID, 0); }
-		public TerminalNode COMMA() { return getToken(adeleParser.COMMA, 0); }
-		public Plist_non_emptyContext plist_non_empty() {
-			return getRuleContext(Plist_non_emptyContext.class,0);
-		}
-		public Plist_non_emptyContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_plist_non_empty; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof adeleListener ) ((adeleListener)listener).enterPlist_non_empty(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof adeleListener ) ((adeleListener)listener).exitPlist_non_empty(this);
-		}
-	}
-
-	public final Plist_non_emptyContext plist_non_empty() throws RecognitionException {
-		Plist_non_emptyContext _localctx = new Plist_non_emptyContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_plist_non_empty);
-		try {
-			setState(51);
-			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(45);
-				match(TYPE);
-				setState(46);
 				match(ID);
 				}
 				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(47);
-				match(TYPE);
-				setState(48);
-				match(ID);
-				setState(49);
-				match(COMMA);
-				setState(50);
-				plist_non_empty();
-				}
-				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -341,24 +290,24 @@ public class adeleParser extends Parser {
 
 	public final StmtsContext stmts() throws RecognitionException {
 		StmtsContext _localctx = new StmtsContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_stmts);
+		enterRule(_localctx, 6, RULE_stmts);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(56);
+			setState(48);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(53);
+					setState(45);
 					stmt();
 					}
 					} 
 				}
-				setState(58);
+				setState(50);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			}
@@ -405,45 +354,47 @@ public class adeleParser extends Parser {
 
 	public final StmtContext stmt() throws RecognitionException {
 		StmtContext _localctx = new StmtContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_stmt);
+		enterRule(_localctx, 8, RULE_stmt);
 		try {
-			setState(66);
+			setState(60);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(59);
+				setState(51);
 				match(SEMICOLON);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(60);
+				setState(52);
 				if_stmt();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(61);
+				setState(53);
 				while_stmt();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(62);
+				setState(54);
 				expr(0);
-				setState(63);
+				setState(55);
 				match(SEMICOLON);
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(65);
+				setState(57);
 				declaration();
+				setState(58);
+				match(SEMICOLON);
 				}
 				break;
 			}
@@ -486,21 +437,21 @@ public class adeleParser extends Parser {
 
 	public final If_stmtContext if_stmt() throws RecognitionException {
 		If_stmtContext _localctx = new If_stmtContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_if_stmt);
+		enterRule(_localctx, 10, RULE_if_stmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(68);
+			setState(62);
 			match(IF);
-			setState(69);
+			setState(63);
 			match(LPAREN);
-			setState(70);
+			setState(64);
 			expr(0);
-			setState(71);
+			setState(65);
 			match(RPAREN);
-			setState(72);
+			setState(66);
 			expr(0);
-			setState(73);
+			setState(67);
 			match(END);
 			}
 		}
@@ -542,21 +493,21 @@ public class adeleParser extends Parser {
 
 	public final While_stmtContext while_stmt() throws RecognitionException {
 		While_stmtContext _localctx = new While_stmtContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_while_stmt);
+		enterRule(_localctx, 12, RULE_while_stmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(75);
+			setState(69);
 			match(WHILE);
-			setState(76);
+			setState(70);
 			match(LPAREN);
-			setState(77);
+			setState(71);
 			expr(0);
-			setState(78);
+			setState(72);
 			match(RPAREN);
-			setState(79);
+			setState(73);
 			stmts();
-			setState(80);
+			setState(74);
 			match(END);
 			}
 		}
@@ -574,10 +525,6 @@ public class adeleParser extends Parser {
 	public static class DeclarationContext extends ParserRuleContext {
 		public TerminalNode TYPE() { return getToken(adeleParser.TYPE, 0); }
 		public TerminalNode ID() { return getToken(adeleParser.ID, 0); }
-		public TerminalNode EQUAL() { return getToken(adeleParser.EQUAL, 0); }
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
-		}
 		public DeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -594,32 +541,14 @@ public class adeleParser extends Parser {
 
 	public final DeclarationContext declaration() throws RecognitionException {
 		DeclarationContext _localctx = new DeclarationContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_declaration);
+		enterRule(_localctx, 14, RULE_declaration);
 		try {
-			setState(88);
-			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(82);
-				match(TYPE);
-				setState(83);
-				match(ID);
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(84);
-				match(TYPE);
-				setState(85);
-				match(ID);
-				setState(86);
-				match(EQUAL);
-				setState(87);
-				expr(0);
-				}
-				break;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(76);
+			match(TYPE);
+			setState(77);
+			match(ID);
 			}
 		}
 		catch (RecognitionException re) {
@@ -684,22 +613,22 @@ public class adeleParser extends Parser {
 		int _parentState = getState();
 		ExprContext _localctx = new ExprContext(_ctx, _parentState);
 		ExprContext _prevctx = _localctx;
-		int _startState = 18;
-		enterRecursionRule(_localctx, 18, RULE_expr, _p);
+		int _startState = 16;
+		enterRecursionRule(_localctx, 16, RULE_expr, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(115);
-			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
+			setState(104);
+			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				{
-				setState(91);
+				setState(80);
 				match(ID);
-				setState(92);
+				setState(81);
 				match(EQUAL);
-				setState(93);
+				setState(82);
 				expr(8);
 				}
 				break;
@@ -709,86 +638,86 @@ public class adeleParser extends Parser {
 				break;
 			case 3:
 				{
-				setState(95);
+				setState(84);
 				match(LPAREN);
-				setState(96);
+				setState(85);
 				expr(0);
-				setState(97);
+				setState(86);
 				match(RPAREN);
 				}
 				break;
 			case 4:
 				{
-				setState(99);
+				setState(88);
 				match(ID);
-				setState(100);
+				setState(89);
 				match(OVERLAY);
-				setState(101);
+				setState(90);
 				match(ID);
-				setState(102);
+				setState(91);
 				match(AT);
-				setState(103);
+				setState(92);
 				match(LPAREN);
-				setState(104);
+				setState(93);
 				match(NUM);
-				setState(105);
+				setState(94);
 				match(COMMA);
-				setState(106);
+				setState(95);
 				match(NUM);
-				setState(107);
+				setState(96);
 				match(RPAREN);
 				}
 				break;
 			case 5:
 				{
-				setState(108);
+				setState(97);
 				match(ID);
-				setState(109);
+				setState(98);
 				match(LPAREN);
-				setState(110);
+				setState(99);
 				func_plist();
-				setState(111);
+				setState(100);
 				match(RPAREN);
 				}
 				break;
 			case 6:
 				{
-				setState(113);
+				setState(102);
 				match(ID);
 				}
 				break;
 			case 7:
 				{
-				setState(114);
+				setState(103);
 				match(NUM);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(125);
+			setState(114);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(123);
-					switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
+					setState(112);
+					switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 					case 1:
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(117);
+						setState(106);
 						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
-						setState(118);
+						setState(107);
 						_la = _input.LA(1);
 						if ( !(_la==MULTI || _la==DIV) ) {
 						_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(119);
+						setState(108);
 						expr(8);
 						}
 						break;
@@ -796,25 +725,25 @@ public class adeleParser extends Parser {
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(120);
+						setState(109);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
-						setState(121);
+						setState(110);
 						_la = _input.LA(1);
 						if ( !(_la==ADD || _la==SUB) ) {
 						_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(122);
+						setState(111);
 						expr(7);
 						}
 						break;
 					}
 					} 
 				}
-				setState(127);
+				setState(116);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			}
 			}
 		}
@@ -830,12 +759,15 @@ public class adeleParser extends Parser {
 	}
 
 	public static class Func_plistContext extends ParserRuleContext {
-		public FpitemContext fpitem() {
-			return getRuleContext(FpitemContext.class,0);
+		public List<FpitemContext> fpitem() {
+			return getRuleContexts(FpitemContext.class);
 		}
-		public TerminalNode COMMA() { return getToken(adeleParser.COMMA, 0); }
-		public Func_plist_non_emptyContext func_plist_non_empty() {
-			return getRuleContext(Func_plist_non_emptyContext.class,0);
+		public FpitemContext fpitem(int i) {
+			return getRuleContext(FpitemContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(adeleParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(adeleParser.COMMA, i);
 		}
 		public Func_plistContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -853,92 +785,45 @@ public class adeleParser extends Parser {
 
 	public final Func_plistContext func_plist() throws RecognitionException {
 		Func_plistContext _localctx = new Func_plistContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_func_plist);
+		enterRule(_localctx, 18, RULE_func_plist);
 		try {
-			setState(134);
-			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
-			case 1:
+			int _alt;
+			setState(127);
+			switch (_input.LA(1)) {
+			case RPAREN:
 				enterOuterAlt(_localctx, 1);
 				{
 				}
 				break;
-			case 2:
+			case ID:
+			case NUM:
+			case STR:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(129);
+				setState(123);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+					if ( _alt==1 ) {
+						{
+						{
+						setState(118);
+						fpitem();
+						setState(119);
+						match(COMMA);
+						}
+						} 
+					}
+					setState(125);
+					_errHandler.sync(this);
+					_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+				}
+				setState(126);
 				fpitem();
 				}
 				break;
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(130);
-				fpitem();
-				setState(131);
-				match(COMMA);
-				setState(132);
-				func_plist_non_empty();
-				}
-				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class Func_plist_non_emptyContext extends ParserRuleContext {
-		public FpitemContext fpitem() {
-			return getRuleContext(FpitemContext.class,0);
-		}
-		public TerminalNode COMMA() { return getToken(adeleParser.COMMA, 0); }
-		public Func_plist_non_emptyContext func_plist_non_empty() {
-			return getRuleContext(Func_plist_non_emptyContext.class,0);
-		}
-		public Func_plist_non_emptyContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_func_plist_non_empty; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof adeleListener ) ((adeleListener)listener).enterFunc_plist_non_empty(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof adeleListener ) ((adeleListener)listener).exitFunc_plist_non_empty(this);
-		}
-	}
-
-	public final Func_plist_non_emptyContext func_plist_non_empty() throws RecognitionException {
-		Func_plist_non_emptyContext _localctx = new Func_plist_non_emptyContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_func_plist_non_empty);
-		try {
-			setState(141);
-			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(136);
-				fpitem();
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(137);
-				fpitem();
-				setState(138);
-				match(COMMA);
-				setState(139);
-				func_plist_non_empty();
-				}
-				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -972,12 +857,12 @@ public class adeleParser extends Parser {
 
 	public final FpitemContext fpitem() throws RecognitionException {
 		FpitemContext _localctx = new FpitemContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_fpitem);
+		enterRule(_localctx, 20, RULE_fpitem);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(143);
+			setState(129);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ID) | (1L << NUM) | (1L << STR))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -999,7 +884,7 @@ public class adeleParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 9:
+		case 8:
 			return expr_sempred((ExprContext)_localctx, predIndex);
 		}
 		return true;
@@ -1015,46 +900,40 @@ public class adeleParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\36\u0094\4\2\t\2"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\25\u0086\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
-		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4.\n\4\3\5\3\5\3\5\3\5\3\5\3\5\5\5\66"+
-		"\n\5\3\6\7\69\n\6\f\6\16\6<\13\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7E\n\7"+
-		"\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\n\3\n\3\n\3"+
-		"\n\3\n\3\n\5\n[\n\n\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13"+
-		"\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13"+
-		"\3\13\5\13v\n\13\3\13\3\13\3\13\3\13\3\13\3\13\7\13~\n\13\f\13\16\13\u0081"+
-		"\13\13\3\f\3\f\3\f\3\f\3\f\3\f\5\f\u0089\n\f\3\r\3\r\3\r\3\r\3\r\5\r\u0090"+
-		"\n\r\3\16\3\16\3\16\2\3\24\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2\5\3\2"+
-		"\b\t\3\2\6\7\5\2\30\30\33\33\35\35\u009a\2\34\3\2\2\2\4\36\3\2\2\2\6-"+
-		"\3\2\2\2\b\65\3\2\2\2\n:\3\2\2\2\fD\3\2\2\2\16F\3\2\2\2\20M\3\2\2\2\22"+
-		"Z\3\2\2\2\24u\3\2\2\2\26\u0088\3\2\2\2\30\u008f\3\2\2\2\32\u0091\3\2\2"+
-		"\2\34\35\5\4\3\2\35\3\3\2\2\2\36\37\7\23\2\2\37 \7\30\2\2 !\7\n\2\2!\""+
-		"\5\6\4\2\"#\7\13\2\2#$\5\n\6\2$%\7\4\2\2%\5\3\2\2\2&.\3\2\2\2\'(\7\23"+
-		"\2\2(.\7\30\2\2)*\7\23\2\2*+\7\30\2\2+,\7\f\2\2,.\5\b\5\2-&\3\2\2\2-\'"+
-		"\3\2\2\2-)\3\2\2\2.\7\3\2\2\2/\60\7\23\2\2\60\66\7\30\2\2\61\62\7\23\2"+
-		"\2\62\63\7\30\2\2\63\64\7\f\2\2\64\66\5\b\5\2\65/\3\2\2\2\65\61\3\2\2"+
-		"\2\66\t\3\2\2\2\679\5\f\7\28\67\3\2\2\29<\3\2\2\2:8\3\2\2\2:;\3\2\2\2"+
-		";\13\3\2\2\2<:\3\2\2\2=E\7\r\2\2>E\5\16\b\2?E\5\20\t\2@A\5\24\13\2AB\7"+
-		"\r\2\2BE\3\2\2\2CE\5\22\n\2D=\3\2\2\2D>\3\2\2\2D?\3\2\2\2D@\3\2\2\2DC"+
-		"\3\2\2\2E\r\3\2\2\2FG\7\3\2\2GH\7\n\2\2HI\5\24\13\2IJ\7\13\2\2JK\5\24"+
-		"\13\2KL\7\4\2\2L\17\3\2\2\2MN\7\5\2\2NO\7\n\2\2OP\5\24\13\2PQ\7\13\2\2"+
-		"QR\5\n\6\2RS\7\4\2\2S\21\3\2\2\2TU\7\23\2\2U[\7\30\2\2VW\7\23\2\2WX\7"+
-		"\30\2\2XY\7\16\2\2Y[\5\24\13\2ZT\3\2\2\2ZV\3\2\2\2[\23\3\2\2\2\\]\b\13"+
-		"\1\2]^\7\30\2\2^_\7\16\2\2_v\5\24\13\n`v\3\2\2\2ab\7\n\2\2bc\5\24\13\2"+
-		"cd\7\13\2\2dv\3\2\2\2ef\7\30\2\2fg\7\17\2\2gh\7\30\2\2hi\7\20\2\2ij\7"+
-		"\n\2\2jk\7\33\2\2kl\7\f\2\2lm\7\33\2\2mv\7\13\2\2no\7\30\2\2op\7\n\2\2"+
-		"pq\5\26\f\2qr\7\13\2\2rv\3\2\2\2sv\7\30\2\2tv\7\33\2\2u\\\3\2\2\2u`\3"+
-		"\2\2\2ua\3\2\2\2ue\3\2\2\2un\3\2\2\2us\3\2\2\2ut\3\2\2\2v\177\3\2\2\2"+
-		"wx\f\t\2\2xy\t\2\2\2y~\5\24\13\nz{\f\b\2\2{|\t\3\2\2|~\5\24\13\t}w\3\2"+
-		"\2\2}z\3\2\2\2~\u0081\3\2\2\2\177}\3\2\2\2\177\u0080\3\2\2\2\u0080\25"+
-		"\3\2\2\2\u0081\177\3\2\2\2\u0082\u0089\3\2\2\2\u0083\u0089\5\32\16\2\u0084"+
-		"\u0085\5\32\16\2\u0085\u0086\7\f\2\2\u0086\u0087\5\30\r\2\u0087\u0089"+
-		"\3\2\2\2\u0088\u0082\3\2\2\2\u0088\u0083\3\2\2\2\u0088\u0084\3\2\2\2\u0089"+
-		"\27\3\2\2\2\u008a\u0090\5\32\16\2\u008b\u008c\5\32\16\2\u008c\u008d\7"+
-		"\f\2\2\u008d\u008e\5\30\r\2\u008e\u0090\3\2\2\2\u008f\u008a\3\2\2\2\u008f"+
-		"\u008b\3\2\2\2\u0090\31\3\2\2\2\u0091\u0092\t\4\2\2\u0092\33\3\2\2\2\f"+
-		"-\65:DZu}\177\u0088\u008f";
+		"\t\13\4\f\t\f\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4"+
+		"\7\4\'\n\4\f\4\16\4*\13\4\3\4\3\4\5\4.\n\4\3\5\7\5\61\n\5\f\5\16\5\64"+
+		"\13\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6?\n\6\3\7\3\7\3\7\3\7\3\7"+
+		"\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3"+
+		"\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n"+
+		"\3\n\3\n\5\nk\n\n\3\n\3\n\3\n\3\n\3\n\3\n\7\ns\n\n\f\n\16\nv\13\n\3\13"+
+		"\3\13\3\13\3\13\7\13|\n\13\f\13\16\13\177\13\13\3\13\5\13\u0082\n\13\3"+
+		"\f\3\f\3\f\2\3\22\r\2\4\6\b\n\f\16\20\22\24\26\2\5\3\2\b\t\3\2\6\7\3\2"+
+		"\22\24\u008b\2\30\3\2\2\2\4\32\3\2\2\2\6-\3\2\2\2\b\62\3\2\2\2\n>\3\2"+
+		"\2\2\f@\3\2\2\2\16G\3\2\2\2\20N\3\2\2\2\22j\3\2\2\2\24\u0081\3\2\2\2\26"+
+		"\u0083\3\2\2\2\30\31\5\4\3\2\31\3\3\2\2\2\32\33\7\21\2\2\33\34\7\22\2"+
+		"\2\34\35\7\n\2\2\35\36\5\6\4\2\36\37\7\13\2\2\37 \5\b\5\2 !\7\4\2\2!\5"+
+		"\3\2\2\2\".\3\2\2\2#$\7\21\2\2$%\7\22\2\2%\'\7\f\2\2&#\3\2\2\2\'*\3\2"+
+		"\2\2(&\3\2\2\2()\3\2\2\2)+\3\2\2\2*(\3\2\2\2+,\7\21\2\2,.\7\22\2\2-\""+
+		"\3\2\2\2-(\3\2\2\2.\7\3\2\2\2/\61\5\n\6\2\60/\3\2\2\2\61\64\3\2\2\2\62"+
+		"\60\3\2\2\2\62\63\3\2\2\2\63\t\3\2\2\2\64\62\3\2\2\2\65?\7\r\2\2\66?\5"+
+		"\f\7\2\67?\5\16\b\289\5\22\n\29:\7\r\2\2:?\3\2\2\2;<\5\20\t\2<=\7\r\2"+
+		"\2=?\3\2\2\2>\65\3\2\2\2>\66\3\2\2\2>\67\3\2\2\2>8\3\2\2\2>;\3\2\2\2?"+
+		"\13\3\2\2\2@A\7\3\2\2AB\7\n\2\2BC\5\22\n\2CD\7\13\2\2DE\5\22\n\2EF\7\4"+
+		"\2\2F\r\3\2\2\2GH\7\5\2\2HI\7\n\2\2IJ\5\22\n\2JK\7\13\2\2KL\5\b\5\2LM"+
+		"\7\4\2\2M\17\3\2\2\2NO\7\21\2\2OP\7\22\2\2P\21\3\2\2\2QR\b\n\1\2RS\7\22"+
+		"\2\2ST\7\16\2\2Tk\5\22\n\nUk\3\2\2\2VW\7\n\2\2WX\5\22\n\2XY\7\13\2\2Y"+
+		"k\3\2\2\2Z[\7\22\2\2[\\\7\17\2\2\\]\7\22\2\2]^\7\20\2\2^_\7\n\2\2_`\7"+
+		"\23\2\2`a\7\f\2\2ab\7\23\2\2bk\7\13\2\2cd\7\22\2\2de\7\n\2\2ef\5\24\13"+
+		"\2fg\7\13\2\2gk\3\2\2\2hk\7\22\2\2ik\7\23\2\2jQ\3\2\2\2jU\3\2\2\2jV\3"+
+		"\2\2\2jZ\3\2\2\2jc\3\2\2\2jh\3\2\2\2ji\3\2\2\2kt\3\2\2\2lm\f\t\2\2mn\t"+
+		"\2\2\2ns\5\22\n\nop\f\b\2\2pq\t\3\2\2qs\5\22\n\trl\3\2\2\2ro\3\2\2\2s"+
+		"v\3\2\2\2tr\3\2\2\2tu\3\2\2\2u\23\3\2\2\2vt\3\2\2\2w\u0082\3\2\2\2xy\5"+
+		"\26\f\2yz\7\f\2\2z|\3\2\2\2{x\3\2\2\2|\177\3\2\2\2}{\3\2\2\2}~\3\2\2\2"+
+		"~\u0080\3\2\2\2\177}\3\2\2\2\u0080\u0082\5\26\f\2\u0081w\3\2\2\2\u0081"+
+		"}\3\2\2\2\u0082\25\3\2\2\2\u0083\u0084\t\4\2\2\u0084\27\3\2\2\2\13(-\62"+
+		">jrt}\u0081";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

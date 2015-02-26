@@ -52,18 +52,6 @@ public class adeleBaseListener implements adeleListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPlist_non_empty(adeleParser.Plist_non_emptyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPlist_non_empty(adeleParser.Plist_non_emptyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterStmts(adeleParser.StmtsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -143,18 +131,6 @@ public class adeleBaseListener implements adeleListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunc_plist(adeleParser.Func_plistContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunc_plist_non_empty(adeleParser.Func_plist_non_emptyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunc_plist_non_empty(adeleParser.Func_plist_non_emptyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
