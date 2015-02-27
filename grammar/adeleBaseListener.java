@@ -31,6 +31,18 @@ public class adeleBaseListener implements adeleListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterType_declaration(adeleParser.Type_declarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitType_declaration(adeleParser.Type_declarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunc(adeleParser.FuncContext ctx) { }
 	/**
 	 * {@inheritDoc}

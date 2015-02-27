@@ -1,3 +1,6 @@
+/******************************************************************************/
+/* Grammar Name: adele                                                        */
+/******************************************************************************/
 grammar adele;
 
 /******************************************************************************/
@@ -10,13 +13,16 @@ grammar adele;
 @members {
 
     /* constant */
-    final int F_TYPE_INT = 1;
+    final int F_TYPE_INT    = 1;
+    final int F_TYPE_CHAR   = 2;
+    final int F_BOOL_TRUE   = 1;
+    final int F_BOOL_FALSE  = -1;
 
     /* globals */
     int m_curScope = 0;
 
     /* Map variable name to Integer object holding value */
-    Hashtable<Integer, Object> m_scopeTable = new Hashtable<Integer, Object> (); 
+    Stack<Hashtable<String, Object>> m_scope = new Stack<Hashtable<String, Object>> (); 
     Hashtable<String, Object> symTyp = new Hashtable<String, Object> ();
     Hashtable<String, Object> symVal = new Hashtable<String, Object> ();
     
@@ -28,10 +34,19 @@ grammar adele;
 /******************************************************************************/
 /* generating matching rules                                                  */
 /******************************************************************************/
-prog:    
-        |   ( func  
-        |   ( declaration SEMICOLON ) )*
+prog:                                       /* empty programs       */ 
+        |   ( 
+                func                        /* functions            */
+        |       type_declaration            /* user defined types   */ 
+        |       (declaration SEMICOLON)     /* declarations         */
+
+            )*              
         ;
+        
+/* type declarations */
+/******************************************************************************/
+type_declaration:
+        GROUP ID (TYPE ID SEMICOLON)* END ;
 
 /* function and its parameters */
 /******************************************************************************/
@@ -41,7 +56,10 @@ func:   TYPE ID LPAREN plist RPAREN stmts END
                 // m_funTbl.put ($ID.text, null);
             } 
         ;
-plist:  | ( TYPE ID COMMA )* TYPE ID ;
+
+plist:  
+        |   ( TYPE ID COMMA )* TYPE ID 
+        ;
 
 /* statments: if, while, declarations */
 /******************************************************************************/
@@ -53,14 +71,15 @@ stmt:       SEMICOLON
         |   declaration SEMICOLON
         ;
 
-if_stmt:        IF LPAREN e1=expr RPAREN e2=expr END ;
-while_stmt:     WHILE LPAREN expr RPAREN stmts END ;
+if_stmt:        IF LPAREN e1=expr RPAREN {m_curScope++;} stmts {m_curScope--;} END ;
+while_stmt:     WHILE LPAREN expr RPAREN {m_curScope++;} stmts {m_curScope--;} END ;
 declaration:    
                 TYPE ID 
                     {
                         symTyp.put ($ID.text, new Integer (F_TYPE_INT));
                         symVal.put ($ID.text, new Integer (0));
-                        //System.out.println ("declare var: " + $ID.text); 
+
+                        System.err.println ("declare var: " + $ID.text); 
                     } 
             |   TYPE ID EQUAL expr
                     {
@@ -69,15 +88,19 @@ declaration:
                     }
             ;
 
-/* expressions */
+/******************************************************************************/
+/* expressions -                                                              */
+/*  1.  the order matters -                                                   */
+/*      it is the actual order of precedence. (left-associative)              */
+/*  2.  we allow int operation at this moment (todo: other types)             */
 /******************************************************************************/
 expr returns [int value]:
             
-            LPAREN  expr    RPAREN          /* parenthesis */
+            LPAREN  expr    RPAREN            /* parenthesis */
                 { 
                     $value = $expr.value; 
                 }
-        |   ID LPAREN func_plist RPAREN /* function call */
+        |   ID LPAREN func_plist RPAREN       /* function call */
                 { 
                     //System.out.println ("func: " + $ID.text + " is called"); 
                     
@@ -99,7 +122,8 @@ expr returns [int value]:
                     int e1 = $e1.value;
                     int e2 = $e2.value;
                     $value = e1 + e2;
-                    //System.out.println ("ADD: " + $value + ":" + e1 + ":" + e2);
+                    
+                    System.err.println ("ADD: " + $value + ":" + e1 + ":" + e2);
                 }
         |   e1=expr    SUB     e2=expr        /* substraction */
                 {
@@ -107,11 +131,32 @@ expr returns [int value]:
                 }
         |   e1=expr    GT      e2=expr        /* less than */
                 {
-                    $value = $e1.value - $e2.value;
+                    if ($e1.value - $e2.value > 0)
+                        $value = F_BOOL_TRUE;
+                    else
+                        $value = F_BOOL_FALSE;;
                 }
-        |   expr    LT      expr        /* less than */
-        |   expr    GET     expr        /* less than */
-        |   expr    LET     expr        /* less than */
+        |   e1=expr    LT      e2=expr        /* less than */
+                {
+                    if ($e1.value - $e2.value < 0)
+                        $value = F_BOOL_TRUE;
+                    else
+                        $value = F_BOOL_FALSE;;
+                }
+        |   e1=expr    GET     e2=expr        /* less than */
+                {
+                    if ($e1.value - $e2.value >= 0)
+                        $value = F_BOOL_TRUE;
+                    else
+                        $value = F_BOOL_FALSE;
+                }
+        |   e1=expr    LET     e2=expr        /* less than */
+                {
+                    if ($e1.value - $e2.value <= 0)
+                        $value = F_BOOL_TRUE;
+                    else
+                        $value = F_BOOL_FALSE;
+                }
         |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN /* @lfred: to fix - lame overlay */
         |   ID      EQUAL   e1=expr        /* assignment */
                 {
@@ -156,6 +201,7 @@ IF:     'if'        ;
 END:    'end'       ;
 WHILE:  'while'     ;
 RETURN: 'return'    ;
+GROUP:  'group'     ;
 
 /* symbols */
 ADD:        '+'  ;

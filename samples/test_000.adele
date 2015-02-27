@@ -1,9 +1,13 @@
 int init_global = 3;
 int unint_global;
 
+group test_group
+    int test;
+end
+
 void main ()
     
-    int x;
+    int x = 11;
     int y;
     int i;
 
@@ -17,10 +21,14 @@ void main ()
         y = y + 1;
         i = i - 1;;
         clear ();
+        calc ();
         print ("hello");
         draw ();
         sleep (10);
     end
 end
 
-
+int calc ()
+    int x = 10;
+    return x;
+end
