@@ -29,8 +29,8 @@ grammar adele;
 /* generating matching rules                                                  */
 /******************************************************************************/
 prog:    
-        |   func* 
-        |   declaration*
+        |   ( func  
+        |   ( declaration SEMICOLON ) )*
         ;
 
 /* function and its parameters */
@@ -53,14 +53,21 @@ stmt:       SEMICOLON
         |   declaration SEMICOLON
         ;
 
-if_stmt:        IF LPAREN expr RPAREN expr END ;
+if_stmt:        IF LPAREN e1=expr RPAREN e2=expr END ;
 while_stmt:     WHILE LPAREN expr RPAREN stmts END ;
-declaration:    TYPE ID 
-                {
-                    symTyp.put ($ID.text, new Integer (F_TYPE_INT));
-                    symVal.put ($ID.text, new Integer (0));
-                    //System.out.println ("declare var: " + $ID.text); 
-                } ;
+declaration:    
+                TYPE ID 
+                    {
+                        symTyp.put ($ID.text, new Integer (F_TYPE_INT));
+                        symVal.put ($ID.text, new Integer (0));
+                        //System.out.println ("declare var: " + $ID.text); 
+                    } 
+            |   TYPE ID EQUAL expr
+                    {
+                        symTyp.put ($ID.text, new Integer (F_TYPE_INT));
+                        symVal.put ($ID.text, new Integer ($expr.value));
+                    }
+            ;
 
 /* expressions */
 /******************************************************************************/
@@ -98,7 +105,10 @@ expr returns [int value]:
                 {
                     $value = $e1.value - $e2.value;
                 }
-        |   expr    GT      expr        /* less than */
+        |   e1=expr    GT      e2=expr        /* less than */
+                {
+                    $value = $e1.value - $e2.value;
+                }
         |   expr    LT      expr        /* less than */
         |   expr    GET     expr        /* less than */
         |   expr    LET     expr        /* less than */
