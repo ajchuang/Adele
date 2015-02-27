@@ -12,22 +12,35 @@ grammar adele;
     /* constant */
     final int F_TYPE_INT = 1;
 
+    /* globals */
+    int m_curScope = 0;
+
     /* Map variable name to Integer object holding value */
+    Hashtable<Integer, Object> m_scopeTable = new Hashtable<Integer, Object> (); 
     Hashtable<String, Object> symTyp = new Hashtable<String, Object> ();
     Hashtable<String, Object> symVal = new Hashtable<String, Object> ();
+    
+    /* global symbols */
+    Hashtable<String, Object> m_funTbl = new Hashtable<String, Object> ();
+    Hashtable<String, Object> m_glbTbl = new Hashtable<String, Object> ();
 }
 
 /******************************************************************************/
 /* generating matching rules                                                  */
 /******************************************************************************/
-prog:   | ( func | declaration )* ;
+prog:    
+        |   func* 
+        |   declaration*
+        ;
 
 /* function and its parameters */
 /******************************************************************************/
 func:   TYPE ID LPAREN plist RPAREN stmts END 
-            { 
-                //System.out.println ("func: " + $ID.text + " is implemented"); 
-            } ;
+            {
+                /* insert into the function table */
+                // m_funTbl.put ($ID.text, null);
+            } 
+        ;
 plist:  | ( TYPE ID COMMA )* TYPE ID ;
 
 /* statments: if, while, declarations */
@@ -44,21 +57,21 @@ if_stmt:        IF LPAREN expr RPAREN expr END ;
 while_stmt:     WHILE LPAREN expr RPAREN stmts END ;
 declaration:    TYPE ID 
                 {
-                    symTyp.put ($ID.text, Integer.valueOf (F_TYPE_INT));
-                    symVal.put ($ID.text, Integer.valueOf (0));
-                    //System.out.println ("var: " + $ID.text + " is declared"); 
+                    symTyp.put ($ID.text, new Integer (F_TYPE_INT));
+                    symVal.put ($ID.text, new Integer (0));
+                    System.out.println ("declare var: " + $ID.text); 
                 } ;
 
 /* expressions */
 /******************************************************************************/
 expr returns [int value]:
-        |                               /* empty expression */
-                { $value = 0; } 
-        |   ID      EQUAL   expr        /* assignment */
-                { 
-                    symVal.put ($ID.text, Integer.valueOf ($expr.value));
-                    $value = $expr.value;
-                    //System.out.println ("assignment: " + $value);
+            
+            ID      EQUAL   e1=expr        /* assignment */
+                {
+                    int v = $e1.value;
+                    System.out.println ("assignment: " + $ID.text + " = " + $e1.text + ":" + v);
+                    symVal.put ($ID.text, new Integer (v));
+                    $value = v;
                 } 
         |   e1=expr    MULTI   e2=expr        /* multiplication */
                 {
@@ -71,6 +84,7 @@ expr returns [int value]:
         |   e1=expr    ADD     e2=expr        /* addition */
                 {
                     $value = $e1.value + $e2.value;
+                    System.out.println ("ADD: " + $value);
                 }
         |   e1=expr    SUB     e2=expr        /* substraction */
                 {
@@ -98,17 +112,21 @@ expr returns [int value]:
                 }
         |   ID  
                 { 
-                    $value = 0;
                     String id = $ID.text;
 
                     if (symVal.containsKey (id)) {
                         Integer i = (Integer)symVal.get (id);
                         $value = i.intValue ();
+                        System.out.println ("ID: " + $ID.text + ":" + $value);
+                    } else {
+                        $value = 0;
+                        System.out.println ("UNKOWN ID: " + $ID.text + ":" + $value);
                     }
                 }
         |   NUM
                 {
                     $value = Integer.parseInt ($NUM.text);
+                    System.out.println ("NUM: " + $NUM.text + ":" + $value);
                 }
         ; 
 

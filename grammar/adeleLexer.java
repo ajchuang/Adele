@@ -81,9 +81,17 @@ public class adeleLexer extends Lexer {
 	    /* constant */
 	    final int F_TYPE_INT = 1;
 
+	    /* globals */
+	    int m_curScope = 0;
+
 	    /* Map variable name to Integer object holding value */
+	    Hashtable<Integer, Object> m_scopeTable = new Hashtable<Integer, Object> (); 
 	    Hashtable<String, Object> symTyp = new Hashtable<String, Object> ();
 	    Hashtable<String, Object> symVal = new Hashtable<String, Object> ();
+	    
+	    /* global symbols */
+	    Hashtable<String, Object> m_funTbl = new Hashtable<String, Object> ();
+	    Hashtable<String, Object> m_glbTbl = new Hashtable<String, Object> ();
 
 
 	public adeleLexer(CharStream input) {
