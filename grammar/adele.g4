@@ -26,6 +26,10 @@ grammar adele;
     /* global symbols */
     Hashtable<String, Object> m_funTbl;
     Hashtable<String, AdeleTypeDes> m_glbVar;
+
+    /* user defined type */
+    int m_curUserTypeId = 0x5566;
+    Hashtable<String, Integer> m_userType;
 }
 
 
@@ -37,6 +41,7 @@ prog
         m_scope     = new Stack<Hashtable<String, AdeleTypeDes>> (); 
         m_funTbl    = new Hashtable<String, Object> ();
         m_glbVar    = new Hashtable<String, AdeleTypeDes> ();
+        m_userType  = new Hashtable<String, Integer> ();
 
         /* put the global scope in the bottom of the stack */
         m_scope.push (m_glbVar);
@@ -54,11 +59,21 @@ prog
 /* type declarations */
 /******************************************************************************/
 type_declaration:
-        GROUP ID (TYPE ID SEMICOLON)* END ;
+        GROUP tid=ID 
+        (TYPE ID SEMICOLON)* 
+        END
+            {
+                if (m_userType.containsKey ($tid.text)) {
+                    System.err.println ("Error: group " + $tid.text + " re-defined.");
+                } else {
+                    m_userType.put (new String ($tid.text), m_curUserTypeId++);
+                }
+            }
+        ;
 
 /* function and its parameters */
 /******************************************************************************/
-func:   TYPE ID LPAREN plist RPAREN 
+func:   (TYPE | GROUP ID) ID LPAREN plist RPAREN 
             {
                 /* insert into the function table */
                 m_funTbl.put ($ID.text, new Integer (0));
@@ -71,7 +86,7 @@ func:   TYPE ID LPAREN plist RPAREN
         END ;
 
 plist:  
-        |   ( TYPE ID COMMA )* TYPE ID 
+        |   ( (TYPE ID COMMA) | (GROUP ID ID) )* (TYPE ID | GROUP ID ID) 
         ;
 
 /* statments: if, while, declarations */

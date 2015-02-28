@@ -94,6 +94,10 @@ public class adeleLexer extends Lexer {
 	    Hashtable<String, Object> m_funTbl;
 	    Hashtable<String, AdeleTypeDes> m_glbVar;
 
+	    /* user defined type */
+	    int m_curUserTypeId = 0x5566;
+	    Hashtable<String, Integer> m_userType;
+
 
 	public adeleLexer(CharStream input) {
 		super(input);
