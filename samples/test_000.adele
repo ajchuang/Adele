@@ -18,8 +18,8 @@ void main ()
 
     while (i > 0)
         x = x + 1;
-        y = y + 1;
-        i = i - 1;;
+        y = y + 1 * 2;
+        i = i - 1 + 10;
         clear ();
         calc ();
         print ("hello");

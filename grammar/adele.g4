@@ -166,25 +166,26 @@ expr returns [int value]:
                         System.out.println ($func_plist.text);
                     }
                 }
-        |   e1=expr    MULTI   e2=expr        /* multiplication */
-                {
-                    $value = $e1.value * $e2.value;
-                }
-        |   e1=expr    DIV     e2=expr        /* division */
-                {
-                    $value = $e1.value / $e2.value;
-                }
-        |   e1=expr    ADD     e2=expr        /* addition */
+        |   e1=expr    ADDITIVE_OP     e2=expr        /* addition */
                 {
                     int e1 = $e1.value;
                     int e2 = $e2.value;
-                    $value = e1 + e2;
+
+                    if ("+".equals ($ADDITIVE_OP.text))                    
+                        $value = e1 + e2;
+                    else
+                        $value = e1 - e2;
                     
-                    System.err.println ("ADD: " + $value + ":" + e1 + ":" + e2);
+                    System.err.println (
+                        "ADD: " + $ADDITIVE_OP.text + ":"  + 
+                        $value + ":" + e1 + ":" + e2);
                 }
-        |   e1=expr    SUB     e2=expr        /* substraction */
+        |   e1=expr    MULTIPLICATIVE_OP   e2=expr        /* multiplication & division */
                 {
-                    $value = $e1.value - $e2.value;
+                    if ("*".equals ($MULTIPLICATIVE_OP.text))
+                        $value = $e1.value * $e2.value;
+                    else
+                        $value = $e1.value / $e2.value;
                 }
         |   e1=expr    GT      e2=expr        /* less than */
                 {
@@ -286,10 +287,10 @@ RETURN: 'return'    ;
 GROUP:  'group'     ;
 
 /* symbols */
-ADD:        '+'  ;
-SUB:        '-'  ;
-MULTI:      '*'  ;
-DIV:        '/'  ;
+fragment ADD:        '+'  ;
+fragment SUB:        '-'  ;
+fragment MULTI:      '*'  ;
+fragment DIV:        '/'  ;
 LPAREN:     '('  ;
 RPAREN:     ')'  ;
 COMMA:      ','  ;
@@ -301,6 +302,9 @@ GT:         '>'  ;
 LT:         '<'  ;
 GET:        '>=' ;
 LET:        '<=' ;
+
+ADDITIVE_OP:    ADD | SUB ;
+MULTIPLICATIVE_OP:  MULTI | DIV ;
 
 /* types */
 fragment INT:   'int'   ;
