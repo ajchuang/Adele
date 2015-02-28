@@ -15,26 +15,34 @@ grammar adele;
     /* constant */
     final int F_TYPE_INT    = 1;
     final int F_TYPE_CHAR   = 2;
+    final int F_TYPE_CUSTOM = 3;
+    
     final int F_BOOL_TRUE   = 1;
-    final int F_BOOL_FALSE  = -1;
-
-    /* globals */
-    int m_curScope = 0;
+    final int F_BOOL_FALSE  = 0;
 
     /* Map variable name to Integer object holding value */
-    Stack<Hashtable<String, Object>> m_scope = new Stack<Hashtable<String, Object>> (); 
-    Hashtable<String, Object> symTyp = new Hashtable<String, Object> ();
-    Hashtable<String, Object> symVal = new Hashtable<String, Object> ();
+    Stack<Hashtable<String, AdeleTypeDes>> m_scope; 
     
     /* global symbols */
-    Hashtable<String, Object> m_funTbl = new Hashtable<String, Object> ();
-    Hashtable<String, Object> m_glbTbl = new Hashtable<String, Object> ();
+    Hashtable<String, Object> m_funTbl;
+    Hashtable<String, AdeleTypeDes> m_glbVar;
 }
+
 
 /******************************************************************************/
 /* generating matching rules                                                  */
 /******************************************************************************/
-prog:                                       /* empty programs       */ 
+prog                                       
+    @init {
+        m_scope     = new Stack<Hashtable<String, AdeleTypeDes>> (); 
+        m_funTbl    = new Hashtable<String, Object> ();
+        m_glbVar    = new Hashtable<String, AdeleTypeDes> ();
+
+        /* put the global scope in the bottom of the stack */
+        m_scope.push (m_glbVar);
+    }
+        :
+                                            /* empty programs       */ 
         |   ( 
                 func                        /* functions            */
         |       type_declaration            /* user defined types   */ 
@@ -50,12 +58,17 @@ type_declaration:
 
 /* function and its parameters */
 /******************************************************************************/
-func:   TYPE ID LPAREN plist RPAREN stmts END 
+func:   TYPE ID LPAREN plist RPAREN 
             {
                 /* insert into the function table */
-                // m_funTbl.put ($ID.text, null);
-            } 
-        ;
+                m_funTbl.put ($ID.text, new Integer (0));
+                m_scope.push (new Hashtable<String, AdeleTypeDes> ());
+            }
+        stmts
+            {
+                m_scope.pop ();
+            }
+        END ;
 
 plist:  
         |   ( TYPE ID COMMA )* TYPE ID 
@@ -71,20 +84,64 @@ stmt:       SEMICOLON
         |   declaration SEMICOLON
         ;
 
-if_stmt:        IF LPAREN e1=expr RPAREN {m_curScope++;} stmts {m_curScope--;} END ;
-while_stmt:     WHILE LPAREN expr RPAREN {m_curScope++;} stmts {m_curScope--;} END ;
-declaration:    
-                TYPE ID 
+if_stmt:        IF LPAREN e1=expr RPAREN 
                     {
-                        symTyp.put ($ID.text, new Integer (F_TYPE_INT));
-                        symVal.put ($ID.text, new Integer (0));
+                        m_scope.push (new Hashtable<String, AdeleTypeDes> ());
+                    } 
+                stmts 
+                    {
+                        m_scope.pop ();
+                    } 
+                END ;
+
+while_stmt:     WHILE LPAREN expr RPAREN 
+                    {
+                        m_scope.push (new Hashtable<String, AdeleTypeDes> ());
+                    } 
+                stmts 
+                    {
+                        m_scope.pop ();
+                    } 
+                END ;
+declaration:   
+
+                GROUP TYPE ID
+                    {
+                        Hashtable<String, AdeleTypeDes> scp =  m_scope.peek ();
+                        
+                        if (scp.containsKey ($ID.text)) {
+                            System.err.println ("Duplicate decalration of variable: " + $ID.text);
+                        } else {
+                            AdeleTypeDes id = new AdeleTypeDes (F_TYPE_CUSTOM, null);
+                            id.setTypeName ($TYPE.text);
+                            scp.put ($ID.text, id);
+                        }
+                    }
+            |   TYPE ID 
+                    {
+                        Hashtable<String, AdeleTypeDes> scp =  m_scope.peek ();
+                        
+                        if (scp.containsKey ($ID.text)) {
+                            System.err.println ("Duplicate decalration of variable: " + $ID.text);
+                        } else {
+                            AdeleTypeDes id = new AdeleTypeDes (F_TYPE_INT, new Integer (0));
+                            scp.put ($ID.text, id);
+                        }
 
                         System.err.println ("declare var: " + $ID.text); 
                     } 
             |   TYPE ID EQUAL expr
                     {
-                        symTyp.put ($ID.text, new Integer (F_TYPE_INT));
-                        symVal.put ($ID.text, new Integer ($expr.value));
+                        Hashtable<String, AdeleTypeDes> scp =  m_scope.peek ();
+                        
+                        if (scp.containsKey ($ID.text)) {
+                            System.err.println ("Duplicate decalration of variable: " + $ID.text);
+                        } else {
+                            AdeleTypeDes id = new AdeleTypeDes (F_TYPE_INT, new Integer ($expr.value));
+                            scp.put ($ID.text, id);
+                        }
+
+                        System.err.println ("declare var: " + $ID.text); 
                     }
             ;
 
@@ -161,9 +218,26 @@ expr returns [int value]:
         |   ID      EQUAL   e1=expr        /* assignment */
                 {
                     int v = $e1.value;
-                    //System.out.println ("ASSIGN: " + $ID.text + " = " + $e1.text + ":" + v);
-                    symVal.put ($ID.text, new Integer (v));
-                    $value = v;
+
+                    /* find the right scope */
+                    Hashtable<String, AdeleTypeDes> sc = null;
+                    boolean found = false;
+
+                    for (int i = m_scope.size () - 1; i >= 0; --i) {
+                        
+                        sc = m_scope.elementAt (i);
+
+                        if (sc.containsKey ($ID.text)) {
+                            AdeleTypeDes atd = sc.get ($ID.text);
+                            atd.setValue (new Integer ($e1.value));
+                            $value = v;
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found == false)
+                        System.err.println ("Error: undefined variable " + $ID.text);
                 } 
         |   RETURN expr
                 {
@@ -171,21 +245,29 @@ expr returns [int value]:
                 }
         |   ID  
                 { 
-                    String id = $ID.text;
+                    /* find the right scope */
+                    Hashtable<String, AdeleTypeDes> sc = null;
+                    boolean found = false;
 
-                    if (symVal.containsKey (id)) {
-                        Integer i = (Integer)symVal.get (id);
-                        $value = i.intValue ();
-                        //System.out.println ("ID: " + $ID.text + ":" + $value);
-                    } else {
-                        $value = 0;
-                        //System.out.println ("UNKOWN ID: " + $ID.text + ":" + $value);
+                    for (int i = m_scope.size () - 1; i >= 0; --i) {
+                        
+                        sc = m_scope.elementAt (i);
+
+                        if (sc.containsKey ($ID.text)) {
+                            AdeleTypeDes atd = sc.get ($ID.text);
+                            Integer x = (Integer)atd.getValue ();
+                            $value = x.intValue ();
+                            found = true;
+                            break;
+                        }
                     }
+
+                    if (found == false)
+                        System.err.println ("Error: undefined variable " + $ID.text);
                 }
         |   NUM
                 {
                     $value = Integer.parseInt ($NUM.text);
-                    //System.out.println ("NUM: " + $NUM.text + ":" + $value);
                 }
         ; 
 
