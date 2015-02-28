@@ -10,6 +10,7 @@ void main ()
     int x = 11;
     int y;
     int i;
+    group test_group xg;
 
     i = 10;
     x = 10;

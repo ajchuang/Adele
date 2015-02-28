@@ -714,12 +714,16 @@ public class adeleParser extends Parser {
 	}
 
 	public static class DeclarationContext extends ParserRuleContext {
-		public Token TYPE;
+		public Token type;
+		public Token name;
 		public Token ID;
 		public ExprContext expr;
 		public TerminalNode GROUP() { return getToken(adeleParser.GROUP, 0); }
+		public List<TerminalNode> ID() { return getTokens(adeleParser.ID); }
+		public TerminalNode ID(int i) {
+			return getToken(adeleParser.ID, i);
+		}
 		public TerminalNode TYPE() { return getToken(adeleParser.TYPE, 0); }
-		public TerminalNode ID() { return getToken(adeleParser.ID, 0); }
 		public TerminalNode EQUAL() { return getToken(adeleParser.EQUAL, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
@@ -750,18 +754,18 @@ public class adeleParser extends Parser {
 				setState(107);
 				match(GROUP);
 				setState(108);
-				((DeclarationContext)_localctx).TYPE = match(TYPE);
+				((DeclarationContext)_localctx).type = match(ID);
 				setState(109);
-				((DeclarationContext)_localctx).ID = match(ID);
+				((DeclarationContext)_localctx).name = match(ID);
 
 				                        Hashtable<String, AdeleTypeDes> scp =  m_scope.peek ();
 				                        
-				                        if (scp.containsKey ((((DeclarationContext)_localctx).ID!=null?((DeclarationContext)_localctx).ID.getText():null))) {
-				                            System.err.println ("Duplicate decalration of variable: " + (((DeclarationContext)_localctx).ID!=null?((DeclarationContext)_localctx).ID.getText():null));
+				                        if (scp.containsKey ((((DeclarationContext)_localctx).name!=null?((DeclarationContext)_localctx).name.getText():null))) {
+				                            System.err.println ("Duplicate decalration of variable: " + (((DeclarationContext)_localctx).name!=null?((DeclarationContext)_localctx).name.getText():null));
 				                        } else {
 				                            AdeleTypeDes id = new AdeleTypeDes (F_TYPE_CUSTOM, null);
-				                            id.setTypeName ((((DeclarationContext)_localctx).TYPE!=null?((DeclarationContext)_localctx).TYPE.getText():null));
-				                            scp.put ((((DeclarationContext)_localctx).ID!=null?((DeclarationContext)_localctx).ID.getText():null), id);
+				                            id.setTypeName ((((DeclarationContext)_localctx).type!=null?((DeclarationContext)_localctx).type.getText():null));
+				                            scp.put ((((DeclarationContext)_localctx).name!=null?((DeclarationContext)_localctx).name.getText():null), id);
 				                        }
 				                    
 				}
@@ -1373,7 +1377,7 @@ public class adeleParser extends Parser {
 		"Z\r\3\2\2\2[\\\7\3\2\2\\]\7\b\2\2]^\5\24\13\2^_\7\t\2\2_`\b\b\1\2`a\5"+
 		"\n\6\2ab\b\b\1\2bc\7\4\2\2c\17\3\2\2\2de\7\5\2\2ef\7\b\2\2fg\5\24\13\2"+
 		"gh\7\t\2\2hi\b\t\1\2ij\5\n\6\2jk\b\t\1\2kl\7\4\2\2l\21\3\2\2\2mn\7\7\2"+
-		"\2no\7\25\2\2op\7\26\2\2p{\b\n\1\2qr\7\25\2\2rs\7\26\2\2s{\b\n\1\2tu\7"+
+		"\2no\7\26\2\2op\7\26\2\2p{\b\n\1\2qr\7\25\2\2rs\7\26\2\2s{\b\n\1\2tu\7"+
 		"\25\2\2uv\7\26\2\2vw\7\f\2\2wx\5\24\13\2xy\b\n\1\2y{\3\2\2\2zm\3\2\2\2"+
 		"zq\3\2\2\2zt\3\2\2\2{\23\3\2\2\2|}\b\13\1\2}~\7\26\2\2~\177\7\f\2\2\177"+
 		"\u0080\5\24\13\6\u0080\u0081\b\13\1\2\u0081\u009f\3\2\2\2\u0082\u0083"+

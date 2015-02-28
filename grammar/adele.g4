@@ -105,16 +105,16 @@ while_stmt:     WHILE LPAREN expr RPAREN
                 END ;
 declaration:   
 
-                GROUP TYPE ID
+                GROUP type=ID name=ID
                     {
                         Hashtable<String, AdeleTypeDes> scp =  m_scope.peek ();
                         
-                        if (scp.containsKey ($ID.text)) {
-                            System.err.println ("Duplicate decalration of variable: " + $ID.text);
+                        if (scp.containsKey ($name.text)) {
+                            System.err.println ("Duplicate decalration of variable: " + $name.text);
                         } else {
                             AdeleTypeDes id = new AdeleTypeDes (F_TYPE_CUSTOM, null);
-                            id.setTypeName ($TYPE.text);
-                            scp.put ($ID.text, id);
+                            id.setTypeName ($type.text);
+                            scp.put ($name.text, id);
                         }
                     }
             |   TYPE ID 
