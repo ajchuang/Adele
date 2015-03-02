@@ -97,6 +97,7 @@ stmt:       SEMICOLON
         |   while_stmt      
         |   expr SEMICOLON  
         |   declaration SEMICOLON
+        |   RETURN expr SEMICOLON
         ;
 
 if_stmt:        IF LPAREN e1=expr RPAREN 
@@ -255,10 +256,6 @@ expr returns [int value]:
                     if (found == false)
                         System.err.println ("Error: undefined variable " + $ID.text);
                 } 
-        |   RETURN expr
-                {
-                    $value = $expr.value;
-                }
         |   ID  
                 { 
                     /* find the right scope */
