@@ -203,6 +203,13 @@ expr returns [int value]:
                     else
                         $value = $e1.value / $e2.value;
                 }
+        |   e1=expr    NE      e2=expr        /* not equal */
+                {
+                    if ($e1.value == $e2.value)
+                        $value = F_BOOL_TRUE;
+                    else
+                        $value = F_BOOL_FALSE;;
+                }
         |   e1=expr    GT      e2=expr        /* less than */
                 {
                     if ($e1.value - $e2.value > 0)
@@ -314,6 +321,7 @@ GT:         '>'  ;
 LT:         '<'  ;
 GET:        '>=' ;
 LET:        '<=' ;
+NE:         '!=' ;
 
 ADDITIVE_OP:    ADD | SUB ;
 MULTIPLICATIVE_OP:  MULTI | DIV ;
