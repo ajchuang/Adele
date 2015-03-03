@@ -19,7 +19,7 @@ public class AdeleRT {
         /* do the string template things */
         STGroupFile stg = new STGroupFile ("./template/group.stg");
         stg.registerModelAdaptor (ParserRuleContext.class, new STModelAdaptor ());
-        ST t = stg.getInstanceOf ("prog");
+        ST t = stg.getInstanceOf ("assign");
         t.add ("assign", pt);
         System.out.println (t.render ());
     

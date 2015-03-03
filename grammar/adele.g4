@@ -241,6 +241,8 @@ expr returns [int value]:
         |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN /* @lfred: to fix - lame overlay */
         |   ID      EQUAL   e1=expr        /* assignment */
                 {
+                    
+
                     int v = $e1.value;
 
                     /* find the right scope */

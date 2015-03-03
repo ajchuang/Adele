@@ -1,6 +1,10 @@
 
-prog() ::= <
->
+typeInitMap ::= [
+    "int":      "0",
+    "float":    "0.0",
+    "bool":     "false",
+    default:    "null" // anything other than an atomic type
+]
 
 assign(lhs,rhs) ::= "<lhs> = <rhs>;"
 
