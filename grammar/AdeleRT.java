@@ -10,6 +10,7 @@ public class AdeleRT {
         adeleLexer lexer = new adeleLexer (in);
         CommonTokenStream tokens = new CommonTokenStream (lexer);
         adeleParser parser = new adeleParser (tokens);
+        parser.addParseListener (new adeleListenerImpl ());
         parser.prog ();
         //System.out.println (parser.eval());                                              
     }
