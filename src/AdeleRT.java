@@ -17,7 +17,7 @@ public class AdeleRT {
         ParseTree pt = parser.prog ();
     
         /* do the string template things */
-        STGroupFile stg = new STGroupFile ("./template/group.stg");
+        STGroupFile stg = new STGroupFile ("../src/template/group.stg");
         stg.registerModelAdaptor (ParserRuleContext.class, new STModelAdaptor ());
         ST t = stg.getInstanceOf ("assign");
         t.add ("assign", pt);
