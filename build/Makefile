@@ -1,7 +1,6 @@
 BASE=..
 BUILD=$(BASE)/build
 SRC=$(BASE)/src
-INC=$(BASE)/include
 LIB=$(BASE)/lib
 GRAMMAR=$(SRC)/grammar
 
@@ -14,7 +13,8 @@ ST=$(LIB)/ST-4.0.8.jar
 
 compiler:
 	@make -C $(GRAMMAR)
-	@javac -cp $(ANTLR):$(INC) adele*.java
+	@make -C $(SRC) define
+	@javac -cp $(ANTLR):. adele*.java
 	@make -C $(SRC)
 
 grammar:
