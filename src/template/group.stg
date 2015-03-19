@@ -6,5 +6,14 @@ typeInitMap ::= [
     default:    "null" // anything other than an atomic type
 ]
 
-assign(lhs,rhs) ::= "<lhs> = <rhs>;"
+assign(lhs, rhs) ::= "<lhs> = <rhs>;"
 
+funcdef(fname, params, body) ::= <<
+function <fname>(<params; separator=", ">) {
+    <body; separator="\n">
+}
+>>
+
+vardecl(vtype, vname, value) ::= "var <vname><init(value)>;"
+
+init(value) ::= "<if(value)> = <value><endif>"
