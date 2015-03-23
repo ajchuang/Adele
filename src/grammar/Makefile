@@ -5,4 +5,4 @@ ANTLR=../../lib/antlr-4.5-complete.jar
 .DEFAULT: grammar
 
 grammar:
-	@java -cp $(ANTLR) org.antlr.v4.Tool -o ../../build adele.g4
+	@java -cp $(ANTLR) org.antlr.v4.Tool -o ../../build Adl.g4

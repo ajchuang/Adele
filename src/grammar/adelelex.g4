@@ -33,13 +33,8 @@ ADDITIVE_OP:    ADD | SUB ;
 MULTIPLICATIVE_OP:  MULTI | DIV ;
 
 /* types */
-fragment INT:       'int'   ;
-fragment FLOAT:     'float' ;
-fragment CHAR:      'char'  ;
-fragment VOID:      'void'  ;
-fragment BOOL:      'bool'  ;
-fragment STRING:    'string';
-TYPE:   INT | FLOAT | CHAR | BOOL | VOID | STRING;
+K_INT:  'int';
+K_VOID: 'void';
 
 /* identifiers */
 ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;   // match lower-case identifiers

@@ -2,7 +2,7 @@
 # ---
 # a simple program doing some arithmatic
 # ---
-# keywords: begin, end, return, int. 
+# keywords: begin, end, return, int.
 # comments: single line using '#'
 # main is the entry point.
 
