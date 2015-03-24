@@ -1,5 +1,6 @@
 \documentclass[11pt,letterpaper]{article}
 \usepackage{listings}
+\usepackage{graphicx}
 \begin{document}
 \title {A Tutorial on the Adele Programming Language}
 \author {
@@ -9,6 +10,7 @@
 }
 \maketitle
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Introduction}
 
 ASCII-art description language, Adele, is a domain-specific programming language aimed at providing a simple and intuitive way to describe and generate ASCII artworks. It includes several special language constructs for ASCII artwork. Besides, common programming language features such as functions, control statements are also supported. Adele is also designed to be executed in a portable run-time environment. The final executable of an Adele program can be run in any web browser supporting JavaScript. 
@@ -31,13 +33,94 @@ In the 2nd line, the function, print\_str, is a predefined function which takes 
 
 After compilation and execution, you should be able to see the string printed on the screen at the upper left corner. The details of the compilation and execution is listed in the following section.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Compiling and Running}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {More Complex Examples}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Special Constructs}
 
+Function print(x, y, graph) is used to put a graph on the canvas at a position relative to it. But sometimes users may want to place a graph relative to another graph, rather than the canvas. The following special constructs provided by Adele are introduced for this purpose. More precisely speaking, these constructs offer different ways to combine two graphs into a new graph.
+
+\subsection {Overlay and locate}
+
+The overlay symbol ‘//’ is used together with the locate symbol ‘\@’, and the two symbols form a ternary operator. The syntax of the construct is:
+
+\begin{lstlisting}
+    graph_a // graph_b @ (pos_x, pos_y);
+\end{lstlisting}
+
+The first two parameters are graphs, and the two parameters inside the parentheses are integers, which can be negative. The effect of this construct is that graph\_a overlays graph\_b, and the upper left corner of graph\_a is placed at the position (pos\_x, pos\_y) relative to the upper left corner of graph\_b. The return value of the construct is a graph. Consider the following example:
+
+\includegraphics[width=\textwidth]{./graph_01.png}
+
+It's clear that the graph on the left side of the overlay symbol is in the upper layer; the one on the right side is in the lower layer. Notice that graph\_a and graph\_b stay unchanged after applying the operator. And as shown in the above example, the cells of the upper layer that are white spaces would not replace the corresponding cells of the lower layer.
+
+\subsection {Attach Horizontally/Vertically}
+
+To attach a graph to the border of another graph, users can use the overlay and locate construct, and specify the exact coordinate of a cell on that border. Adele provides two utility constructs to facilitate that operation.
+
+To attach graph\_a to the right of graph\_b (i.e. attach horizontally):
+\begin{lstlisting}
+    graph_b - graph_a
+\end{lstlisting}
+
+To attach graph\_a to the bottom of graph\_b (i.e. attach vertically):
+\begin{lstlisting}
+    graph_b | graph_a
+\end{lstlisting}
+
+The parameter on the left side of the operator is the "base" graph, and the one on the right side is the graph to attach to it. As the overlay and locate operator, applying the two operators ('-' or '|') does not change the value of the two graphs, and each construct returns a new graph. Consider the following example:
+
+\includegraphics[width=\textwidth]{./graph_02.png}
+
+The example shows that, the "attach horizontally" operator sets the top-left corner of graph\_a to the right of the top-right corner of graph\_b; the "attach vertically" operator sets the top-left corner of graph\_a to the bottom of the bottom-left corner of graph\_b. Therefore, if users want to customize the position of graph\_a, relative to the border of the graph\_b, it's still suggested to use the overlay and locate construct. For example, to realize the following effect:
+
+\includegraphics[width=\textwidth]{./graph_03.png}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Predefined Functions}
+
+Besides the data types and flow control, some more utilities are provided either to enable display or to facilitate programming process.
+
+\subsection {draw}
+The draw function is the essential function to display the ASCII art arranged by the programmers. All the graph data defined or placed in the program is not displayed immediately. Adele will trigger the target language to render the output only when the draw function is invoked. The usage of draw is
+\begin{lstlisting}
+	draw ();
+\end{lstlisting}
+and it does not return any value. Here is a simple example to show the usage of the draw function.
+
+\begin{lstlisting}
+	void main (canvas c)
+		graph g = “\(^o^)/”;
+		g@(0, 0);
+		draw();
+	end
+\end{lstlisting}
+
+In the example, if the program ends without draw(), the output will actually not render the graph. Only with draw() will the Adele generate the rendering part of target code to show the graphs.
+
+The purpose of this step is mainly to coordinate and synchronize the display timing of different graphs. When there are two or more graphs to be displayed at the same time, we can hardly achieve it without draw(). If there is no draw(), and we display the graph immediately when we put the graph on the canvas by g\@(0, 0). For more graphs operated with this mechanism, those graphs will be displayed one by one but not at the same time.
+
+\subsection {print}
+In addition to the ASCII art, sometimes the programmers would like to add some words in the picture for various reasons. Adele provides a simple function for such a situation. The usage of the string printing function is
+\begin{lstlisting}
+	print_str(<x>, <y>, “<string>”);
+\end{lstlisting}
+and it does not return values.
+
+\subsection {load}
+
+\subsection {sleep}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section {Put Everything Altogether}
+
+
+
 
 \end{document}
 
