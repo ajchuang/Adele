@@ -1,0 +1,4 @@
+void main (canvas c)
+    print_str (0, 0, "Hello, world");
+end
+

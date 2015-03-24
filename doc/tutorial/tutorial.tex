@@ -1,0 +1,36 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{listings}
+\begin{document}
+\title {A Tutorial on the Adele Programming Language}
+\author {
+	Jen-Chieh Huang \texttt{(jh3478)} \and Xiuhan Hu \texttt{(xh2234)} \and     
+	Zixuan Gong \texttt{(zg2203)} \and Jie-Gang Kuang \texttt{(jk3735)} \and 
+	Yuan Lin \texttt{(ly2324)}
+}
+\maketitle
+
+\section {Introduction}
+
+ASCII-art description language, Adele, is a domain-specific programming language aimed at providing a simple and intuitive way to describe and generate ASCII artworks. It includes several special language constructs for ASCII artwork. Besides, common programming language features such as functions, control statements are also supported. Adele is also designed to be executed in a portable run-time environment. The final executable of an Adele program can be run in any web browser supporting JavaScript. 
+
+Before discussing the details of the language, we'd like to present the basic concepts of how Adele processes the output ASCII art. For every Adele program, a canvas is given to the main function. The canvas is the destination on which a user can put his artwork on. When a user puts something on the artwork, it generates a corresponding 'layer' on the canvas. This is exceptionally useful when the user would like to create reusable parts and background parts of the artwork. The user can change the position of the reusable parts to create interactive or animated effects. When all the layers are created, the user would need to inform the run-time environment, and the resulting canvas will be displayed on the output device.
+
+The purpose of the document is to show the audience how to write and execute an Adele program. The document will first start by giving a simple example of an Adele program and how to run this program followed by more complicated examples and details of the special constructs. Finally, we will present an example by putting everything together.
+
+Good luck and have fun in Adele.
+
+\section {The First Adele Program}
+
+As a tradition in introducing a programming language, we would like to present the Hello World as our first example using Adele. The following codes illustrate what the Hello World program looks like.
+
+\lstinputlisting {./hello_world.adele}
+
+In the program, the entry point of any Adele program is the main function. 'void' indicates that the return value of the function is ignored, and the parenthesis after the function name shows the parameters of the function. In this example, c, whose type is canvas, is the input parameter to the main function, which is the output device of the user's artwork. For user-defined function, empty parameters are also possible. Note that, in Adele, every function has to be ended with an 'end' marker.
+
+In the 2nd line, the function, print\_str, is a predefined function which takes 3 parameters. The first 2 parameters are the x and y coordinator in the default canvas, and the 3rd parameter is the string which the user would like to show. The semantics of the function is that the a ASCII-string will be displayed on the user window at the given location.
+
+After compilation and execution, you should be able to see the string printed on the screen at the upper left corner. The details of the compilation and execution is listed in the following section.
+
+
+\end{document}
+
