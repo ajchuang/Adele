@@ -51,4 +51,4 @@ STR:    '"' CHR* '"' ;
 WS:     [ \t\r\n]+ -> skip ;        // skip spaces, tabs, newlines
 
 /* comments */
-COMMENT: '#' .*
+COMMENT: '#' .* ;
