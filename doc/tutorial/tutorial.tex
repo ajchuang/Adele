@@ -39,6 +39,136 @@ After compilation and execution, you should be able to see the string printed on
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {More Complex Examples}
 
+In Adele, there are some control flow statements and user defined structures to help you write less code.
+
+\subsection {if conditional statements}
+
+The if statement allows you to control if a program enters a block of code based on whether a given condition is true. For example:
+
+\begin{lstlisting}[caption=if.adl, label=if, captionpos=b]
+x = 1;
+if (x==1)
+  print_str(0, 0, "x is equal to 1");
+end
+if (x==2)
+  print_str(0, 0, "x is equal to 2");
+end
+# "x is equal to 1" is printed
+\end{lstlisting}
+
+All if statements end with a keyword end.
+
+\subsection {while loop statements}
+
+The while statement loops through a block of code as long as a specified condition is true. For instance:
+
+\begin{lstlisting}[caption=while.adl, label=while, captionpos=b]
+x = 1;
+sum = 0;
+
+while (x<=100)
+  sum = sum + x;
+  x = x + 1;
+end
+# x = 51, sum = 5050
+\end{lstlisting}
+
+Again, while loops end with keyword end. Actually, a rule of thumb for Adele is that all control flow statements end the block of code with an end marker.
+
+\subsection {functions}
+A function is a group of statements that is given a name, and which can be called from some point of the program. The common syntax to define a function is:
+
+\begin{lstlisting}
+type name(parameter1, parameter2, ...)
+statement1
+statement2
+...
+end
+\end{lstlisting}
+
+For example, here is a complete Adele program:
+
+\begin{lstlisting}[caption=func.adl, label=func, captionpos=b]
+int isGreaterThanZero (int x)
+  if (x>0)
+    return 1;
+  end
+  return 0;
+end
+
+void main(canvas c)
+  int t = 10;
+  t = isGreaterThanZero(t); # t = 1
+end
+\end{lstlisting}
+
+The main function is required for any Adele program. Besides the main function, we defined another function named isGreaterThanZero. We should not define a function inside another, which means nested functions are not allowed.
+
+To call a function, use name(parameter1, parameter2, ...) to fill in any expression. We can recursively call a function if needed.
+
+\subsection {User-defined group structures}
+Sometimes we may want to group a list of variables under a same name by defining a group structure. Here is an example:
+
+\begin{lstlisting}
+group point
+  int x;
+  int y;
+end
+\end{lstlisting}
+
+To declare an instance variable of a specific group point:
+\begin{lstlisting}
+group point p1;
+\end{lstlisting}
+
+To access a member of a group instance, we use the conventional dot (.) operator:
+\begin{lstlisting}
+p1.x = 10;
+p1.y = 20;
+\end{lstlisting}
+
+Group variables are passing by reference in expression evaluation, which is different from primitive-typed variables.
+
+\subsection {Example: Sorting using Adele}
+
+Here is an implementation of quick sort algorithm in Adele language:
+
+\begin{lstlisting}[caption=qsort.adl, label=qsort, captionpos=b]
+void qsort (int A[], int left, int right)
+	int i = left;
+	int j = right;
+	int tmp;
+	int pivot = A[0];
+
+	while (i<=j)
+		while (A[i]<pivot)
+			i = i + 1;
+		end
+  		
+		while (A[j]>pivot)
+			j = j - 1;
+		end
+  		
+  		if (i<=j)
+			tmp = A[i];
+			A[i] = A[j];
+			A[j] = tmp;
+			i = i + 1;
+			j = j - 1;
+		end
+	end
+
+	if (left < j)
+  		qsort (A, left, j)
+	end
+
+	if (right > i)
+  		qsort (A, i, right)
+	end
+end
+\end{lstlisting}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Special Constructs}
 
