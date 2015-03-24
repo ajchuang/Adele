@@ -111,10 +111,107 @@ In addition to the ASCII art, sometimes the programmers would like to add some w
 \end{lstlisting}
 and it does not return values.
 
+Since this is just a simple and quick implementation to display strings, there are two restrictions when using this function. One is that, although the displayed strings are treated as a graph, the lifetime of the graph is only to the next draw function. After the string is rendered by a draw(), it will not be displayed again in the next draw() unless the same statement is invoked again before the draw(). This is because there is no reference to the string(graph) so that we cannot remove it manually with statements.
+
+The other is that the rendered string will always on the most bottom layer. The reason is similar to the previous one. Since we do not have a reference to the string, we cannot decide the layer of it, or place it over or under other graphs. As a result, in order not to affect the major part of the graphs, all the strings rendered by the string printing function will be under all other explicit graph types.
+
 \subsection {load}
+It is most of the case that the elemental ASCII graphs are preferably constructed from the existing files rather than locally with the character arrays in the programs. For these cases, a predefined function, load, can be used to import ASCII graphs from the files. The usage of load is
+\begin{lstlisting}
+	load("filename");
+\end{lstlisting}
+and it returns a graph-type reference which points to a ASCII character group.
+
+For example, to show a ASCII graph of $\backslash$ (\^o\^)/ without the file importing, a simple program as in section 6.1 is
+\begin{lstlisting}[caption=hail.adl, label=hail, captionpos=b]
+void main()
+	graph g = “\(^o^)/”;
+	g@(0, 0);
+	draw();
+end
+\end{lstlisting}
+
+Alternatively, It can also be done by having a text file of $\backslash$ (\^o\^)/ and a program to import the graph from the file, such as
+
+\begin{lstlisting}[caption=graph.txt, label=hail_face, captionpos=b]
+	\(^o^)/
+\end{lstlisting}
+
+\begin{lstlisting}[caption=hailv2.adl, label=hailv2, captionpos=b]
+void main()
+	graph g = load(“graph.txt”);
+	draw();
+end
+\end{lstlisting}
+
+Although the above example may be too simple to show the convenience of using load to import the graphs from the files, the load function can be very useful when there are multiple rather bigger graphs to manipulate. The following program is an example to demonstrate the advantage of using the load function
+
+\begin{lstlisting}[caption=graph\_horse.txt, label=horse, captionpos=b]
+		   >>\.
+		  /_  )`.
+		 /  _)`^)`.   _.---. _
+		(_,' \  `^-)""      `.\
+		      |              | \
+		      \              / |
+		     / \  /.___.'\  (\ (_
+		    < ,"||     \ |`. \`-'
+		     \\ ()      )|  )/
+		     |_>|>     /_] //
+		       /_]        /_]
+\end{lstlisting}
+
+\begin{lstlisting}[caption=graph\_cat.txt, label=cat, captionpos=b]
+			  A_A
+			 (-.-)
+			  |-|
+			 /   \
+			|     |   __
+			|  || |  |  \__
+			 \_||_/_/
+\end{lstlisting}
+
+\begin{lstlisting}[caption=graph\_dogs.txt, label=dogs, captionpos=b]
+_     /)---(\          /~~~\
+\\   (/ . . \)        /  .. \
+ \\__)-\(*)/         (_,\  |_)
+ \_       (_         /   \@/    /^^^\
+ (___/-(____) _     /      \   / . . \
+              \\   /  `    |   V\ Y /V
+               \\/  \   | _\    / - \
+                \   /__'|| \\_  |    \
+                 \_____)|_).\_).||(__V
+\end{lstlisting}
+
+\begin{lstlisting}[caption=animals.adl, label=animal, captionpos=b]
+void main()
+	graph gHorse = load(“graph_horse.txt”);
+	graph gCat = load(“graph_cat.txt”);
+	graph gDogs = load(“graph_dogs.txt”);
+	print(0, 0, gHorse);
+	print(25, 25, gCat);
+	print(30, 0, gDogs);
+	draw();
+end
+\end{lstlisting}
+
+However, there are some restrictions or things to be aware of when using the load function. First of all, the source file should be ASCII-encoded text file. The result of opening a non-ASCII text file is unpredictable. Second, the content of a single text file will be grouped as one graph. There is no way for the load function to load partial graph in the source file.
 
 \subsection {sleep}
 
+Despite the basic flow control described in the previous chapter, a time control mechanism is necessary to generate the animation. Therefore, Adele provides the sleep function to pause the procedure in the program to enable the graphs to be displayed step by step. The usage of the sleep function is
+\begin{lstlisting}
+	sleep(milliseconds);
+\end{lstlisting}
+and it does not return values.
+
+An example program to show the usage of the sleep function is like
+
+\begin{lstlisting}[caption=marquee.adl, label=marquee, captionpos=b]
+void main()
+	graph g = “This is a scrolling text”;
+	int …<<waiting for checking while loop>>
+end
+\end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Put Everything Altogether}
