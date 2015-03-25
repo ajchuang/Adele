@@ -28,47 +28,49 @@ In this reference manual, the fundamentals of the Adele programming language wil
 
 \section {Lexical Specifications}
 \subsection {Comments}
-Character '\#' introduces a comment, which terminates with a newline. Considering elegance and simplicity of our lexer, we do not provide any multi-line comment pattern. You can do multi-line comment via your text editor.
+The \texttt{\#} character introduces a comment, which terminates with a newline. Considering elegance and simplicity of our lexer, we do not provide multi-line comment construct. 
 
 \subsection {Identifiers}
-An identifier is a sequence of letters, digits and underscore. The first character of any identifier must be a letter or underscore. For example, 1a2\_3d will not be considered as an identifier, but a2\_3d or \_1a2\_3d is in our standard. Identifiers may have any length, but only the first 31 characters are guaranteed to be considered. So any identifier longer than 31 characters is not recommended. And any identifier is case-sensitive, e.x., 'ab' and 'Ab' is distinguishable by our compiler.
+An identifier is a sequence of letters, digits and underscore. The first character of any identifier must be a letter or underscore. For example, \texttt {1a2\_3d} will not be considered as an identifier, but \texttt{a2\_3d} or \texttt{\_1a2\_3d} is in our standard. Identifiers may have any length, but only the first 31 characters are guaranteed to be considered. So any identifier longer than 31 characters is not recommended. And any identifier is case-sensitive, eg., \texttt{ab} and \texttt{Ab} is distinguishable by our compiler.
 
 \subsection {Keywords}
-The following identifiers is reserved as keywords including grammar keywords and predefined functions. The user is not supposed to use these keywords as identifier names. Otherwise, 
+The following identifiers are reserved as keywords including grammar keywords and predefined functions. The user is not supposed to use these keywords as identifier names. Otherwise, 
 
-\begin{center}
-    \begin{tabular}{l l l}
-		if 		& end 	& while \\
-		return	& group	& int 	\\
-		float	& void	& false	\\ 
-		true		& draw	& print\_str		\\
-		load		& sleep	& null			\\
-    \end{tabular}
-\end{center}
+\texttt {
+	\begin{center}
+    		\begin{tabular}{l l l}
+			if 		& end 	& while \\
+			return	& group	& int 	\\
+			float	& void	& false	\\ 
+			true		& draw	& print\_str		\\
+			load		& sleep	& null			\\
+    		\end{tabular}
+	\end{center}
+}
 
 \subsection {Constants}
 \subsubsection* {Number}
-A number constant is either an integer or a float. A positive integer starts with a non-zero digit([1-9]) and can be followed by any digit, or it's zero itself. A negative integer starts with a minus '-' then followed by a positive integer. Note that 012 and -012 are not integers. A float starts with an integer, then a '.', then followed by a sequence of any digits, e.x., 0.1345.
+A number constant is either an integer or a float. A positive integer starts with a non-zero digit(\texttt{[1-9]}) and can be followed by any digit, or it's zero itself. A negative integer starts with a minus \texttt{-} then followed by a positive integer. Note that \texttt{012} and \texttt{-012} are not integers. A float starts with an integer, then a \texttt{.}, then followed by a sequence of any digits, eg., \texttt{0.1345}.
 
 \subsubsection* {String}
-A string literal is a string constant, which consists of a sequence of characters surrounded by double quotes as in "...". A string is actually an array of characters.
+A string literal is a string constant, which consists of a sequence of characters surrounded by double quotes as in \texttt{"..."}. A string is actually an array of characters.
 
 \subsubsection* {Boolean}
-A boolean constant is either the keyword true or false.
+A boolean constant is either the keyword \texttt{true} or \texttt{false}.
 
 \subsubsection* {Character}
-A character constant is a sequence of one or more characters enclosed in single quotes as in 'x'. But you can also put it in a string like: "abcx", where 'x' is a character constant. A table of special character constant is shown below:
+A character constant is a sequence of one or more characters enclosed in single quotes as in \texttt{x}. But you can also put it in a string like: \texttt{"abcx"}, where \texttt{x} is a character constant. A table of special character constant is shown below:
 \begin{itemize}
-	\item newline: $\backslash$n
-	\item backslash: $\backslash\backslash$               
-	\item horizontal tab: $\backslash$t         
-    \item single quote: $\backslash$'         
-    \item backspace: $\backslash$b             
-    \item double quote: $\backslash$"  
+	\item newline: \texttt{$\backslash$n}
+	\item backslash: \texttt{$\backslash\backslash$}              
+	\item horizontal tab: \texttt{$\backslash$t}         
+    \item single quote: \texttt{$\backslash$'}         
+    \item backspace: \texttt{$\backslash$b}             
+    \item double quote: \texttt{$\backslash$"}  
 \end{itemize}
 
 \subsection {Punctuation and Separators}
-A comma ',' is used to separate parameters in function's parameter list. A semicolon ';' is used to separate two lines. Note that you needn't and shouldn't use semicolon ';' at the end of the line which starts with 'if', 'while', 'end' or the end of first line of a function declaration. 
+A comma \texttt {,} is used to separate parameters in function's parameter list. A semicolon \texttt{;} is used to separate two lines. Note that you needn't and shouldn't use semicolon \texttt{;} at the end of the line which starts with \texttt{if}, \texttt{while}, \texttt{end} or the end of first line of a function declaration. 
 
 \section {Types}
 In the Adele programming language, static type checking is performed. Type inconsistencies will be reported as errors in the compile time if the type conversion is not possible. 
@@ -77,19 +79,18 @@ In the Adele programming language, static type checking is performed. Type incon
 The basic types of Adele includes integers, floating point numbers, boolean, and void.
 
 \subsubsection*{Integer type (int)} 
-Integer type is defined as a signed decimal integer. The range is defined from +9007199254740991 to -9007199254740991. When operating with floating number, the integer can be converted into a corresponding floating point number. When overflow or underflow happens, the behavior is not defined in the language specification. For integer constants, the lexical definition is [-]?[1-9]+[0-9]* \textbar [0]
+Integer type is defined as a signed decimal integer. The range is defined from \texttt{+9007199254740991} to \texttt{-9007199254740991}. When operating with floating number, the integer can be converted into a corresponding floating point number. When overflow or underflow happens, the behavior is not defined in the language specification. For integer constants, the lexical definition is \texttt{[-]?[1-9]+[0-9]* \textbar [0]}
 
-Note that in the definition, we do not allow preceding 0s in front of the integer, and we also do not allow multiple 0s. That is, 00000 or 0001 are not legal integers. Besides, -0 is also an invalid integer.
+Note that in the definition, we do not allow preceding 0s in front of the integer, and we also do not allow multiple 0s. That is, \texttt{00000} or \texttt{0001} are not legal integers. Besides, \texttt{-0} is also an invalid integer.
 
  \subsubsection*{Floating point number type (float)} 
 Floating type is defined as a floating number conforming double-precision 64-bit format IEEE 754 values. Loss of precision can happen if a floating number is converted into an integer. For floating point constants, Note that we do not allow 00.00 in this case because the integer part of the definition is the same as the definition of integer.
 
 \subsubsection*{Boolean type (bool)} 
-Boolean type represents the boolean variables, true or false. Note that you can NOT convert boolean values to numeric values like integers. It is also not allowed to convert numeric values to boolean values. A compilation error will be given if the invalid conversion is used.
+Boolean type represents the boolean variables, \texttt{true} or \texttt{false}. Note that you can NOT convert boolean values to numeric values like integers. It is also not allowed to convert numeric values to boolean values. A compilation error will be given if the invalid conversion is used.
 
 \subsubsection*{void type (void)} 
-As the name suggests, the void type will not check the type until the compiler or the computation has to. This is particularly useful when you want to pass groups which may have several different types into a single function.
-
+As the name suggests, the \texttt{void} type will not check the type until the compiler or the computation has to. This is particularly useful when you want to pass groups which may have several different types into a single function.
 
 \subsection{Derived types}
 For derived types, Adele supports the following types: array, functions, references, groups.
@@ -104,17 +105,16 @@ Functions in Adele are composed by the following parts.
 		\item Function name: used to identify the function itself.
 		\item Parameter list: a finite set of 2 tuples (type and name), worked as input of the function.
 		\item Function body: description of the computation to be carried out in the function.
-		\item End marker: an ‘end’ to indicate the end of the function
+		\item \texttt{end} marker: an \texttt{end} to indicate the end of the function
 	\end{itemize}
 	
 \subsubsection*{Groups}
 
-Groups is a mechanism which make the data abstraction possible in Adele. The user can compose his own data abstraction by using the group keyword. Besides, Adele also defines a set of pre-defined groups for simplifying the user operations.
+Group is a mechanism which make the data abstraction possible in Adele. The user can compose his own data abstraction by using the group keyword. Besides, Adele also defines a set of pre-defined groups for simplifying the user operations.
 	\begin{itemize}
-		\item user-defined: Groups in Adele is just like struct in C. It provides a mechanism for the users to group the logically related 	data into a type. However, other object-oriented features are not supported in Adele for simplification. Complicated operations in OOP can be scaring. To define a group, the user has to start with the keyword, group, followed by a group name, and an ‘end’ marker in the end.
+		\item user-defined: Groups in Adele is just like struct in C. It provides a mechanism for the users to group the logically related 	data into a type. However, other object-oriented features are not supported in Adele for simplification. Complicated operations in OOP can be scaring. To define a group, the user has to start with the keyword, group, followed by a group name, and an \texttt{end} marker in the end.
 		\item pre-defined: Pre-defined group includes canvas, graph.
 	\end{itemize}
-
 
 \section {Operators}
 The following table summarizes the precedence and associativity of all the operators supported by Adele. Operators on the same line have the same precedence, and the rows are in order of decreasing precedence.
@@ -122,19 +122,19 @@ The following table summarizes the precedence and associativity of all the opera
 \begin{center}
     \begin{tabular}{| p{4cm} | p{4cm} |}		\hline
     Operators 		& Associativity \\ 		\hline \hline
-    () [] . 			& left to right \\ 		\hline
-    *, /, \% 		& left to right \\ 		\hline
-    +, -, \textbar	& left to right \\ 		\hline
-    \textless,  \textless=,  \textgreater,  \textgreater=	& left to right \\ 		\hline
-    ==,  !=			& left to right \\ 		\hline
-    // @				& right to left\\ 		\hline
+    \texttt {() [] .} 			& left to right \\ 		\hline
+    \texttt {*, /, \%} 		& left to right \\ 		\hline
+    \texttt {+, -, \textbar}	& left to right \\ 		\hline
+    \texttt {\textless,  \textless=,  \textgreater,  \textgreater=}	& left to right \\ 		\hline
+    \texttt {==,  !=}			& left to right \\ 		\hline
+    \texttt {// @}				& right to left \\ 		\hline
     
     \end{tabular}
 \end{center}
 
-The () operator is used in functions to list the parameters, and also provides the specific precedence in the arithmetic operations; [] refers to array subscripting; the dot operator is used to access fields of groups. 
+The \texttt{()} operator is used in functions to list the parameters, and also provides the specific precedence in the arithmetic operations; \texttt{[]} is used for array subscription; the dot operator is used to access fields of groups. 
 
-The operator - can serve as both the arithmetic subtraction operator and a graph operator.  Other special graph operators include \textbar and // @ (details can be found in the following sections).
+The operator \texttt{-} can serve as both the arithmetic subtraction operator and a graph operator.  Other special graph operators include \texttt{\textbar} and \texttt{// @} (details can be found in the following sections).
 
 \section {Syntax}
 \subsection {Literals}
@@ -142,28 +142,28 @@ The operator - can serve as both the arithmetic subtraction operator and a graph
 \item Number literals: integers and floating-point numbers;
 \item Character literals: single ASCII characters surrounded by single quotes;
 \item String literals: a sequence of characters surrounded by double quotes;
-\item Boolean literals: true or false;
+\item Boolean literals: \texttt{true} or \texttt{false};
 \end{itemize}
 \subsubsection {Identifiers}
 An identifier is a valid expression, provided that it has been declared before use.
 
 \subsubsection {Multiplicative Expressions}
-Multiplicative expressions consists of expressions involving *, /, \%. The operands of all the three operators must have arithmetic type; the operands of \% must have integral type. As the convention, multiplicative operators have a higher precedence than additive operators. 
+Multiplicative expressions consists of expressions involving \texttt{*}, \texttt{/}, \texttt{\%}. The operands of all the three operators must have arithmetic type; the operands of \texttt{\%} must have integral type. As the convention, multiplicative operators have a higher precedence than additive operators. 
 
 \subsubsection {Additive Expressions}
-The additive operators include +, -. Rigorously speaking,  + is the arithmetic addition operator, but - can serve as either the arithmetic subtraction operator or the graph operator "attaching horizontally" which is determined by the type of its operands determines.
+The additive operators include \texttt{+}, \texttt{-}. Rigorously speaking, \texttt{+} is the arithmetic addition operator, but \texttt{-} can serve as either the arithmetic subtraction operator or the graph operator "attaching horizontally" which is determined by the type of its operands determines.
 
 The operands of the arithmetic additive operators must be numbers.
 
 \subsubsection {Graph Combining Expressions}
-The graph operators are -, \textbar, and the ternary operator // @. These three operators does not have side effects on their operands.
+The graph operators are \texttt{-}, \textbar, and the ternary operator \texttt{// @}. These three operators does not have side effects on their operands.
 
-The operands of the two binary graph operators must be graphs. When serving as a graph operator, - means "attaching horizontally." The operator \textbar means "attaching vertically." As for the ternary operator, i.e. the overlay and locate operator, the first two operands must be graphs, and the third operand is a pair of integers in the form of "(x, y)", indicating the coordinates.
+The operands of the two binary graph operators must be graphs. When serving as a graph operator, \texttt{-} means "attaching horizontally." The operator \textbar means "attaching vertically." As for the ternary operator, i.e. the overlay and locate operator, the first two operands must be graphs, and the third operand is a pair of integers in the form of \texttt{(x, y)}, indicating the coordinates.
 
 The type of the value of graph combining expressions is graph. Notice that the part of a graph that exceeds the canvas will be truncated.
 
 \subsubsection {Boolean Expressions}
-Boolean expressions include expressions involving the relational operators:  \textless,  \textless=,  \textgreater,  \textgreater=;  and the equality operators: ==, !=. The equality operators have lower precedence than the relatioal operators. The value of these expressions is true or false, of boolean type.
+Boolean expressions include expressions involving the relational operators:  \texttt {\textless},  \texttt {\textless=},  \texttt{\textgreater},  \texttt{\textgreater=};  and the equality operators: \texttt{==}, \texttt{!=}. The equality operators have lower precedence than the relational operators. The value of these expressions is true or false, of boolean type.
 
 \subsubsection {Braced Expressions}
 Expressions surrounded by parentheses are equivalent to the original expressions.
@@ -172,7 +172,7 @@ Expressions surrounded by parentheses are equivalent to the original expressions
 A function call expression consists of the function identifier, and a possibly empty, comma-separated list of parameters surrounded by parentheses. The expression is valid only if the function has been declared somewhere, either before or after the function call. Parameters of group type are passed by reference, and those of primitive types are passed by value. The value of a function call expression is the return value of that function.
 
 \subsection {Statements}
-There are five kinds of statement in Adele programs: declarations, expressions, if statements, while statements and return statements. Simple statements like declarations, expressions and return statements end with a semicolon. Control flow statements, if statements and while statements, are ended by an end keyword.
+There are five kinds of statement in Adele programs: declarations, expressions, \texttt{if} statements, \texttt{while} statements and \texttt{return} statements. Simple statements like declarations, expressions and return statements end with a semicolon. Control flow statements, if statements and while statements, are ended by an end keyword.
 
 \subsubsection {Declarations}
 A declaration statement assign an identifier to a specific memory space according to its type. A primitive-typed variable declaration consists of a type, an id and an optional initializer:
@@ -207,17 +207,16 @@ An expression along with a semicolon can be a valid statement. For example:
 \end{lstlisting}
 
 \subsubsection {return statements}
-return statements will end a function call and returns control to the calling function with a return value:
+\texttt{return} statements will end a function call and returns control to the calling function with a return value:
 \begin{lstlisting}[tabsize=4]
 	return result;
 	return;
 \end{lstlisting}
 
-For a function whose return type is void, we can omit the return value as above and pass a NULL value back to the calling function.
-
+For a function whose return type is \texttt{void}, we can omit the return value as above and pass a \texttt{null} value back to the calling function.
 
 \subsubsection {if statements}
-The if statement allows you to control if a program enters a block of code based on whether a given condition is true. 
+The \texttt{if} statement allows you to control if a program enters a block of code based on whether a given condition is true. 
 
 \begin{lstlisting}[tabsize=4]
 	if (condition_expression)
@@ -227,7 +226,7 @@ The if statement allows you to control if a program enters a block of code based
 	end
 \end{lstlisting}
 
-The statements between the if line and the end line will be executed if and only if condition\_expression returns a bool true value.
+The statements between the \texttt{if} line and the \texttt{end} marker will be executed if and only if condition\_expression returns a bool true value.
 
 \subsubsection {while statements}
 The while statement loops through a block of code as long as a specified condition is true.
@@ -240,7 +239,7 @@ The while statement loops through a block of code as long as a specified conditi
 	end
 \end{lstlisting}
 
-The statements between the while line and the end line will be executed iteratively until condition\_expression is false.
+The statements between the \texttt{while} line and the \texttt{end} marker will be executed iteratively until \texttt{condition\_expression} is false.
 
 \section {Built-in Functions}
 Besides the grammar defined above, Adele also provides some built-in functions to accomplish the job of rendering combined or moving ASCII art. Because the syntax of the built-in functions are simple and fixed, the built-in functions will take all the acceptable arguments and do not return any values (except for the load function). When the types of the arguments for the functions are incorrect, the compiler should report them as errors.
@@ -250,26 +249,26 @@ The prototype of the draw function is simply
 \begin{lstlisting}[tabsize=4]
 	void draw ()
 \end{lstlisting}
-Since the draw function do not take any arguments and do not return any values, the statement involving draw() should be just like the description above. When the draw function is invoked, Adele will render the target codes of drawing all the currently placed graphs. The graphs which is not placed on the canvas or is removed from the canvas by the time when draw() is invoked will not be displayed at that time.
+Since the draw function do not take any arguments and do not return any values, the statement involving \texttt{draw()} should be just like the description above. When the draw function is invoked, Adele will render the target codes of drawing all the currently placed graphs. The graphs which is not placed on the canvas or is removed from the canvas by the time when \texttt{draw()} is invoked will not be displayed at that time.
 
 \subsection {print}
 The one-time string printing function should be invoked according to the prototype
 \begin{lstlisting}[tabsize=4]
-	void print_str (int <x>, int <y>, string <string>)
+	void print_str (int x, int y, string str)
 \end{lstlisting}
-where \textless x\textgreater and \textless y\textgreater are the position of first character of the string on the x-axis and y-axis respectively, and \textless string\textgreater is the target string to be displayed. The string printing function will place the desired string on the bottom layer over the canvas for the next draw(). After a draw() is invoked, all the strings rendered and placed by the string printing function will be removed from the canvas.
+where \texttt{x} and \texttt{y} are the position of first character of the string on the x-axis and y-axis respectively, and \texttt{str} is the target string to be displayed. The string printing function will place the desired string on the bottom layer over the canvas for the next \texttt{draw()}. After a \texttt{draw()} is invoked, all the strings rendered and placed by the string printing function will be removed from the canvas.
 
 \subsection {load}
 To construct the graphs more efficiently, a load function is provided by Adele to import prepared ASCII art from the existing files. The prototype of the load function is
 \begin{lstlisting}[tabsize=4]
-	<reference to graph> = load (string <filename>)
+	reference_to_graph = load (string filename)
 \end{lstlisting}	
 The file will only be opened in text/string mode but not in binary mode. That is, only plain-text files will be valid for the load function. If the source file is not plain-text, the non-text part will be read in and could induce unexpected results. The load function is also the only built-in function returning a value, a reference to a graph constructed from the source file.
 
 \subsection {sleep}
 To achieve better flow control, sleep, a function which pauses the program is provided in Adele to enable the programmer to control the flow more flexible. The prototype of the sleep function is
 \begin{lstlisting}[tabsize=4]
-	void sleep(int <millisecond>)
+	void sleep(int millisecond)
 \end{lstlisting}	
 The argument for the sleep function is the duration in milliseconds and the sleep function does not return a value, either.
 
@@ -278,7 +277,7 @@ The argument for the sleep function is the duration in milliseconds and the slee
 \subsection {Syntactical Grammar}
 Note: the draft grammar is not finalized.
 
-\begin{lstlisting}[tabsize=4]
+\begin{lstlisting}[tabsize=2]
 grammar adele;
 
 prog    :                                   /* empty programs       */ 
