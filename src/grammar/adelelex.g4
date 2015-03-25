@@ -35,6 +35,7 @@ MULTIPLICATIVE_OP:  MULTI | DIV ;
 /* types */
 K_INT:  'int';
 K_VOID: 'void';
+K_FLOAT: 'float'
 
 /* identifiers */
 ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;   // match lower-case identifiers
