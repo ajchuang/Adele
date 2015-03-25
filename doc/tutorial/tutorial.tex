@@ -30,9 +30,9 @@ As a tradition in introducing a programming language, we would like to present t
 
 \lstinputlisting[frame=single] {./hello_world.adele}
 
-In the program, the entry point of any Adele program is the main function. 'void' indicates that the return value of the function is ignored, and the parenthesis after the function name shows the parameters of the function. In this example, c, whose type is canvas, is the input parameter to the main function, which is the output device of the user's artwork. For user-defined function, empty parameters are also possible. Note that, in Adele, every function has to be ended with an 'end' marker.
+In the program, the entry point of any Adele program is the main function. \texttt{void} indicates that the return value of the function is ignored, and the parenthesis after the function name shows the parameters of the function. In this example, \texttt{c}, whose type is \texttt{canvas}, is the input parameter to the main function, which is the output device of the user's artwork. For user-defined function, empty parameters are also possible. Note that, in Adele, every function has to be ended with an \texttt{end} marker.
 
-In the 2nd line, the function, print\_str, is a predefined function which takes 3 parameters. The first 2 parameters are the x and y coordinator in the default canvas, and the 3rd parameter is the string which the user would like to show. The semantics of the function is that the a ASCII-string will be displayed on the user window at the given location.
+In the 2nd line, the function, \texttt{print\_str}, is a predefined function which takes 3 parameters. The first 2 parameters are the x and y coordinator in the default canvas, and the 3rd parameter is the string which the user would like to show. The semantics of the function is that the a ASCII-string will be displayed on the user window at the given location.
 
 After compilation and execution, you should be able to see the string printed on the screen at the upper left corner. The details of the compilation and execution is listed in the following section.
 
@@ -44,20 +44,19 @@ To use our compiler, you need to create your program file whose name ends in ".a
 	adelecc test.adele -o test.html
 \end{lstlisting}
 
-where test.html is the output file. Note that our compiler is actually a java class file, a java runtime environment is required(8.0 or later).
+where test.html is the output file. Note that our compiler is based on the Java runtime environment is required (7.0 or later).
 
-If you make everything correct, including any spelling and grammar, our compile will produce the file test.html as you want with no warning or error. Then you can open it with any text editor to view or modify its content(But it may be a struggle to understand, so modification is never recommended). Or you can just open it using your favorite browser to see your fancy arts created via our language.
+If everything is correct, including any spelling and grammar, the target will be produced the file test.html as you want with no warning or error. Then you can open it with any text editor to view or modify its content. Or you can just open it using your favorite browser to see your fancy arts created via our language.
 
-About the runtime environment, as stated before, all you need is a java runtime environment. So don't worry too much about your system. Maybe you can enjoy the joy of creating cool ascii-arts just on your phone.
+About the runtime environment, as stated before, all you need is a Java runtime environment. So don't worry too much about your system.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {More Complex Examples}
-
 In Adele, there are some control flow statements and user defined structures to help you write less code.
 
-\subsection {if conditional statements}
+\subsection {\texttt{if} conditional statements}
 
-The if statement allows you to control if a program enters a block of code based on whether a given condition is true. For example:
+The \texttt{if} statement allows you to control if a program enters a block of code based on whether a given condition is true. For example:
 
 \begin{lstlisting}[caption=if.adl, label=if, captionpos=b, tabsize=4, frame=single]
 x = 1;
@@ -71,11 +70,10 @@ end
 # "x is equal to 1" is printed
 \end{lstlisting}
 
-All if statements end with a keyword end.
+All \texttt{if} statements end with a keyword \texttt{end}.
 
-\subsection {while loop statements}
-
-The while statement loops through a block of code as long as a specified condition is true. For instance:
+\subsection {\texttt{while} loop statements}
+The \texttt{while} statement loops through a block of code as long as a specified condition is true. For instance:
 
 \begin{lstlisting}[caption=while.adl, label=while, captionpos=b, tabsize=4, frame=single]
 x = 1;
@@ -88,7 +86,7 @@ end
 # x = 51, sum = 5050
 \end{lstlisting}
 
-Again, while loops end with keyword end. Actually, a rule of thumb for Adele is that all control flow statements end the block of code with an end marker.
+Again, while loops end with keyword \texttt{end}. Actually, a rule of thumb for Adele is that all control flow statements end the block of code with an \texttt{end} marker.
 
 \subsection {functions}
 A function is a group of statements that is given a name, and which can be called from some point of the program. The common syntax to define a function is:
@@ -117,9 +115,9 @@ void main(canvas c)
 end
 \end{lstlisting}
 
-The main function is required for any Adele program. Besides the main function, we defined another function named isGreaterThanZero. We should not define a function inside another, which means nested functions are not allowed.
+The main function is required for any Adele program. Besides the main function, we defined another function named \texttt{isGreaterThanZero}. We should not define a function inside another, which means nested functions are not allowed.
 
-To call a function, use name(parameter1, parameter2, ...) to fill in any expression. We can recursively call a function if needed.
+To call a function, use \texttt{name (parameter1, parameter2, ...)} to fill in any expression. We can recursively call a function if needed.
 
 \subsection {User-defined group structures}
 Sometimes we may want to group a list of variables under a same name by defining a group structure. Here is an example:
@@ -136,7 +134,7 @@ To declare an instance variable of a specific group point:
 group point p1;
 \end{lstlisting}
 
-To access a member of a group instance, we use the conventional dot (.) operator:
+To access a member of a group instance, we use the conventional dot (\texttt{.}) operator:
 \begin{lstlisting}
 p1.x = 10;
 p1.y = 20;
@@ -145,7 +143,6 @@ p1.y = 20;
 Group variables are passing by reference in expression evaluation, which is different from primitive-typed variables.
 
 \subsection {Example: Sorting using Adele}
-
 Here is an implementation of quick sort algorithm in Adele language:
 
 \begin{lstlisting}[caption=qsort.adl, label=qsort, captionpos=b, frame=single, tabsize=4]
@@ -187,41 +184,41 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Special Constructs}
 
-Function print(x, y, graph) is used to put a graph on the canvas at a position relative to it. But sometimes users may want to place a graph relative to another graph, rather than the canvas. The following special constructs provided by Adele are introduced for this purpose. More precisely speaking, these constructs offer different ways to combine two graphs into a new graph.
+Function \texttt{print (x, y, graph)} is used to put a graph on the canvas at a position relative to it. But sometimes users may want to place a graph relative to another graph, rather than the canvas. The following special constructs provided by Adele are introduced for this purpose. More precisely speaking, these constructs offer different ways to combine two graphs into a new graph.
 
 \subsection {Overlay and locate}
 
-The overlay symbol ‘//’ is used together with the locate symbol ‘\@’, and the two symbols form a ternary operator. The syntax of the construct is:
+The overlay symbol \texttt{//} is used together with the locate symbol \texttt{\@}, and the two symbols form a ternary operator. The syntax of the construct is:
 
 \begin{lstlisting}
     graph_a // graph_b @ (pos_x, pos_y);
 \end{lstlisting}
 
-The first two parameters are graphs, and the two parameters inside the parentheses are integers, which can be negative. The effect of this construct is that graph\_a overlays graph\_b, and the upper left corner of graph\_a is placed at the position (pos\_x, pos\_y) relative to the upper left corner of graph\_b. The return value of the construct is a graph. Consider the following example:
+The first two parameters are graphs, and the two parameters inside the parentheses are integers, which can be negative. The effect of this construct is that \texttt{graph\_a} overlays \texttt{graph\_b}, and the upper left corner of graph\_a is placed at the position \texttt{(pos\_x, pos\_y)} relative to the upper left corner of \texttt{graph\_b}. The return value of the construct is a graph. Consider the following example:
 
 \includegraphics[width=\textwidth]{./graph_01.png}
 
-It's clear that the graph on the left side of the overlay symbol is in the upper layer; the one on the right side is in the lower layer. Notice that graph\_a and graph\_b stay unchanged after applying the operator. And as shown in the above example, the cells of the upper layer that are white spaces would not replace the corresponding cells of the lower layer.
+It's clear that the graph on the left side of the overlay symbol is in the upper layer; the one on the right side is in the lower layer. Notice that \texttt{graph\_a} and \texttt{graph\_b} stay unchanged after applying the operator. And as shown in the above example, the cells of the upper layer that are white spaces would not replace the corresponding cells of the lower layer.
 
 \subsection {Attach Horizontally/Vertically}
 
 To attach a graph to the border of another graph, users can use the overlay and locate construct, and specify the exact coordinate of a cell on that border. Adele provides two utility constructs to facilitate that operation.
 
-To attach graph\_a to the right of graph\_b (i.e. attach horizontally):
+To attach \texttt{graph\_a} to the right of \texttt{graph\_b} (i.e. attach horizontally):
 \begin{lstlisting}
     graph_b - graph_a
 \end{lstlisting}
 
-To attach graph\_a to the bottom of graph\_b (i.e. attach vertically):
+To attach \texttt{graph\_a} to the bottom of \texttt{graph\_b} (i.e. attach vertically):
 \begin{lstlisting}
     graph_b | graph_a
 \end{lstlisting}
 
-The parameter on the left side of the operator is the "base" graph, and the one on the right side is the graph to attach to it. As the overlay and locate operator, applying the two operators ('-' or '|') does not change the value of the two graphs, and each construct returns a new graph. Consider the following example:
+The parameter on the left side of the operator is the "base" graph, and the one on the right side is the graph to attach to it. As the overlay and locate operator, applying the two operators (\texttt{-} or \texttt{\textbar}) does not change the value of the two graphs, and each construct returns a new graph. Consider the following example:
 
 \includegraphics[width=\textwidth]{./graph_02.png}
 
-The example shows that, the "attach horizontally" operator sets the top-left corner of graph\_a to the right of the top-right corner of graph\_b; the "attach vertically" operator sets the top-left corner of graph\_a to the bottom of the bottom-left corner of graph\_b. Therefore, if users want to customize the position of graph\_a, relative to the border of the graph\_b, it's still suggested to use the overlay and locate construct. For example, to realize the following effect:
+The example shows that, the "attach horizontally" operator sets the top-left corner of \texttt{graph\_a} to the right of the top-right corner of \texttt{graph\_b}; the "attach vertically" operator sets the top-left corner of \texttt{graph\_a} to the bottom of the bottom-left corner of \texttt{graph\_b}. Therefore, if users want to customize the position of \texttt{graph\_a}, relative to the border of the \texttt{graph\_b}, it's still suggested to use the overlay and locate construct. For example, to realize the following effect:
 
 \includegraphics[width=\textwidth]{./graph_03.png}
 
@@ -231,12 +228,12 @@ The example shows that, the "attach horizontally" operator sets the top-left cor
 Besides the data types and flow control, some more utilities are provided either to enable display or to facilitate programming process.
 
 \subsection {draw}
-The draw function is the essential function to display the ASCII art arranged by the programmers. All the graph data defined or placed in the program is not displayed immediately. Adele will trigger the target language to render the output only when the draw function is invoked. The usage of draw is
+The \texttt{draw} function is the essential function to display the ASCII art arranged by the programmers. All the graph data defined or placed in the program is not displayed immediately. Adele will trigger the target language to render the output only when the draw function is invoked. The usage is
 \begin{lstlisting}[tabsize=4] 
 	draw (); 
 \end{lstlisting}
 and it does not return any value. Here is a simple example to show the usage of the draw function.
-
+\pagebreak
 \begin{lstlisting}[tabsize=4, frame=single]
 void main (canvas c)
 	graph g = “\(^o^)/”;
@@ -245,9 +242,9 @@ void main (canvas c)
 end
 \end{lstlisting}
 
-In the example, if the program ends without draw(), the output will actually not render the graph. Only with draw() will the Adele generate the rendering part of target code to show the graphs.
+In the example, if the program ends without \texttt{draw()}, the output will actually not render the graph. Only with \texttt{draw()} will the Adele generate the rendering part of target code to show the graphs.
 
-The purpose of this step is mainly to coordinate and synchronize the display timing of different graphs. When there are two or more graphs to be displayed at the same time, we can hardly achieve it without draw(). If there is no draw(), and we display the graph immediately when we put the graph on the canvas by g\@(0, 0). For more graphs operated with this mechanism, those graphs will be displayed one by one but not at the same time.
+The purpose of this step is mainly to coordinate and synchronize the display timing of different graphs. When there are two or more graphs to be displayed at the same time, we can hardly achieve it without \texttt{draw()}. If there is no \texttt{draw()}, and we display the graph immediately when we put the graph on the canvas by \texttt{g\@(0, 0)}. For more graphs operated with this mechanism, those graphs will be displayed one by one but not at the same time.
 
 \subsection {print}
 In addition to the ASCII art, sometimes the programmers would like to add some words in the picture for various reasons. Adele provides a simple function for such a situation. The usage of the string printing function is
@@ -256,7 +253,7 @@ In addition to the ASCII art, sometimes the programmers would like to add some w
 \end{lstlisting}
 and it does not return values.
 
-Since this is just a simple and quick implementation to display strings, there are two restrictions when using this function. One is that, although the displayed strings are treated as a graph, the lifetime of the graph is only to the next draw function. After the string is rendered by a draw(), it will not be displayed again in the next draw() unless the same statement is invoked again before the draw(). This is because there is no reference to the string(graph) so that we cannot remove it manually with statements.
+Since this is just a simple and quick implementation to display strings, there are two restrictions when using this function. One is that, although the displayed strings are treated as a graph, the lifetime of the graph is only to the next draw function. After the string is rendered by a \texttt{draw()}, it will not be displayed again in the next \texttt{draw()} unless the same statement is invoked again before the \texttt{draw()}. This is because there is no reference to the string(graph) so that we cannot remove it manually with statements.
 
 The other is that the rendered string will always on the most bottom layer. The reason is similar to the previous one. Since we do not have a reference to the string, we cannot decide the layer of it, or place it over or under other graphs. As a result, in order not to affect the major part of the graphs, all the strings rendered by the string printing function will be under all other explicit graph types.
 
@@ -267,7 +264,7 @@ It is most of the case that the elemental ASCII graphs are preferably constructe
 \end{lstlisting}
 and it returns a graph-type reference which points to a ASCII character group.
 
-For example, to show a ASCII graph of $\backslash$(\^{}o\^{})/ without the file importing, a simple program as in section 6.1 is
+For example, to show a ASCII graph of \texttt{$\backslash$(\^{}o\^{})/} without the file importing, a simple program as in section 6.1 is
 \begin{lstlisting}[caption=hail.adl, label=hail, captionpos=b, tabsize=4, frame=single]
 void main()
 	graph g = "\(^o^)/";
@@ -276,7 +273,7 @@ void main()
 end
 \end{lstlisting}
 
-Alternatively, It can also be done by having a text file of $\backslash$(\^{}o\^{})/ and a program to import the graph from the file, such as
+Alternatively, It can also be done by having a text file of \texttt{$\backslash$(\^{}o\^{})/} and a program to import the graph from the file, such as
 
 \begin{lstlisting}[caption=graph.txt, label=hail_face, captionpos=b, tabsize=4]
 						\(^o^)/
@@ -339,7 +336,7 @@ void main()
 end
 \end{lstlisting}
 
-However, there are some restrictions or things to be aware of when using the load function. First of all, the source file should be ASCII-encoded text file. The result of opening a non-ASCII text file is unpredictable. Second, the content of a single text file will be grouped as one graph. There is no way for the load function to load partial graph in the source file.
+However, there are some restrictions or things to be aware of when using the \texttt{load} function. First of all, the source file should be ASCII-encoded text file. The result of opening a non-ASCII text file is unpredictable. Second, the content of a single text file will be grouped as one graph. There is no way for the \texttt{load} function to load partial graph in the source file.
 
 \subsection {sleep}
 
@@ -372,6 +369,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Put Everything Altogether}
 Finally, with the tools introduced above, we can compose an Adele program to import the graphs and make a simple animation.
+\pagebreak
 \begin{lstlisting}[caption=simple\_anima.txt, label=animation, captionpos=b, tabsize=4, frame=single]
 void main()
 	graph gHorse = load("graph_horse.txt");
