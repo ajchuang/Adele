@@ -10,7 +10,7 @@
 	Yuan Lin \texttt{(ly2324)}
 }
 \maketitle
-
+\pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Introduction}
 
@@ -36,6 +36,17 @@ After compilation and execution, you should be able to see the string printed on
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Compiling and Running}
+To use our compiler, you need to create your program file whose name ends in ".adele"(other suffix is never recommended), such as "test.adele". Then you can compile it by the following command:
+
+\begin{lstlisting}[tabsize=4]
+	adelecc test.adele -o test.html
+\end{lstlisting}
+
+where test.html is the output file. Note that our compiler is actually a java class file, a java runtime environment is required(8.0 or later).
+
+If you make everything correct, including any spelling and grammar, our compile will produce the file test.html as you want with no warning or error. Then you can open it with any text editor to view or modify its content(But it may be a struggle to understand, so modification is never recommended). Or you can just open it using your favorite browser to see your fancy arts created via our language.
+
+About the runtime environment, as stated before, all you need is a java runtime environment. So don't worry too much about your system. Maybe you can enjoy the joy of creating cool ascii-arts just on your phone.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {More Complex Examples}
@@ -339,17 +350,25 @@ and it does not return values.
 An example program to show the usage of the sleep function is like
 
 \begin{lstlisting}[caption=marquee.adl, label=marquee, captionpos=b, , tabsize=4, frame=single]
-void main()
+void main ()
 	graph g = "This is a scrolling text";
-	<<waiting for checking while loop>>
+	int x = 0;
+	int y = 0;
+		
+	while (true)
+		g@(x, y);
+		draw();
+		sleep(100);
+		x = x + 1;
+		if (x == 80)
+			x = 0;
+		end
+	end
 end
 \end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Put Everything Altogether}
-
-
-
 
 \end{document}
 
