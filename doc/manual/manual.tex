@@ -115,7 +115,7 @@ The following table summarizes the precedence and associativity of all the opera
     +, -, \textbar	& left to right \\ 		\hline
     \textless,  \textless=,  \textgreater,  \textgreater=	& left to right \\ 		\hline
     ==,  !=			& left to right \\ 		\hline
-    // @				& left to right \\ 		\hline
+    // @				& right to left\\ 		\hline
     
     \end{tabular}
 \end{center}
@@ -133,31 +133,31 @@ The operator - can serve as both the arithmetic subtraction operator and a graph
 \item Boolean literals: true or false;
 \end{itemize}
 \subsubsection {Identifiers}
-Identifiers for variables, functions, groups or arrays.
+An identifier is a valid expression, provided that it has been declared before use.
 
 \subsubsection {Multiplicative Expressions}
 Multiplicative expressions consists of expressions involving *, /, \%. The operands of all the three operators must have arithmetic type; the operands of \% must have integral type. As the convention, multiplicative operators have a higher precedence than additive operators. 
 
 \subsubsection {Additive Expressions}
-The additive operators include +, -. Rigorously speaking,  + is the arithmetic addition operator; - can serve as both the arithmetic subtraction operator and a graph operator. The type of the operands determines whether the operator - works as subtraction or attaching horizontally.
+The additive operators include +, -. Rigorously speaking,  + is the arithmetic addition operator, but - can serve as either the arithmetic subtraction operator or the graph operator "attaching horizontally" which is determined by the type of its operands determines.
 
-The operands of the arithmetic additive operators must be numbers. The type of values of arithmetic additive expressions is number.
+The operands of the arithmetic additive operators must be numbers.
 
 \subsubsection {Graph Combining Expressions}
 The graph operators are -, \textbar, and the ternary operator // @. These three operators does not have side effects on their operands.
 
 The operands of the two binary graph operators must be graphs. When serving as a graph operator, - means "attaching horizontally." The operator \textbar means "attaching vertically." As for the ternary operator, i.e. the overlay and locate operator, the first two operands must be graphs, and the third operand is a pair of integers in the form of "(x, y)", indicating the coordinates.
 
-The type of value of graph combining expressions is graph. Notice that the part of a graph that exceeds the canvas will be truncated.
+The type of the value of graph combining expressions is graph. Notice that the part of a graph that exceeds the canvas will be truncated.
 
 \subsubsection {Boolean Expressions}
-Boolean expressions include expressions involving the relational operators: <, <=, >, >=;  and the equality operators: ==, !=. The value of these expressions is true or false.
+Boolean expressions include expressions involving the relational operators:  \textless,  \textless=,  \textgreater,  \textgreater=;  and the equality operators: ==, !=. The equality operators have lower precedence than the relatioal operators. The value of these expressions is true or false, of boolean type.
 
 \subsubsection {Braced Expressions}
 Expressions surrounded by parentheses are equivalent to the original expressions.
 
 \subsubsection {Function Calls}
-A function call expression consists of the function identifier, and a parameter list surrounded by a pair of parentheses. The value of a function call expression is the return value of the function called.
+A function call expression consists of the function identifier, and a possibly empty, comma-separated list of parameters surrounded by parentheses. The expression is valid only if the function has been declared somewhere, either before or after the function call. Parameters of group type are passed by reference, and those of primitive types are passed by value. The value of a function call expression is the return value of that function.
 
 \subsection {Statements}
 There are five kinds of statement in Adele programs: declarations, expressions, if statements, while statements and return statements. Simple statements like declarations, expressions and return statements end with a semicolon. Control flow statements, if statements and while statements, are ended by an end keyword.
