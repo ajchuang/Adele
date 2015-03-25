@@ -2,6 +2,9 @@
 \usepackage{listings}
 \lstset{basicstyle=\small\ttfamily, breaklines=true}
 
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist 
+
 \begin{document}
 \title {The Adele Programming Language \\ Reference Manual}
 \author {
@@ -11,8 +14,10 @@
 }
 \maketitle
 \pagebreak
-\setcounter{tocdepth}{2}
+\begin{changemargin}{-0.5cm}{-0.5cm} 
+\setcounter{tocdepth}{3}
 \tableofcontents
+\end{changemargin}
 \pagebreak
 \section {Introduction}
 Adele is a programming language designed specifically for simplifying the creation of ASCII artwork. The output space is defined as a canvas object on which the user is allowed to put several custom layers. By controlling the custom layers properly, the user will be able to create interactive ASCII artwork with reusable components. To further simplify these operations, various special operator and predefined functions are included in the language specification.
@@ -42,16 +47,16 @@ The following identifiers is reserved as keywords including grammar keywords and
 \end{center}
 
 \subsection {Constants}
-\subsubsection {Number}
+\subsubsection* {Number}
 A number constant is either an integer or a float. A positive integer starts with a non-zero digit([1-9]) and can be followed by any digit, or it's zero itself. A negative integer starts with a minus '-' then followed by a positive integer. Note that 012 and -012 are not integers. A float starts with an integer, then a '.', then followed by a sequence of any digits, e.x., 0.1345.
 
-\subsubsection {String}
+\subsubsection* {String}
 A string literal is a string constant, which consists of a sequence of characters surrounded by double quotes as in "...". A string is actually an array of characters.
 
-\subsubsection {Boolean}
+\subsubsection* {Boolean}
 A boolean constant is either the keyword true or false.
 
-\subsubsection {Character}
+\subsubsection* {Character}
 A character constant is a sequence of one or more characters enclosed in single quotes as in 'x'. But you can also put it in a string like: "abcx", where 'x' is a character constant. A table of special character constant is shown below:
 \begin{itemize}
 	\item newline: $\backslash$n
@@ -66,30 +71,33 @@ A character constant is a sequence of one or more characters enclosed in single 
 A comma ',' is used to separate parameters in function's parameter list. A semicolon ';' is used to separate two lines. Note that you needn't and shouldn't use semicolon ';' at the end of the line which starts with 'if', 'while', 'end' or the end of first line of a function declaration. 
 
 \section {Types}
-In the Adele programming language, static type checking is performed. Type inconsistencies will be reported as errors in the compile time if the type conversion is not possible. The basic types of Adele includes integers, floating point numbers, boolean, and void.
+In the Adele programming language, static type checking is performed. Type inconsistencies will be reported as errors in the compile time if the type conversion is not possible. 
 
-\begin{itemize}
-\item Integer type (int) \\
+\subsection{Basic types}
+The basic types of Adele includes integers, floating point numbers, boolean, and void.
+
+\subsubsection*{Integer type (int)} 
 Integer type is defined as a signed decimal integer. The range is defined from +9007199254740991 to -9007199254740991. When operating with floating number, the integer can be converted into a corresponding floating point number. When overflow or underflow happens, the behavior is not defined in the language specification. For integer constants, the lexical definition is [-]?[1-9]+[0-9]* \textbar [0]
 
 Note that in the definition, we do not allow preceding 0s in front of the integer, and we also do not allow multiple 0s. That is, 00000 or 0001 are not legal integers. Besides, -0 is also an invalid integer.
 
-\item Floating point number type (float) \\
+ \subsubsection*{Floating point number type (float)} 
 Floating type is defined as a floating number conforming double-precision 64-bit format IEEE 754 values. Loss of precision can happen if a floating number is converted into an integer. For floating point constants, Note that we do not allow 00.00 in this case because the integer part of the definition is the same as the definition of integer.
 
-\item Boolean type (bool) \\
+\subsubsection*{Boolean type (bool)} 
 Boolean type represents the boolean variables, true or false. Note that you can NOT convert boolean values to numeric values like integers. It is also not allowed to convert numeric values to boolean values. A compilation error will be given if the invalid conversion is used.
 
-\item void type (void) \\
+\subsubsection*{void type (void)} 
 As the name suggests, the void type will not check the type until the compiler or the computation has to. This is particularly useful when you want to pass groups which may have several different types into a single function.
-\end{itemize}
 
+
+\subsection{Derived types}
 For derived types, Adele supports the following types: array, functions, references, groups.
-\begin{itemize}
-\item Arrays \\
+
+\subsubsection*{Arrays}
 Array type in Adele is similar to the array type in the Java programming language. The user can put either a set of primitive-typed data or a set of user-defined type references. Note that all the data in the same array have to be the same type.
 
-\item Functions \\
+\subsubsection*{Functions} 
 Functions in Adele are composed by the following parts.
 	\begin{itemize}
 		\item Return type: indicates the type which will be returned by the function.
@@ -99,14 +107,14 @@ Functions in Adele are composed by the following parts.
 		\item End marker: an ‘end’ to indicate the end of the function
 	\end{itemize}
 	
-\item Groups
+\subsubsection*{Groups}
 
 Groups is a mechanism which make the data abstraction possible in Adele. The user can compose his own data abstraction by using the group keyword. Besides, Adele also defines a set of pre-defined groups for simplifying the user operations.
 	\begin{itemize}
 		\item user-defined: Groups in Adele is just like struct in C. It provides a mechanism for the users to group the logically related 	data into a type. However, other object-oriented features are not supported in Adele for simplification. Complicated operations in OOP can be scaring. To define a group, the user has to start with the keyword, group, followed by a group name, and an ‘end’ marker in the end.
 		\item pre-defined: Pre-defined group includes canvas, graph.
 	\end{itemize}
-\end{itemize}
+
 
 \section {Operators}
 The following table summarizes the precedence and associativity of all the operators supported by Adele. Operators on the same line have the same precedence, and the rows are in order of decreasing precedence.

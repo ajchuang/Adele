@@ -1,24 +1,14 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  25 MAR 2015 10:35
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.22)  25 MAR 2015 11:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **manual.tex
 (./manual.tex
 LaTeX2e <2011/06/27>
-Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, ge
-rman-x-2012-05-30, ngerman-x-2012-05-30, afrikaans, ancientgreek, ibycus, arabi
-c, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danis
-h, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnis
-h, french, friulan, galician, german, ngerman, swissgerman, monogreek, greek, h
-ungarian, icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, ma
-rathi, oriya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, 
-kurmanji, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk,
- polish, portuguese, romanian, romansh, russian, sanskrit, serbian, serbianc, s
-lovak, slovenian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, 
-welsh, loaded.
-(/usr/local/texlive/2012/texmf-dist/tex/latex/base/article.cls
+Babel <3.9f> and hyphenation patterns for 78 languages loaded.
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-(/usr/local/texlive/2012/texmf-dist/tex/latex/base/size11.clo
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/size11.clo
 File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -33,8 +23,8 @@ File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/local/texlive/2012/texmf-dist/tex/latex/listings/listings.sty
-(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/keyval.sty
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/listings.sty
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks14
 )
@@ -51,13 +41,13 @@ Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \lst@lineno=\count92
 \lst@maxwidth=\dimen106
 
-(/usr/local/texlive/2012/texmf-dist/tex/latex/listings/lstmisc.sty
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 \c@lstnumber=\count93
 \lst@skipnumbers=\count94
 \lst@framebox=\box27
 )
-(/usr/local/texlive/2012/texmf-dist/tex/latex/listings/listings.cfg
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/listings.cfg
 File: listings.cfg 2007/02/22 1.4 listings configuration
 ))
 Package: listings 2007/02/22 1.4 (Carsten Heinz)
@@ -65,99 +55,94 @@ Package: listings 2007/02/22 1.4 (Carsten Heinz)
 (./manual.aux)
 \openout1 = `manual.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
 \c@lstlisting=\count95
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 12.
+(Font)              <12> on input line 15.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 12.
+(Font)              <8> on input line 15.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 12.
+(Font)              <6> on input line 15.
  [1
 
-{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./manu
+{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./manu
 al.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <10.95> on input line 3.
-)
+ [2])
 \tf@toc=\write3
 \openout3 = `manual.toc'.
 
- [2] [3]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 57.
+ [3] [4]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 62.
 
-(/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 57.
- [4]
-Overfull \hbox (9.68465pt too wide) in paragraph at lines 77--79
-\OT1/cmr/m/n/10.95 Floating type is de-fined as a float-ing num-ber con-form-in
-g double-precision
- []
-
-[5]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 62.
+ [5] [6]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ˜ in font cmr10!
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ™ in font cmr10!
+ [7]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ˜ in font cmr10!
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ™ in font cmr10!
- [6]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 120.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 128.
 
- (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omlcmr.fd
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 120.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 128.
 
-Overfull \hbox (3.1438pt too wide) in paragraph at lines 135--136
+Overfull \hbox (3.1438pt too wide) in paragraph at lines 143--144
 []\OT1/cmr/m/n/10.95 Character lit-er-als: sin-gle ASCII char-ac-ters sur-round
 ed by sin-gle quotes; 
  []
 
-[7] [8] [9] [10] [11] [12] [13] [14] [15] (./manual.aux) ) 
+[8] [9] [10] [11] [12] [13] [14] [15] [16] (./manual.aux) ) 
 Here is how much of TeX's memory you used:
- 1492 strings out of 493488
- 21185 string characters out of 3141326
- 170979 words of memory out of 3000000
- 4846 multiletter control sequences out of 15000+200000
- 9148 words of font info for 33 fonts, out of 3000000 for 9000
+ 1494 strings out of 493315
+ 21212 string characters out of 6137904
+ 174533 words of memory out of 5000000
+ 4993 multiletter control sequences out of 15000+600000
+ 9148 words of font info for 33 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 26i,8n,32p,527b,1463s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/local/texlive/2
-012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/20
-12/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/201
-2/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2012
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2012/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2012/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2012/texmf
--dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2012/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2012/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on manual.pdf (15 pages, 143704 bytes).
+ 26i,8n,32p,527b,1463s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/
+2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2
+013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/20
+13/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/201
+3/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2013/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on manual.pdf (16 pages, 145531 bytes).
 PDF statistics:
- 89 PDF objects out of 1000 (max. 8388607)
- 62 compressed objects within 1 object stream
+ 92 PDF objects out of 1000 (max. 8388607)
+ 64 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
