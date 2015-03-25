@@ -215,7 +215,7 @@ The if statement allows you to control if a program enters a block of code based
 	end
 \end{lstlisting}
 
-The statements between the if line and the end line will be executed if and only if condition\_expression returns a true value (numeric non-zero, boolean true, assigned void variables etc).
+The statements between the if line and the end line will be executed if and only if condition\_expression returns a bool true value.
 
 \subsubsection {while statements}
 The while statement loops through a block of code as long as a specified condition is true.
@@ -228,7 +228,7 @@ The while statement loops through a block of code as long as a specified conditi
 	end
 \end{lstlisting}
 
-The statements between the while line and the end line will be executed iteratively until condition\_expression is not a true value.
+The statements between the while line and the end line will be executed iteratively until condition\_expression is false.
 
 \section {Built-in Functions}
 Besides the grammar defined above, Adele also provides some built-in functions to accomplish the job of rendering combined or moving ASCII art. Because the syntax of the built-in functions are simple and fixed, the built-in functions will take all the acceptable arguments and do not return any values (except for the load function). When the types of the arguments for the functions are incorrect, the compiler should report them as errors.

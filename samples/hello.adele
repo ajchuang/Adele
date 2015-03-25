@@ -1,4 +1,5 @@
-
-void main ()
+void main (canvas c)
     print_str (10, 10, "hello world");
+    print_str (20, 10, "Test it at (20, 10)");
+    print_str (10, 20, "(10, 20)");
 end
