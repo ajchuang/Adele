@@ -48,20 +48,19 @@ prog
         m_scope.push (m_glbVar);
     }
         :
-                                            /* empty programs       */ 
-        |   ( 
+            ( 
                 func                        /* functions            */
         |       type_declaration            /* user defined types   */ 
-        |       (declaration SEMICOLON)     /* declarations         */
+        |       declaration SEMICOLON       /* declarations         */
 
-            )*              
+            )+?              
         ;
         
 /* type declarations */
 /******************************************************************************/
 type_declaration:
         GROUP tid=ID 
-        (TYPE ID SEMICOLON)* 
+        (TYPE ID SEMICOLON)+?
         END
             {
                 if (m_userType.containsKey ($tid.text)) {
