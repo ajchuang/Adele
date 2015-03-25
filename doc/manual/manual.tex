@@ -11,6 +11,9 @@
 }
 \maketitle
 \pagebreak
+\setcounter{tocdepth}{2}
+\tableofcontents
+\pagebreak
 \section {Introduction}
 Adele is a programming language designed specifically for simplifying the creation of ASCII artwork. The output space is defined as a canvas object on which the user is allowed to put several custom layers. By controlling the custom layers properly, the user will be able to create interactive ASCII artwork with reusable components. To further simplify these operations, various special operator and predefined functions are included in the language specification.
 
@@ -26,7 +29,7 @@ Character '\#' introduces a comment, which terminates with a newline. Considerin
 An identifier is a sequence of letters, digits and underscore. The first character of any identifier must be a letter or underscore. For example, 1a2\_3d will not be considered as an identifier, but a2\_3d or \_1a2\_3d is in our standard. Identifiers may have any length, but only the first 31 characters are guaranteed to be considered. So any identifier longer than 31 characters is not recommended. And any identifier is case-sensitive, e.x., 'ab' and 'Ab' is distinguishable by our compiler.
 
 \subsection {Keywords}
-The following identifiers is reserved as keywords, so you are not supposed to use them as an identifier, otherwise an error may occur:
+The following identifiers is reserved as keywords including grammar keywords and predefined functions. The user is not supposed to use these keywords as identifier names. Otherwise, 
 
 \begin{center}
     \begin{tabular}{l l l}
@@ -63,7 +66,6 @@ A character constant is a sequence of one or more characters enclosed in single 
 A comma ',' is used to separate parameters in function's parameter list. A semicolon ';' is used to separate two lines. Note that you needn't and shouldn't use semicolon ';' at the end of the line which starts with 'if', 'while', 'end' or the end of first line of a function declaration. 
 
 \section {Types}
-
 In the Adele programming language, static type checking is performed. Type inconsistencies will be reported as errors in the compile time if the type conversion is not possible. The basic types of Adele includes integers, floating point numbers, boolean, and void.
 
 \begin{itemize}
@@ -73,10 +75,10 @@ Integer type is defined as a signed decimal integer. The range is defined from +
 Note that in the definition, we do not allow preceding 0s in front of the integer, and we also do not allow multiple 0s. That is, 00000 or 0001 are not legal integers. Besides, -0 is also an invalid integer.
 
 \item Floating point number type (float) \\
-Floating type is defined as a floating number conforming double-precision 64-bit format IEEE 754 values. Loss of precision can happen if a floating number is converted into an integer. For floating point constants, The lexical definition is [-]?[0-9]+ '.' [0-9]+. Note that we do allow 00.00 in this case since the meaning of 0 and 0.0 is somehow different in terms of precision.
+Floating type is defined as a floating number conforming double-precision 64-bit format IEEE 754 values. Loss of precision can happen if a floating number is converted into an integer. For floating point constants, Note that we do not allow 00.00 in this case because the integer part of the definition is the same as the definition of integer.
 
 \item Boolean type (bool) \\
-Boolean type represents the boolean variables, true or false. Note that you can NOT convert boolean values to numeric values like integers.
+Boolean type represents the boolean variables, true or false. Note that you can NOT convert boolean values to numeric values like integers. It is also not allowed to convert numeric values to boolean values. A compilation error will be given if the invalid conversion is used.
 
 \item void type (void) \\
 As the name suggests, the void type will not check the type until the compiler or the computation has to. This is particularly useful when you want to pass groups which may have several different types into a single function.
@@ -85,7 +87,7 @@ As the name suggests, the void type will not check the type until the compiler o
 For derived types, Adele supports the following types: array, functions, references, groups.
 \begin{itemize}
 \item Arrays \\
-Array type in Adele is similar to the Java programming language. The user can put either a set of primitive-typed data or a set of user-defined type references. Note that all the data in the same array have to be the same type.
+Array type in Adele is similar to the array type in the Java programming language. The user can put either a set of primitive-typed data or a set of user-defined type references. Note that all the data in the same array have to be the same type.
 
 \item Functions \\
 Functions in Adele are composed by the following parts.
@@ -98,6 +100,8 @@ Functions in Adele are composed by the following parts.
 	\end{itemize}
 	
 \item Groups
+
+Groups is a mechanism which make the data abstraction possible in Adele. The user can compose his own data abstraction by using the group keyword. Besides, Adele also defines a set of pre-defined groups for simplifying the user operations.
 	\begin{itemize}
 		\item user-defined: Groups in Adele is just like struct in C. It provides a mechanism for the users to group the logically related 	data into a type. However, other object-oriented features are not supported in Adele for simplification. Complicated operations in OOP can be scaring. To define a group, the user has to start with the keyword, group, followed by a group name, and an ‘end’ marker in the end.
 		\item pre-defined: Pre-defined group includes canvas, graph.
@@ -120,7 +124,7 @@ The following table summarizes the precedence and associativity of all the opera
     \end{tabular}
 \end{center}
 
-The operator () refers to function call; [] refers to array subscripting; . is used to access fields of groups. 
+The () operator is used in functions to list the parameters, and also provides the specific precedence in the arithmetic operations; [] refers to array subscripting; the dot operator is used to access fields of groups. 
 
 The operator - can serve as both the arithmetic subtraction operator and a graph operator.  Other special graph operators include \textbar and // @ (details can be found in the following sections).
 
@@ -262,7 +266,10 @@ To achieve better flow control, sleep, a function which pauses the program is pr
 The argument for the sleep function is the duration in milliseconds and the sleep function does not return a value, either.
 
 \pagebreak
-\section{Appendix}
+\section {Appendix}
+\subsection {Syntactical Grammar}
+Note: the draft grammar is not finalized.
+
 \begin{lstlisting}[tabsize=4]
 grammar adele;
 
