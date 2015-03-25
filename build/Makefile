@@ -13,8 +13,7 @@ ST=$(LIB)/ST-4.0.8.jar
 
 compiler:
 	@make -C $(GRAMMAR)
-	@make -C $(SRC) define
-	@javac -cp $(ANTLR):. adele*.java
+	@javac -cp $(ANTLR):. Adl*.java
 	@make -C $(SRC)
 
 grammar:

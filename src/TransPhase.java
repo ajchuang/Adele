@@ -16,7 +16,7 @@ public class TransPhase extends AdlBaseListener {
         this.scopes = scopes;
         this.globals = globals;
         this.values = values;
-        stg = new STGroupFile("template/group.stg");
+        stg = new STGroupFile("../src/template/group.stg");
         tmp = "";
     }
 
