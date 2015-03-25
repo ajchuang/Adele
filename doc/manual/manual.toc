@@ -1,35 +1,33 @@
-\contentsline {section}{\numberline {1}Introduction}{3}
-\contentsline {section}{\numberline {2}Lexical Specifications}{3}
-\contentsline {subsection}{\numberline {2.1}Comments}{3}
-\contentsline {subsection}{\numberline {2.2}Identifiers}{3}
-\contentsline {subsection}{\numberline {2.3}Keywords}{3}
-\contentsline {subsection}{\numberline {2.4}Constants}{4}
-\contentsline {subsubsection}{\numberline {2.4.1}Number}{4}
-\contentsline {subsubsection}{\numberline {2.4.2}String}{4}
-\contentsline {subsubsection}{\numberline {2.4.3}Boolean}{4}
-\contentsline {subsubsection}{\numberline {2.4.4}Character}{4}
-\contentsline {subsection}{\numberline {2.5}Punctuation and Separators}{5}
-\contentsline {section}{\numberline {3}Types}{5}
-\contentsline {section}{\numberline {4}Operators}{7}
-\contentsline {section}{\numberline {5}Syntax}{7}
-\contentsline {subsection}{\numberline {5.1}Literals}{7}
-\contentsline {subsubsection}{\numberline {5.1.1}Identifiers}{7}
-\contentsline {subsubsection}{\numberline {5.1.2}Multiplicative Expressions}{7}
-\contentsline {subsubsection}{\numberline {5.1.3}Additive Expressions}{8}
-\contentsline {subsubsection}{\numberline {5.1.4}Graph Combining Expressions}{8}
-\contentsline {subsubsection}{\numberline {5.1.5}Boolean Expressions}{8}
-\contentsline {subsubsection}{\numberline {5.1.6}Braced Expressions}{8}
-\contentsline {subsubsection}{\numberline {5.1.7}Function Calls}{8}
-\contentsline {subsection}{\numberline {5.2}Statements}{9}
-\contentsline {subsubsection}{\numberline {5.2.1}Declarations}{9}
-\contentsline {subsubsection}{\numberline {5.2.2}Expressions}{9}
-\contentsline {subsubsection}{\numberline {5.2.3}return statements}{10}
-\contentsline {subsubsection}{\numberline {5.2.4}if statements}{10}
-\contentsline {subsubsection}{\numberline {5.2.5}while statements}{10}
-\contentsline {section}{\numberline {6}Built-in Functions}{10}
-\contentsline {subsection}{\numberline {6.1}sleep}{11}
-\contentsline {subsection}{\numberline {6.2}print}{11}
-\contentsline {subsection}{\numberline {6.3}load}{11}
-\contentsline {subsection}{\numberline {6.4}sleep}{12}
-\contentsline {section}{\numberline {7}Appendix}{13}
-\contentsline {subsection}{\numberline {7.1}Syntactical Grammar}{13}
+\contentsline {section}{\numberline {1}Introduction}{4}
+\contentsline {section}{\numberline {2}Lexical Specifications}{4}
+\contentsline {subsection}{\numberline {2.1}Comments}{4}
+\contentsline {subsection}{\numberline {2.2}Identifiers}{4}
+\contentsline {subsection}{\numberline {2.3}Keywords}{4}
+\contentsline {subsection}{\numberline {2.4}Constants}{5}
+\contentsline {subsection}{\numberline {2.5}Punctuation and Separators}{6}
+\contentsline {section}{\numberline {3}Types}{6}
+\contentsline {subsection}{\numberline {3.1}Basic types}{6}
+\contentsline {subsection}{\numberline {3.2}Derived types}{7}
+\contentsline {section}{\numberline {4}Operators}{8}
+\contentsline {section}{\numberline {5}Syntax}{8}
+\contentsline {subsection}{\numberline {5.1}Literals}{8}
+\contentsline {subsubsection}{\numberline {5.1.1}Identifiers}{9}
+\contentsline {subsubsection}{\numberline {5.1.2}Multiplicative Expressions}{9}
+\contentsline {subsubsection}{\numberline {5.1.3}Additive Expressions}{9}
+\contentsline {subsubsection}{\numberline {5.1.4}Graph Combining Expressions}{9}
+\contentsline {subsubsection}{\numberline {5.1.5}Boolean Expressions}{10}
+\contentsline {subsubsection}{\numberline {5.1.6}Braced Expressions}{10}
+\contentsline {subsubsection}{\numberline {5.1.7}Function Calls}{10}
+\contentsline {subsection}{\numberline {5.2}Statements}{10}
+\contentsline {subsubsection}{\numberline {5.2.1}Declarations}{10}
+\contentsline {subsubsection}{\numberline {5.2.2}Expressions}{11}
+\contentsline {subsubsection}{\numberline {5.2.3}return statements}{11}
+\contentsline {subsubsection}{\numberline {5.2.4}if statements}{11}
+\contentsline {subsubsection}{\numberline {5.2.5}while statements}{11}
+\contentsline {section}{\numberline {6}Built-in Functions}{12}
+\contentsline {subsection}{\numberline {6.1}sleep}{12}
+\contentsline {subsection}{\numberline {6.2}print}{12}
+\contentsline {subsection}{\numberline {6.3}load}{13}
+\contentsline {subsection}{\numberline {6.4}sleep}{13}
+\contentsline {section}{\numberline {7}Appendix}{14}
+\contentsline {subsection}{\numberline {7.1}Syntactical Grammar}{14}
