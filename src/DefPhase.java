@@ -34,7 +34,7 @@ class DefPhase extends AdlBaseListener {
   }
 
   public void exitProg(AdlParser.ProgContext ctx) {
-    System.out.println(globals);
+    //System.out.println(globals);
   }
 
   public void enterFunc(AdlParser.FuncContext ctx) {
@@ -50,7 +50,7 @@ class DefPhase extends AdlBaseListener {
   }
 
   public void exitFunc(AdlParser.FuncContext ctx) {
-    System.out.println(currentScope);
+    //System.out.println(currentScope);
     currentScope = currentScope.getEnclosingScope(); // pop scope
   }
 

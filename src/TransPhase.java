@@ -26,10 +26,14 @@ public class TransPhase extends AdlBaseListener {
 
     public void enterProg(AdlParser.ProgContext ctx) {
         currentScope = globals;
-        System.out.println("--------------------------");
+        //System.out.println("--------------------------");
+        ST befprog = stg.getInstanceOf("befprog");
+        System.out.print(befprog.render());
     }
 
     public void exitProg(AdlParser.ProgContext ctx) {
+        ST aftprog = stg.getInstanceOf("aftprog");
+        System.out.print(aftprog.render());
         System.out.println();
     }
 

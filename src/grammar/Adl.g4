@@ -29,5 +29,6 @@ declaration:    type ID
             ;
 
 expr:       ID      EQUAL   expr        #assign
+        |   ID LPAREN  RPAREN            #funcall
         |   NUM                         #num
         ;

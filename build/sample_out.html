@@ -19,12 +19,13 @@ var Pixel = function() {
   this.chr = '';
 };
 
-var pixeldiv = $('<div>').addClass('pixel').css({
+var pixeldiv = jQuery('<div>').addClass('pixel').css({
   "width": "20px",
   "height": "20px",
   "font-size": "20px",
   "float": "left",
-  "text-align": "center"
+  "text-align": "center",
+  "background-color": "#CFF"
 });
 
 var graph = function(w, h) {
@@ -48,7 +49,7 @@ var graph = function(w, h) {
 
 
 var init = function() {
-  $(document.body).css('width', canvas.width*20 +'px').css('height', canvas.height*20 +'px');
+  jQuery(document.body).css('width', canvas.width*20 +'px').css('height', canvas.height*20 +'px');
   for (var i = 0; i < canvas.height; i++) {
     canvas.buffer[i] = [];
     for (var j = 0; j < canvas.width; j++) {
@@ -61,6 +62,7 @@ var init = function() {
 
 //Convert string to graph
 var str2graph = function (str) {
+  str = String(str);
   var g = new graph(str.length, 1);
   for (i in str) {
     var cr = 0, cc = Number(i);
@@ -76,14 +78,14 @@ var print_str = function(r, c, str) {
   canvas.draw();
 };
 
-$(document).ready(function(){
-  init();
-  print_str(0, 0, "Hello world!");
-  print_str(20, 10, "Test it at (20, 10)");
-  print_str(10, 20, "(10, 20)");
+jQuery(document).ready(function(){
+  init();var x;
+function main() {
+    var x;
+    x = 2;
+    var y = 3;
 
-});
-
+}});
 </script>
 <body>
 </body>
