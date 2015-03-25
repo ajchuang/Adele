@@ -1,6 +1,7 @@
 \documentclass[11pt,letterpaper]{article}
 \usepackage{listings}
 \usepackage{graphicx}
+\lstset{basicstyle=\small\ttfamily}
 \begin{document}
 \title {A Tutorial on the Adele Programming Language}
 \author {
@@ -25,7 +26,7 @@ Good luck and have fun in Adele.
 
 As a tradition in introducing a programming language, we would like to present the Hello World as our first example using Adele. The following codes illustrate what the Hello World program looks like.
 
-\lstinputlisting {./hello_world.adele}
+\lstinputlisting[frame=single] {./hello_world.adele}
 
 In the program, the entry point of any Adele program is the main function. 'void' indicates that the return value of the function is ignored, and the parenthesis after the function name shows the parameters of the function. In this example, c, whose type is canvas, is the input parameter to the main function, which is the output device of the user's artwork. For user-defined function, empty parameters are also possible. Note that, in Adele, every function has to be ended with an 'end' marker.
 
@@ -45,13 +46,14 @@ In Adele, there are some control flow statements and user defined structures to 
 
 The if statement allows you to control if a program enters a block of code based on whether a given condition is true. For example:
 
-\begin{lstlisting}[caption=if.adl, label=if, captionpos=b]
+\begin{lstlisting}[caption=if.adl, label=if, captionpos=b, tabsize=4, frame=single]
 x = 1;
 if (x==1)
-  print_str(0, 0, "x is equal to 1");
+	print_str (0, 0, "x is equal to 1");
 end
+
 if (x==2)
-  print_str(0, 0, "x is equal to 2");
+	print_str (0, 0, "x is equal to 2");
 end
 # "x is equal to 1" is printed
 \end{lstlisting}
@@ -62,7 +64,7 @@ All if statements end with a keyword end.
 
 The while statement loops through a block of code as long as a specified condition is true. For instance:
 
-\begin{lstlisting}[caption=while.adl, label=while, captionpos=b]
+\begin{lstlisting}[caption=while.adl, label=while, captionpos=b, tabsize=4, frame=single]
 x = 1;
 sum = 0;
 
@@ -88,7 +90,7 @@ end
 
 For example, here is a complete Adele program:
 
-\begin{lstlisting}[caption=func.adl, label=func, captionpos=b]
+\begin{lstlisting}[caption=func.adl, label=func, captionpos=b, tabsize=4, frame=single]
 int isGreaterThanZero (int x)
   if (x>0)
     return 1;
@@ -133,7 +135,7 @@ Group variables are passing by reference in expression evaluation, which is diff
 
 Here is an implementation of quick sort algorithm in Adele language:
 
-\begin{lstlisting}[caption=qsort.adl, label=qsort, captionpos=b]
+\begin{lstlisting}[caption=qsort.adl, label=qsort, captionpos=b, frame=single, tabsize=4]
 void qsort (int A[], int left, int right)
 	int i = left;
 	int j = right;
@@ -217,17 +219,17 @@ Besides the data types and flow control, some more utilities are provided either
 
 \subsection {draw}
 The draw function is the essential function to display the ASCII art arranged by the programmers. All the graph data defined or placed in the program is not displayed immediately. Adele will trigger the target language to render the output only when the draw function is invoked. The usage of draw is
-\begin{lstlisting}
-	draw ();
+\begin{lstlisting}[tabsize=4] 
+	draw (); 
 \end{lstlisting}
 and it does not return any value. Here is a simple example to show the usage of the draw function.
 
-\begin{lstlisting}
-	void main (canvas c)
-		graph g = “\(^o^)/”;
-		g@(0, 0);
-		draw();
-	end
+\begin{lstlisting}[tabsize=4, frame=single]
+void main (canvas c)
+	graph g = “\(^o^)/”;
+	g@(0, 0);
+	draw();
+end
 \end{lstlisting}
 
 In the example, if the program ends without draw(), the output will actually not render the graph. Only with draw() will the Adele generate the rendering part of target code to show the graphs.
@@ -236,8 +238,8 @@ The purpose of this step is mainly to coordinate and synchronize the display tim
 
 \subsection {print}
 In addition to the ASCII art, sometimes the programmers would like to add some words in the picture for various reasons. Adele provides a simple function for such a situation. The usage of the string printing function is
-\begin{lstlisting}
-	print_str(<x>, <y>, “<string>”);
+\begin{lstlisting}[tabsize=4]
+	print_str(<x>, <y>, "<string>");
 \end{lstlisting}
 and it does not return values.
 
@@ -247,15 +249,15 @@ The other is that the rendered string will always on the most bottom layer. The 
 
 \subsection {load}
 It is most of the case that the elemental ASCII graphs are preferably constructed from the existing files rather than locally with the character arrays in the programs. For these cases, a predefined function, load, can be used to import ASCII graphs from the files. The usage of load is
-\begin{lstlisting}
+\begin{lstlisting}[tabsize=4]
 	load("filename");
 \end{lstlisting}
 and it returns a graph-type reference which points to a ASCII character group.
 
 For example, to show a ASCII graph of $\backslash$ (\^o\^)/ without the file importing, a simple program as in section 6.1 is
-\begin{lstlisting}[caption=hail.adl, label=hail, captionpos=b]
+\begin{lstlisting}[caption=hail.adl, label=hail, captionpos=b, tabsize=4, frame=single]
 void main()
-	graph g = “\(^o^)/”;
+	graph g = "\(^o^)/";
 	g@(0, 0);
 	draw();
 end
@@ -263,19 +265,19 @@ end
 
 Alternatively, It can also be done by having a text file of $\backslash$ (\^o\^)/ and a program to import the graph from the file, such as
 
-\begin{lstlisting}[caption=graph.txt, label=hail_face, captionpos=b]
-	\(^o^)/
+\begin{lstlisting}[caption=graph.txt, label=hail_face, captionpos=b, tabsize=4]
+						\(^o^)/
 \end{lstlisting}
 
-\begin{lstlisting}[caption=hailv2.adl, label=hailv2, captionpos=b]
+\begin{lstlisting}[caption=hailv2.adl, label=hailv2, captionpos=b, tabsize=4, frame=single]
 void main()
-	graph g = load(“graph.txt”);
+	graph g = load ("graph.txt");
 	draw();
 end
 \end{lstlisting}
 
 Although the above example may be too simple to show the convenience of using load to import the graphs from the files, the load function can be very useful when there are multiple rather bigger graphs to manipulate. The following program is an example to demonstrate the advantage of using the load function
-
+\pagebreak
 \begin{lstlisting}[caption=graph\_horse.txt, label=horse, captionpos=b]
 		   >>\.
 		  /_  )`.
@@ -312,11 +314,11 @@ _     /)---(\          /~~~\
                  \_____)|_).\_).||(__V
 \end{lstlisting}
 
-\begin{lstlisting}[caption=animals.adl, label=animal, captionpos=b]
+\begin{lstlisting}[caption=animals.adl, label=animal, captionpos=b, tabsize=4, frame=single]
 void main()
-	graph gHorse = load(“graph_horse.txt”);
-	graph gCat = load(“graph_cat.txt”);
-	graph gDogs = load(“graph_dogs.txt”);
+	graph gHorse = load ("graph_horse.txt");
+	graph gCat = load ("graph_cat.txt");
+	graph gDogs = load("graph_dogs.txt");
 	print(0, 0, gHorse);
 	print(25, 25, gCat);
 	print(30, 0, gDogs);
@@ -329,17 +331,17 @@ However, there are some restrictions or things to be aware of when using the loa
 \subsection {sleep}
 
 Despite the basic flow control described in the previous chapter, a time control mechanism is necessary to generate the animation. Therefore, Adele provides the sleep function to pause the procedure in the program to enable the graphs to be displayed step by step. The usage of the sleep function is
-\begin{lstlisting}
-	sleep(milliseconds);
+\begin{lstlisting}[tabsize=4]
+	sleep (time_in_milliseconds);
 \end{lstlisting}
 and it does not return values.
 
 An example program to show the usage of the sleep function is like
 
-\begin{lstlisting}[caption=marquee.adl, label=marquee, captionpos=b]
+\begin{lstlisting}[caption=marquee.adl, label=marquee, captionpos=b, , tabsize=4, frame=single]
 void main()
-	graph g = “This is a scrolling text”;
-	int …<<waiting for checking while loop>>
+	graph g = "This is a scrolling text";
+	<<waiting for checking while loop>>
 end
 \end{lstlisting}
 
