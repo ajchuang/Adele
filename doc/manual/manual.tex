@@ -68,7 +68,7 @@ In the Adele programming language, static type checking is performed. Type incon
 
 \begin{itemize}
 \item Integer type (int) \\
-Integer type is defined as a signed decimal integer. The range is defined from +9007199254740991 to -9007199254740991. When operating with floating number, the integer can be converted into a corresponding floating point number. When overflow or underflow happens, the behavior is not defined in the language specification. For integer constants, the lexical definition is [-]?[1-9]+[0-9]* | [0]
+Integer type is defined as a signed decimal integer. The range is defined from +9007199254740991 to -9007199254740991. When operating with floating number, the integer can be converted into a corresponding floating point number. When overflow or underflow happens, the behavior is not defined in the language specification. For integer constants, the lexical definition is [-]?[1-9]+[0-9]* \textbar [0]
 
 Note that in the definition, we do not allow preceding 0s in front of the integer, and we also do not allow multiple 0s. That is, 00000 or 0001 are not legal integers. Besides, -0 is also an invalid integer.
 
@@ -122,7 +122,7 @@ The following table summarizes the precedence and associativity of all the opera
 
 The operator () refers to function call; [] refers to array subscripting; . is used to access fields of groups. 
 
-The operator - can serve as both the arithmetic subtraction operator and a graph operator.  Other special graph operators include | and // @ (details can be found in the following sections).
+The operator - can serve as both the arithmetic subtraction operator and a graph operator.  Other special graph operators include \textbar and // @ (details can be found in the following sections).
 
 \section {Syntax}
 \subsection {Literals}
@@ -144,7 +144,7 @@ The additive operators include +, -. Rigorously speaking,  + is the arithmetic a
 The operands of the arithmetic additive operators must be numbers. The type of values of arithmetic additive expressions is number.
 
 \subsubsection {Graph Combining Expressions}
-The graph operators are -, |, and the ternary operator // @. These three operators does not have side effects on their operands.
+The graph operators are -, \textbar, and the ternary operator // @. These three operators does not have side effects on their operands.
 
 The operands of the two binary graph operators must be graphs. When serving as a graph operator, - means "attaching horizontally." The operator \textbar means "attaching vertically." As for the ternary operator, i.e. the overlay and locate operator, the first two operands must be graphs, and the third operand is a pair of integers in the form of "(x, y)", indicating the coordinates.
 
@@ -263,7 +263,7 @@ The argument for the sleep function is the duration in milliseconds and the slee
 
 \pagebreak
 \section{Appendix}
-\begin{lstlisting}[tabsize=4, ]
+\begin{lstlisting}[tabsize=4]
 grammar adele;
 
 prog    :                                   /* empty programs       */ 
