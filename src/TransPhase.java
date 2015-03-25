@@ -50,6 +50,7 @@ public class TransPhase extends AdlBaseListener {
         func.add("fname", ctx.ID());
         func.add("body", tmp);
         System.out.print(func.render());
+        System.out.println();
         tmp = "";
     }
 
@@ -67,5 +68,13 @@ public class TransPhase extends AdlBaseListener {
             decl.add("value", getValue(ctx.expr()));
         }
         tmp += decl.render() + '\n';
+    }
+
+    public void enterFunccall(AdlParser.FunccallContext ctx) {
+        org.stringtemplate.v4.ST funccall = stg.getInstanceOf("funccall");
+        funccall.add("fname", ctx.ID());
+        funccall.add("params", "");
+        tmp += funccall.render() + '\n';
+
     }
 }

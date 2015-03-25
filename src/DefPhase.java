@@ -59,10 +59,19 @@ class DefPhase extends AdlBaseListener {
     setValue(ctx, Integer.valueOf(numText));
   }
 
+  public void exitFpitem(AdlParser.FpitemContext ctx) {
+    int right = getValue(ctx.expr());
+    setValue(ctx, right);
+  }
   public void exitAssign(AdlParser.AssignContext ctx) {
     int right = getValue(ctx.expr());
     setValue(ctx, right);
   }
+
+  public void exitFunc_plist(AdlParser.Func_plistContext ctx) {
+  }
+
+
 
   public void exitDeclaration(AdlParser.DeclarationContext ctx) {
     defineVar(ctx.type(), ctx.ID().getSymbol());

@@ -28,7 +28,10 @@ declaration:    type ID
             |   type ID EQUAL expr
             ;
 
-expr:       ID      EQUAL   expr        #assign
-        |   ID LPAREN  RPAREN            #funcall
+expr:      ID LPAREN func_plist RPAREN #funccall
+        |    ID      EQUAL   expr        #assign
         |   NUM                         #num
         ;
+
+func_plist:  | ( fpitem COMMA )* fpitem;
+fpitem:     expr ;

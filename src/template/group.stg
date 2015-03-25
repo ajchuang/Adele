@@ -10,10 +10,12 @@ typeInitMap ::= [
 assign(lhs, rhs) ::= "$lhs$ = $rhs$;"
 
 funcdef(fname, params, body) ::= <<
-function $fname$($params; separator=", "$) {
+var $fname$ = function($params; separator=", "$) {
     $body; separator="\n"$
-}
+};
 >>
+
+funccall(fname, params) ::= <<$fname$($params; separator=", "$);>>
 
 vardecl(vtype, vname, value) ::= "var $vname$$init(value)$;"
 
@@ -44,7 +46,7 @@ var Pixel = function() {
 var pixeldiv = jQuery('<div>').addClass('pixel').css({
   "width": "20px",
   "height": "20px",
-  "font-size": "20px",
+  "font-size": "14px",
   "float": "left",
   "text-align": "center",
   "background-color": "#CFF"
@@ -95,16 +97,20 @@ var str2graph = function (str) {
 
 
 var print_str = function(r, c, str) {
+  if (r==undefined || c==undefined || str==undefined) {
+    r = 0; c = 0; str = "hello world";
+  }
   var g = str2graph(str);
   g.at(r, c);
   canvas.draw();
 };
 
-jQuery(document).ready(function(){
-  init();
 >>
 
 aftprog() ::= <<
+jQuery(document).ready(function(){
+  init();
+  main();
 });
 </script>
 <body>
