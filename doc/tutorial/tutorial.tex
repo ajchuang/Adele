@@ -267,7 +267,7 @@ It is most of the case that the elemental ASCII graphs are preferably constructe
 \end{lstlisting}
 and it returns a graph-type reference which points to a ASCII character group.
 
-For example, to show a ASCII graph of $\backslash$ (\^o\^)/ without the file importing, a simple program as in section 6.1 is
+For example, to show a ASCII graph of $\backslash$(\^{}o\^{})/ without the file importing, a simple program as in section 6.1 is
 \begin{lstlisting}[caption=hail.adl, label=hail, captionpos=b, tabsize=4, frame=single]
 void main()
 	graph g = "\(^o^)/";
@@ -276,7 +276,7 @@ void main()
 end
 \end{lstlisting}
 
-Alternatively, It can also be done by having a text file of $\backslash$ (\^o\^)/ and a program to import the graph from the file, such as
+Alternatively, It can also be done by having a text file of $\backslash$(\^{}o\^{})/ and a program to import the graph from the file, such as
 
 \begin{lstlisting}[caption=graph.txt, label=hail_face, captionpos=b, tabsize=4]
 						\(^o^)/
@@ -332,9 +332,9 @@ void main()
 	graph gHorse = load ("graph_horse.txt");
 	graph gCat = load ("graph_cat.txt");
 	graph gDogs = load("graph_dogs.txt");
-	print(0, 0, gHorse);
-	print(25, 25, gCat);
-	print(30, 0, gDogs);
+	gHorse@(0, 0);
+	gCat@(25, 25);
+	gDogs@(30, 0);
 	draw();
 end
 \end{lstlisting}
@@ -351,7 +351,7 @@ and it does not return values.
 
 An example program to show the usage of the sleep function is like
 
-\begin{lstlisting}[caption=marquee.adl, label=marquee, captionpos=b, , tabsize=4, frame=single]
+\begin{lstlisting}[caption=marquee.adl, label=marquee, captionpos=b, tabsize=4, frame=single]
 void main ()
 	graph g = "This is a scrolling text";
 	int x = 0;
@@ -371,6 +371,28 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section {Put Everything Altogether}
+Finally, with the tools introduced above, we can compose an Adele program to import the graphs and make a simple animation.
+\begin{lstlisting}[caption=simple\_anima.txt, label=animation, captionpos=b, tabsize=4, frame=single]
+void main()
+	graph gHorse = load("graph_horse.txt");
+	graph gCat = load("graph_cat.txt");
+	int x = 100;
+	int y = 100;
+	int i = 0;
 
+	gCat@(80, 0);
+	while (i < 100)
+		gHorse@(x, y);
+		print_str(0, 100, "The horse is walking!");
+		draw();
+		sleep(100);
+		x = x - 1;
+		y = y - 1;
+		i = i + 1;
+	end
+end
+\end{lstlisting}
+
+After the above sample code is compiled, an animation could be generated in which a horse moves from the bottom right to the top left and a cat stands at the top right watching the horse.
 \end{document}
 
