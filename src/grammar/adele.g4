@@ -12,62 +12,62 @@ import adelelex;
 /* generating matching rules                                                  */
 /******************************************************************************/
 prog:
-        ( 
+        (
                 func                        /* functions            */
-        |       type_declaration            /* user defined types   */ 
+        |       type_declaration            /* user defined types   */
         |       declaration SEMICOLON       /* declarations         */
 
-        )+?              
+        )+?
         ;
-        
+
 /* type declarations */
 /******************************************************************************/
 type_declaration:
-            GROUP ID 
-            (TYPE ID SEMICOLON)+?
+            GROUP ID
+            (type ID SEMICOLON)+?
             END
         ;
 
 /* function and its parameters */
 /******************************************************************************/
-func:   
-            ( TYPE | GROUP ID ) ID LPAREN plist RPAREN 
+func:
+            ( type | GROUP gid=ID ) id=ID LPAREN plist RPAREN
             stmts
-            END 
+            END
         ;
 
-plist:  
-        |   ( ((TYPE) | (GROUP ID)) ID COMMA )* ( TYPE ID | GROUP ID ID ) 
+plist:
+        |   ( ((type) | (GROUP ID)) ID COMMA )* ( type ID | GROUP ID ID )
         ;
 
 /* statments: if, while, declarations */
 /******************************************************************************/
 stmts:  stmt* ;
-stmt:       
-            SEMICOLON       
-        |   if_stmt       
-        |   while_stmt      
-        |   expr SEMICOLON  
+stmt:
+            SEMICOLON
+        |   if_stmt
+        |   while_stmt
+        |   expr SEMICOLON
         |   declaration SEMICOLON
         |   RETURN expr SEMICOLON
         ;
 
-if_stmt:        
-            IF LPAREN expr RPAREN 
-            stmts 
-            END 
+if_stmt:
+            IF LPAREN expr RPAREN
+            stmts
+            END
         ;
 
-while_stmt:     
-            WHILE LPAREN expr RPAREN 
-            stmts 
-            END 
+while_stmt:
+            WHILE LPAREN expr RPAREN
+            stmts
+            END
         ;
 
-declaration:   
-            GROUP ID ID
-        |   TYPE ID 
-        |   TYPE ID EQUAL expr
+declaration:
+            GROUP ID ID         #groupDecl
+        |   type ID             #varDecl
+        |   type ID EQUAL expr  #varDeclAssign
         ;
 
 /******************************************************************************/
@@ -76,25 +76,27 @@ declaration:
 /*      it is the actual order of precedence. (left-associative)              */
 /*  2.  we allow int operation at this moment (todo: other types)             */
 /******************************************************************************/
-expr:        
-            LPAREN expr RPAREN                      /* parenthesis */
-        |   ID LPAREN func_plist RPAREN             /* function call */
-        |   expr MULTI_OP    expr                   /* multiplication & division */
-        |   expr ADDITIVE_OP expr                   /* addition */
-        |   expr COMPARE_OP  expr                   /* compare equal */
-        |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN /* @lfred: to fix - lame overlay */
-        |   ID EQUAL expr                           /* assignment */
-        |   ID  
-        |   NUM
-        |   STR
-        ; 
+expr:
+            LPAREN expr RPAREN                 #parenExpr     /* parenthesis */
+        |   ID LPAREN func_plist RPAREN       #funcCall      /* function call */
+        |   expr MULTI_OP    expr             #mult      /* multiplication & division */
+        |   expr ADDITIVE_OP expr             #add      /* addition */
+        |   expr COMPARE_OP  expr             #compare     /* compare equal */
+        |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN #overlay/* @lfred: to fix - lame overlay */
+        |   ID EQUAL expr                      #assign     /* assignment */
+        |   ID      #var
+        |   NUM     #num
+        |   STR     #string
+        ;
 
-func_plist:  
+func_plist:
         |   ( fpitem COMMA )* fpitem
         ;
 
-fpitem:     
+fpitem:
             expr
         ;
+
+type:   'int' | 'float' | 'char' | 'bool' | 'void' | 'string';
 
 

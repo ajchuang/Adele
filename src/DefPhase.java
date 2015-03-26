@@ -4,23 +4,23 @@ import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 class DefPhase extends adeleBaseListener {
-  
+
     ParseTreeProperty<Scope> scopes = new ParseTreeProperty<Scope>();
-    ParseTreeProperty<Integer> values = new ParseTreeProperty<Integer>();
+    ParseTreeProperty<Object> values = new ParseTreeProperty<Object>();
     GlobalScope globals;
     Scope currentScope;
 
-    public void setValue (ParseTree node, int value) {
+    public void setValue (ParseTree node, Object value) {
         values.put (node, value);
     }
-  
-    public int getValue (ParseTree node) {
-        return values.get (node);
+
+    public Object getValue (ParseTree node) {
+        return values.get(node);
     }
 
     public void defineVar (adeleParser.TypeContext typeCtx, Token nameToken) {
-        int typeTokenType = typeCtx.start.getType();
-        Symbol.Type type = AdeleRT.getType(typeTokenType);
+        String typeStr = typeCtx.getText();
+        Symbol.Type type = Symbol.getType(typeStr);
         VariableSymbol var = new VariableSymbol(nameToken.getText(), type);
         currentScope.define(var); // Define symbol in current scope
     }
@@ -39,9 +39,9 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void enterFunc (adeleParser.FuncContext ctx) {
-        String name = ctx.ID().getText();
-        int typeTokenType = ctx.type().start.getType();
-        Symbol.Type type = AdeleRT.getType(typeTokenType);
+        String name = ctx.id.getText();
+        String typeStr = ctx.type().getText();
+        Symbol.Type type = Symbol.getType(typeStr);
 
         // push new scope by making new one that points to enclosing scope
         FunctionSymbol function = new FunctionSymbol(name, type, currentScope);
@@ -61,20 +61,24 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitFpitem(adeleParser.FpitemContext ctx) {
-        int right = getValue(ctx.expr());
+        Object right = getValue(ctx.expr());
         setValue(ctx, right);
     }
 
     public void exitAssign(adeleParser.AssignContext ctx) {
-        int right = getValue(ctx.expr());
+        Object right = getValue(ctx.expr());
         setValue(ctx, right);
     }
 
-    public void exitFunc_plist (adeleParser.Func_plistContext ctx) {
-    }
+    // public void exitFunc_plist (adeleParser.Func_plistContext ctx) {
+    // }
 
-    public void exitDeclaration (adeleParser.DeclarationContext ctx) {
+    public void exitVarDecl (adeleParser.VarDeclContext ctx) {
         defineVar(ctx.type(), ctx.ID().getSymbol());
     }
+
+    // public void exitType(adeleParser.TypeContext ctx) {
+
+    // }
 
 }

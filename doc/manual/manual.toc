@@ -25,7 +25,7 @@
 \contentsline {subsubsection}{\numberline {5.2.4}if statements}{11}
 \contentsline {subsubsection}{\numberline {5.2.5}while statements}{11}
 \contentsline {section}{\numberline {6}Built-in Functions}{12}
-\contentsline {subsection}{\numberline {6.1}sleep}{12}
+\contentsline {subsection}{\numberline {6.1}draw}{12}
 \contentsline {subsection}{\numberline {6.2}print}{12}
 \contentsline {subsection}{\numberline {6.3}load}{13}
 \contentsline {subsection}{\numberline {6.4}sleep}{13}

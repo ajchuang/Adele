@@ -13,17 +13,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 public class AdeleRT {
-    
-    public static Symbol.Type getType (int tokenType) {
-        switch ( tokenType ) {
-            //case AdlParser.K_INT :   return Symbol.Type.tINT;
-            //case AdlParser.K_VOID :   return Symbol.Type.tVOID;
-        }
-        return Symbol.Type.tINVALID;
-    }
 
     public void process (String fname) throws Exception {
- 
+
         InputStream is;
 
         if (fname != null)
@@ -32,7 +24,7 @@ public class AdeleRT {
             is = System.in;
 
         ANTLRInputStream input = new ANTLRInputStream (is);
-        adelelLexer lexer = new adeleLexer (input);
+        adeleLexer lexer = new adeleLexer (input);
         CommonTokenStream tokens = new CommonTokenStream (lexer);
         adeleParser parser = new adeleParser (tokens);
         parser.setBuildParseTree (true);
@@ -42,19 +34,19 @@ public class AdeleRT {
         ParseTreeWalker walker = new ParseTreeWalker();
         DefPhase def = new DefPhase();
         walker.walk(def, tree);
-       
+
         /* perform translation */
         TransPhase trans = new TransPhase(def.globals, def.scopes, def.values);
         walker.walk(trans, tree);
     }
 
     public static void main (String[] args) {
-        
+
         String fname = null;
 
         if (args.length == 1)
             fname = args[0];
-            
+
         AdeleRT adele = new AdeleRT ();
 
         try {

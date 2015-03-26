@@ -6,7 +6,7 @@
 \let\endchangemargin=\endlist 
 
 \begin{document}
-\title {The Adele Programming Language \\ Reference Manual}
+\title {Language Adele LRM}
 \author {
 	Jen-Chieh Huang \texttt{(jh3478)} \and Xiuhan Hu \texttt{(xh2234)} \and     
 	Zixuan Gong \texttt{(zg2203)} \and Jie-Gang Kuang \texttt{(jk3735)} \and 
@@ -31,10 +31,10 @@ In this reference manual, the fundamentals of the Adele programming language wil
 The \texttt{\#} character introduces a comment, which terminates with a newline. Considering elegance and simplicity of our lexer, we do not provide multi-line comment construct. 
 
 \subsection {Identifiers}
-An identifier is a sequence of letters, digits and underscore. The first character of any identifier must be a letter or underscore. For example, \texttt {1a2\_3d} will not be considered as an identifier, but \texttt{a2\_3d} or \texttt{\_1a2\_3d} is in our standard. Identifiers may have any length, but only the first 31 characters are guaranteed to be considered. So any identifier longer than 31 characters is not recommended. And any identifier is case-sensitive, eg., \texttt{ab} and \texttt{Ab} is distinguishable by our compiler.
+An identifier is a sequence of letters, digits and underscores. The first character of any identifier must be a letter or underscore. For example, \texttt {1a2\_3d} will not be considered as an identifier, but \texttt{a2\_3d} or \texttt{\_1a2\_3d} conforms to our standard. Identifiers may have any length, but only the first 31 characters are guaranteed to be considered. So any identifier longer than 31 characters is not recommended. And any identifier is case-sensitive, eg., \texttt{ab} and \texttt{Ab} is distinguishable by our compiler.
 
 \subsection {Keywords}
-The following identifiers are reserved as keywords including grammar keywords and predefined functions. The user is not supposed to use these keywords as identifier names. Otherwise, 
+The following identifiers are reserved as keywords including grammar keywords and predefined functions. The user is not supposed to use these keywords as identifier names. Otherwise, an error may occur.
 
 \texttt {
 	\begin{center}
@@ -70,10 +70,10 @@ A character constant is a sequence of one or more characters enclosed in single 
 \end{itemize}
 
 \subsection {Punctuation and Separators}
-A comma \texttt {,} is used to separate parameters in function's parameter list. A semicolon \texttt{;} is used to separate two lines. Note that you needn't and shouldn't use semicolon \texttt{;} at the end of the line which starts with \texttt{if}, \texttt{while}, \texttt{end} or the end of first line of a function declaration. 
+A comma \texttt {,} is used to separate parameters in the parameter list of a function. A semicolon \texttt{;} is used to separate two lines. Note that the semicolon \texttt{;} should not appear at the end of the line which starts with \texttt{if}, \texttt{while}, \texttt{end} or the end of first line of a function declaration. 
 
 \section {Types}
-In the Adele programming language, static type checking is performed. Type inconsistencies will be reported as errors in the compile time if the type conversion is not possible. 
+In the Adele programming language, static type checking is performed. Type inconsistencies will be reported as errors at compile time if the type conversion is not possible. 
 
 \subsection{Basic types}
 The basic types of Adele includes integers, floating point numbers, boolean, and void.
@@ -93,7 +93,7 @@ Boolean type represents the boolean variables, \texttt{true} or \texttt{false}. 
 As the name suggests, the \texttt{void} type will not check the type until the compiler or the computation has to. This is particularly useful when you want to pass groups which may have several different types into a single function.
 
 \subsection{Derived types}
-For derived types, Adele supports the following types: array, functions, references, groups.
+For derived types, Adele supports the following types: arrays, functions, references, groups.
 
 \subsubsection*{Arrays}
 Array type in Adele is similar to the array type in the Java programming language. The user can put either a set of primitive-typed data or a set of user-defined type references. Note that all the data in the same array have to be the same type.
@@ -103,16 +103,16 @@ Functions in Adele are composed by the following parts.
 	\begin{itemize}
 		\item Return type: indicates the type which will be returned by the function.
 		\item Function name: used to identify the function itself.
-		\item Parameter list: a finite set of 2 tuples (type and name), worked as input of the function.
+		\item Parameter list: a finite set of 2-element tuples (type and name), workes as input of the function.
 		\item Function body: description of the computation to be carried out in the function.
 		\item \texttt{end} marker: an \texttt{end} to indicate the end of the function
 	\end{itemize}
 	
 \subsubsection*{Groups}
 
-Group is a mechanism which make the data abstraction possible in Adele. The user can compose his own data abstraction by using the group keyword. Besides, Adele also defines a set of pre-defined groups for simplifying the user operations.
+Group is a mechanism which enables data abstraction in Adele. Users can compose their own data abstraction by using the group keyword. Besides, Adele also defines a set of pre-defined groups for simplifying the user operations.
 	\begin{itemize}
-		\item user-defined: Groups in Adele is just like struct in C. It provides a mechanism for the users to group the logically related 	data into a type. However, other object-oriented features are not supported in Adele for simplification. Complicated operations in OOP can be scaring. To define a group, the user has to start with the keyword, group, followed by a group name, and an \texttt{end} marker in the end.
+		\item user-defined: The group in Adele is just like the struct in C. It provides a mechanism for the users to group the logically related 	data into a type. However, other object-oriented features are not supported in Adele for simplification. Complicated operations in OOP can be scary. To define a group, the user has to start with the keyword, group, followed by a group name, and an \texttt{end} marker in the end.
 		\item pre-defined: Pre-defined group includes canvas, graph.
 	\end{itemize}
 
@@ -151,19 +151,19 @@ An identifier is a valid expression, provided that it has been declared before u
 Multiplicative expressions consists of expressions involving \texttt{*}, \texttt{/}, \texttt{\%}. The operands of all the three operators must have arithmetic type; the operands of \texttt{\%} must have integral type. As the convention, multiplicative operators have a higher precedence than additive operators. 
 
 \subsubsection {Additive Expressions}
-The additive operators include \texttt{+}, \texttt{-}. Rigorously speaking, \texttt{+} is the arithmetic addition operator, but \texttt{-} can serve as either the arithmetic subtraction operator or the graph operator "attaching horizontally" which is determined by the type of its operands determines.
+The additive operators include \texttt{+}, \texttt{-}. Rigorously speaking, \texttt{+} is the arithmetic addition operator, but \texttt{-} can serve as either the arithmetic subtraction operator or the graph operator ``attaching horizontally", which is determined by the type of its operands determines.
 
 The operands of the arithmetic additive operators must be numbers.
 
 \subsubsection {Graph Combining Expressions}
-The graph operators are \texttt{-}, \textbar, and the ternary operator \texttt{// @}. These three operators does not have side effects on their operands.
+The graph operators are \texttt{-}, \texttt{\textbar}, and the ternary operator \texttt{// @}. These three operators does not have side effects on their operands.
 
-The operands of the two binary graph operators must be graphs. When serving as a graph operator, \texttt{-} means "attaching horizontally." The operator \textbar means "attaching vertically." As for the ternary operator, i.e. the overlay and locate operator, the first two operands must be graphs, and the third operand is a pair of integers in the form of \texttt{(x, y)}, indicating the coordinates.
+The operands of the two binary graph operators must be graphs. When serving as a graph operator, \texttt{-} means  ``attaching horizontally". The operator \texttt{\textbar} means ``attaching vertically". As for the ternary operator, i.e. the overlay and locate operator, the first two operands must be graphs, and the third operand is a pair of integers in the form of \texttt{(x, y)}, indicating the coordinates.
 
-The type of the value of graph combining expressions is graph. Notice that the part of a graph that exceeds the canvas will be truncated.
+The type of the value of graph combining expressions is \texttt{graph}. Notice that the part of a graph that exceeds the canvas will be truncated.
 
 \subsubsection {Boolean Expressions}
-Boolean expressions include expressions involving the relational operators:  \texttt {\textless},  \texttt {\textless=},  \texttt{\textgreater},  \texttt{\textgreater=};  and the equality operators: \texttt{==}, \texttt{!=}. The equality operators have lower precedence than the relational operators. The value of these expressions is true or false, of boolean type.
+Boolean expressions include expressions involving the relational operators:  \texttt {\textless},  \texttt {\textless=},  \texttt{\textgreater},  \texttt{\textgreater=};  and the equality operators: \texttt{==}, \texttt{!=}. The equality operators have lower precedence than the relational operators. The value of these expressions is \texttt{true} or \texttt{false}, of boolean type.
 
 \subsubsection {Braced Expressions}
 Expressions surrounded by parentheses are equivalent to the original expressions.
@@ -172,10 +172,10 @@ Expressions surrounded by parentheses are equivalent to the original expressions
 A function call expression consists of the function identifier, and a possibly empty, comma-separated list of parameters surrounded by parentheses. The expression is valid only if the function has been declared somewhere, either before or after the function call. Parameters of group type are passed by reference, and those of primitive types are passed by value. The value of a function call expression is the return value of that function.
 
 \subsection {Statements}
-There are five kinds of statement in Adele programs: declarations, expressions, \texttt{if} statements, \texttt{while} statements and \texttt{return} statements. Simple statements like declarations, expressions and return statements end with a semicolon. Control flow statements, if statements and while statements, are ended by an end keyword.
+There are five kinds of statement in Adele programs: declarations, expressions, \texttt{if} statements, \texttt{while} statements and \texttt{return} statements. Simple statements like declarations, expressions and return statements end with a semicolon. Control flow statements, if statements and while statements, are ended by an \texttt{end} keyword.
 
 \subsubsection {Declarations}
-A declaration statement assign an identifier to a specific memory space according to its type. A primitive-typed variable declaration consists of a type, an id and an optional initializer:
+A declaration statement assigns an identifier to a specific memory space according to its type. A primitive-typed variable declaration consists of a type, an identifier and an optional initializer:
 \begin{lstlisting}[tabsize=4]
 	type id;
 	type id = expression;
@@ -216,7 +216,7 @@ An expression along with a semicolon can be a valid statement. For example:
 For a function whose return type is \texttt{void}, we can omit the return value as above and pass a \texttt{null} value back to the calling function.
 
 \subsubsection {if statements}
-The \texttt{if} statement allows you to control if a program enters a block of code based on whether a given condition is true. 
+The \texttt{if} statement allows the user to control whether or not a program enters a block of code, based on whether a given condition is true. 
 
 \begin{lstlisting}[tabsize=4]
 	if (condition_expression)
@@ -226,10 +226,10 @@ The \texttt{if} statement allows you to control if a program enters a block of c
 	end
 \end{lstlisting}
 
-The statements between the \texttt{if} line and the \texttt{end} marker will be executed if and only if condition\_expression returns a bool true value.
+The statements between the \texttt{if} line and the \texttt{end} marker will be executed if and only if \texttt{condition\_expression} returns a bool \texttt{true} value.
 
 \subsubsection {while statements}
-The while statement loops through a block of code as long as a specified condition is true.
+The \texttt{while} statement loops through a block of code as long as a specified condition is true.
 
 \begin{lstlisting}[tabsize=4]
 	while (condition_expression)
@@ -244,12 +244,12 @@ The statements between the \texttt{while} line and the \texttt{end} marker will 
 \section {Built-in Functions}
 Besides the grammar defined above, Adele also provides some built-in functions to accomplish the job of rendering combined or moving ASCII art. Because the syntax of the built-in functions are simple and fixed, the built-in functions will take all the acceptable arguments and do not return any values (except for the load function). When the types of the arguments for the functions are incorrect, the compiler should report them as errors.
 
-\subsection {sleep}
+\subsection {draw}
 The prototype of the draw function is simply
 \begin{lstlisting}[tabsize=4]
 	void draw ()
 \end{lstlisting}
-Since the draw function do not take any arguments and do not return any values, the statement involving \texttt{draw()} should be just like the description above. When the draw function is invoked, Adele will render the target codes of drawing all the currently placed graphs. The graphs which is not placed on the canvas or is removed from the canvas by the time when \texttt{draw()} is invoked will not be displayed at that time.
+Since the draw function neither takes any argument not returns any value, the statement involving \texttt{draw()} should look just like the description above. When the draw function is invoked, Adele will render the target codes of printing all the graphs already placed on the canvas. The graphs not yet placed on the canvas or already removed from the canvas by the time when \texttt{draw()} is invoked will not be displayed.
 
 \subsection {print}
 The one-time string printing function should be invoked according to the prototype
@@ -259,18 +259,18 @@ The one-time string printing function should be invoked according to the prototy
 where \texttt{x} and \texttt{y} are the position of first character of the string on the x-axis and y-axis respectively, and \texttt{str} is the target string to be displayed. The string printing function will place the desired string on the bottom layer over the canvas for the next \texttt{draw()}. After a \texttt{draw()} is invoked, all the strings rendered and placed by the string printing function will be removed from the canvas.
 
 \subsection {load}
-To construct the graphs more efficiently, a load function is provided by Adele to import prepared ASCII art from the existing files. The prototype of the load function is
+To construct graphs more efficiently, a load function is provided by Adele to import ASCII art from existing files. The prototype of the load function is
 \begin{lstlisting}[tabsize=4]
 	reference_to_graph = load (string filename)
 \end{lstlisting}	
-The file will only be opened in text/string mode but not in binary mode. That is, only plain-text files will be valid for the load function. If the source file is not plain-text, the non-text part will be read in and could induce unexpected results. The load function is also the only built-in function returning a value, a reference to a graph constructed from the source file.
+The file will only be opened in text/string mode but not in binary mode. That is, only plain-text files will be valid for the load function. If the source file is not plain-text, the non-text part will be read in and could induce unexpected results. The load function is also the only built-in function that returns a value, i.e. a reference to a graph constructed from the source file.
 
 \subsection {sleep}
-To achieve better flow control, sleep, a function which pauses the program is provided in Adele to enable the programmer to control the flow more flexible. The prototype of the sleep function is
+To achieve better flow control, \texttt{sleep}, a function which pauses the program is provided in Adele to enable the user to control the flow in a more flexible way. The prototype of the sleep function is
 \begin{lstlisting}[tabsize=4]
 	void sleep(int millisecond)
 \end{lstlisting}	
-The argument for the sleep function is the duration in milliseconds and the sleep function does not return a value, either.
+The argument for the sleep function is the duration in milliseconds. The sleep function does not return a value.
 
 \pagebreak
 \section {Appendix}
@@ -280,11 +280,11 @@ Note: the draft grammar is not finalized.
 \begin{lstlisting}[tabsize=2]
 grammar adele;
 
-prog    :                                   /* empty programs       */ 
+prog    :  /* empty programs*/ 
         |   ( 
-                func                        /* functions            */
-        |       type_declaration            /* user defined types   */
-        |       (declaration SEMICOLON)     /* declarations         */
+                func       /* functions*/
+        |       type_declaration /* user defined types*/
+        |       (declaration SEMICOLON) /* declarations*/
             )*              
         ;
         
@@ -324,16 +324,16 @@ declaration:   GROUP ID ID
             |   TYPE ID EQUAL expr
             ;
 
-expr:       LPAREN  expr    RPAREN            /* parenthesis */
-        |   ID LPAREN func_plist RPAREN       /* function call */
-        |   expr    ADDITIVE_OP     expr        /* addition */
+expr:       LPAREN expr RPAREN  /* parenthesis */
+        |   ID LPAREN func_plist RPAREN                       /* function call */
+        |   expr    ADDITIVE_OP   expr        /* addition */
         |   expr    MULTIPLICATIVE_OP   expr        /* multiplication & division */
         |   expr    NE      expr        /* not equal */
         |   expr    GT      expr        /* less than */
         |   expr    LT      expr        /* less than */
         |   expr    GET     expr        /* less than */
         |   expr    LET     expr        /* less than */
-        |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN /* @lfred: to fix - lame overlay */
+        |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN /* overlay */
         |   ID      EQUAL   expr        /* assignment */
         |   ID  
         |   NUM
@@ -343,51 +343,55 @@ func_plist:  | ( fpitem COMMA )* fpitem;
 fpitem:     ID | NUM | STR ;
 
 /* keywords */
-IF:     'if'        ;
-END:    'end'       ;
-WHILE:  'while'     ;
-RETURN: 'return'    ;
-GROUP:  'group'     ;
+IF:     `if'        ;
+END:    `end'       ;
+WHILE:  `while'     ;
+RETURN: `return'    ;
+GROUP:  `group'     ;
 
 /* symbols */
-fragment ADD:        '+'  ;
-fragment SUB:        '-'  ;
-fragment MULTI:      '*'  ;
-fragment DIV:        '/'  ;
-LPAREN:     '('  ;
-RPAREN:     ')'  ;
-COMMA:      ','  ;
-SEMICOLON:  ';'  ;
-EQUAL:      '='  ;
-OVERLAY:    '//' ;
-AT:         '@'  ;
-GT:         '>'  ;
-LT:         '<'  ;
-GET:        '>=' ;
-LET:        '<=' ;
-NE:         '!=' ;
+fragment ADD:        `+'  ;
+fragment SUB:        `-'  ;
+fragment MULTI:      `*'  ;
+fragment DIV:        `/'  ;
+LPAREN:     `('  ;
+RPAREN:     `)'  ;
+COMMA:      `,'  ;
+SEMICOLON:  `;'  ;
+EQUAL:      `='  ;
+OVERLAY:    `//' ;
+AT:         `@'  ;
+GT:         `>'  ;
+LT:         `<'  ;
+GET:        `>=' ;
+LET:        `<=' ;
+NE:         `!=' ;
 
 ADDITIVE_OP:    ADD | SUB ;
 MULTIPLICATIVE_OP:  MULTI | DIV ;
 
 /* types */
-K_INT:  'int';
-K_VOID: 'void';
-K_FLOAT: 'float'
+fragment INT:       `int'   ;
+fragment FLOAT:     `float' ;
+fragment CHAR:      `char'  ;
+fragment VOID:      `void'  ;
+fragment BOOL:      `bool'  ;
+fragment STRING:    `string';
+TYPE:   INT | FLOAT | CHAR | BOOL | VOID | STRING;
 
 /* identifiers */
 ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;   
 
 /* primitive types */
 fragment INT_NUM:    [-]?[1-9]+[0-9]* | [0] ;    
-fragment FLOAT_NUM: INT_NUM '.' [0-9]+; 
+fragment FLOAT_NUM: INT_NUM `.' [0-9]+; 
 fragment CHR:        [A-Za-z0-9_] ;
 NUM:    INT_NUM ;
-STR:    '"' CHR* '"' ;
+STR:    `"' CHR* `"' ;
 
 WS:     [ \t\r\n]+ -> skip ;
 
-COMMENT: '#' .* ;
+COMMENT: `#' .* ;
 \end{lstlisting}	
 
 \end{document}
