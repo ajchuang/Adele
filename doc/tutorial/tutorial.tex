@@ -150,7 +150,7 @@ void qsort (int A[], int left, int right)
 	int i = left;
 	int j = right;
 	int tmp;
-	int pivot = A[0];
+	int pivot = A[(i+j)/2];
 
 	while (i<=j)
 		while (A[i]<pivot)
