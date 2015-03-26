@@ -23,7 +23,7 @@ prog:
 /* type declarations */
 /******************************************************************************/
 type_declaration:
-            GROUP tid=ID 
+            GROUP ID 
             (TYPE ID SEMICOLON)+?
             END
         ;
@@ -31,9 +31,9 @@ type_declaration:
 /* function and its parameters */
 /******************************************************************************/
 func:   
-        (TYPE | GROUP ID) ID LPAREN plist RPAREN 
-        stmts
-        END 
+            ( TYPE | GROUP ID ) ID LPAREN plist RPAREN 
+            stmts
+            END 
         ;
 
 plist:  
@@ -43,7 +43,8 @@ plist:
 /* statments: if, while, declarations */
 /******************************************************************************/
 stmts:  stmt* ;
-stmt:       SEMICOLON       
+stmt:       
+            SEMICOLON       
         |   if_stmt       
         |   while_stmt      
         |   expr SEMICOLON  
@@ -51,22 +52,23 @@ stmt:       SEMICOLON
         |   RETURN expr SEMICOLON
         ;
 
-if_stmt:        IF LPAREN e1=expr RPAREN 
-                stmts 
-                END 
-                ;
+if_stmt:        
+            IF LPAREN expr RPAREN 
+            stmts 
+            END 
+        ;
 
-while_stmt:     WHILE LPAREN expr RPAREN 
-                stmts 
-                END 
-                ;
+while_stmt:     
+            WHILE LPAREN expr RPAREN 
+            stmts 
+            END 
+        ;
 
 declaration:   
-
-                GROUP ID ID
-            |   TYPE ID 
-            |   TYPE ID EQUAL expr
-            ;
+            GROUP ID ID
+        |   TYPE ID 
+        |   TYPE ID EQUAL expr
+        ;
 
 /******************************************************************************/
 /* expressions -                                                              */
@@ -84,6 +86,7 @@ expr:
         |   ID EQUAL expr                           /* assignment */
         |   ID  
         |   NUM
+        |   STR
         ; 
 
 func_plist:  
@@ -91,10 +94,7 @@ func_plist:
         ;
 
 fpitem:     
-            ID 
-        |   NUM 
-        |   STR 
+            expr
         ;
 
 
-//LINE_COMMENT:   HASH ~[\r\n]* -> skip ;

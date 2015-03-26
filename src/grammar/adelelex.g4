@@ -57,3 +57,4 @@ STR:    '"' CHR* '"' ;
 
 /* spaces, tabs.. */
 WS:     [ \t\r\n]+ -> skip ;        // skip spaces, tabs, newlines
+LINE_COMMENT:   HASH ~[\r\n]* -> channel(HIDDEN) ;
