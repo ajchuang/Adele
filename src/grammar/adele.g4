@@ -7,160 +7,68 @@ import adelelex;
 /******************************************************************************/
 /* Adele runtime                                                              */
 /******************************************************************************/
-@header {
-    import java.util.*;
-}
-
-@members {
-
-    /* constant */
-    final int F_TYPE_INT    = 1;
-    final int F_TYPE_CHAR   = 2;
-    final int F_TYPE_CUSTOM = 3;
-    
-    final int F_BOOL_TRUE   = 1;
-    final int F_BOOL_FALSE  = 0;
-
-    /* Map variable name to Integer object holding value */
-    Stack<Hashtable<String, AdeleTypeDes>> m_scope; 
-    
-    /* global symbols */
-    Hashtable<String, Object> m_funTbl;
-    Hashtable<String, AdeleTypeDes> m_glbVar;
-
-    /* user defined type */
-    int m_curUserTypeId = 0x5566;
-    Hashtable<String, Integer> m_userType;
-}
-
 
 /******************************************************************************/
 /* generating matching rules                                                  */
 /******************************************************************************/
-prog                                       
-    @init {
-        m_scope     = new Stack<Hashtable<String, AdeleTypeDes>> (); 
-        m_funTbl    = new Hashtable<String, Object> ();
-        m_glbVar    = new Hashtable<String, AdeleTypeDes> ();
-        m_userType  = new Hashtable<String, Integer> ();
-
-        /* put the global scope in the bottom of the stack */
-        m_scope.push (m_glbVar);
-    }
-        :
-                                            /* empty programs       */ 
-        |   ( 
+prog:
+        (
                 func                        /* functions            */
-        |       type_declaration            /* user defined types   */ 
-        |       (declaration SEMICOLON)     /* declarations         */
+        |       type_declaration            /* user defined types   */
+        |       declaration SEMICOLON       /* declarations         */
 
-            )*              
+        )+?
         ;
-        
+
 /* type declarations */
 /******************************************************************************/
 type_declaration:
-        GROUP tid=ID 
-        (TYPE ID SEMICOLON)* 
-        END
-            {
-                if (m_userType.containsKey ($tid.text)) {
-                    System.err.println ("Error: group " + $tid.text + " re-defined.");
-                } else {
-                    m_userType.put (new String ($tid.text), m_curUserTypeId++);
-                }
-            }
+            GROUP ID
+            (type ID SEMICOLON)+?
+            END
         ;
 
 /* function and its parameters */
 /******************************************************************************/
-func:   (TYPE | GROUP ID) ID LPAREN plist RPAREN 
-            {
-                /* insert into the function table */
-                m_funTbl.put ($ID.text, new Integer (0));
-                m_scope.push (new Hashtable<String, AdeleTypeDes> ());
-            }
-        stmts
-            {
-                m_scope.pop ();
-            }
-        END ;
+func:
+            ( type | GROUP gid=ID ) id=ID LPAREN plist RPAREN
+            stmts
+            END
+        ;
 
-plist:  
-        |   ( (TYPE ID COMMA) | (GROUP ID ID) )* (TYPE ID | GROUP ID ID) 
+plist:
+        |   ( ((type) | (GROUP ID)) ID COMMA )* ( type ID | GROUP ID ID )
         ;
 
 /* statments: if, while, declarations */
 /******************************************************************************/
 stmts:  stmt* ;
-stmt:       SEMICOLON       
-        |   if_stmt       
-        |   while_stmt      
-        |   expr SEMICOLON  
+stmt:
+            SEMICOLON
+        |   if_stmt
+        |   while_stmt
+        |   expr SEMICOLON
         |   declaration SEMICOLON
         |   RETURN expr SEMICOLON
         ;
 
-if_stmt:        IF LPAREN e1=expr RPAREN 
-                    {
-                        m_scope.push (new Hashtable<String, AdeleTypeDes> ());
-                    } 
-                stmts 
-                    {
-                        m_scope.pop ();
-                    } 
-                END ;
+if_stmt:
+            IF LPAREN expr RPAREN
+            stmts
+            END
+        ;
 
-while_stmt:     WHILE LPAREN expr RPAREN 
-                    {
-                        m_scope.push (new Hashtable<String, AdeleTypeDes> ());
-                    } 
-                stmts 
-                    {
-                        m_scope.pop ();
-                    } 
-                END ;
-declaration:   
+while_stmt:
+            WHILE LPAREN expr RPAREN
+            stmts
+            END
+        ;
 
-                GROUP type=ID name=ID
-                    {
-                        Hashtable<String, AdeleTypeDes> scp =  m_scope.peek ();
-                        
-                        if (scp.containsKey ($name.text)) {
-                            System.err.println ("Duplicate decalration of variable: " + $name.text);
-                        } else {
-                            AdeleTypeDes id = new AdeleTypeDes (F_TYPE_CUSTOM, null);
-                            id.setTypeName ($type.text);
-                            scp.put ($name.text, id);
-                        }
-                    }
-            |   TYPE ID 
-                    {
-                        Hashtable<String, AdeleTypeDes> scp =  m_scope.peek ();
-                        
-                        if (scp.containsKey ($ID.text)) {
-                            System.err.println ("Duplicate decalration of variable: " + $ID.text);
-                        } else {
-                            AdeleTypeDes id = new AdeleTypeDes (F_TYPE_INT, new Integer (0));
-                            scp.put ($ID.text, id);
-                        }
-
-                        System.err.println ("declare var: " + $ID.text); 
-                    } 
-            |   TYPE ID EQUAL expr
-                    {
-                        Hashtable<String, AdeleTypeDes> scp =  m_scope.peek ();
-                        
-                        if (scp.containsKey ($ID.text)) {
-                            System.err.println ("Duplicate decalration of variable: " + $ID.text);
-                        } else {
-                            AdeleTypeDes id = new AdeleTypeDes (F_TYPE_INT, new Integer ($expr.value));
-                            scp.put ($ID.text, id);
-                        }
-
-                        System.err.println ("declare var: " + $ID.text); 
-                    }
-            ;
+declaration:
+            GROUP ID ID         #groupDecl
+        |   type ID             #varDecl
+        |   type ID EQUAL expr  #varDeclAssign
+        ;
 
 /******************************************************************************/
 /* expressions -                                                              */
@@ -168,131 +76,27 @@ declaration:
 /*      it is the actual order of precedence. (left-associative)              */
 /*  2.  we allow int operation at this moment (todo: other types)             */
 /******************************************************************************/
-expr returns [int value]:
-            
-            LPAREN  expr    RPAREN            /* parenthesis */
-                { 
-                    $value = $expr.value; 
-                }
-        |   ID LPAREN func_plist RPAREN       /* function call */
-                { 
-                    //System.out.println ("func: " + $ID.text + " is called"); 
-                    
-                    /* brute force */
-                    if ($ID.text.equals ("print")) {
-                        System.out.println ($func_plist.text);
-                    }
-                }
-        |   e1=expr    ADDITIVE_OP     e2=expr        /* addition */
-                {
-                    int e1 = $e1.value;
-                    int e2 = $e2.value;
+expr:
+            LPAREN expr RPAREN                 #parenExpr     /* parenthesis */
+        |   ID LPAREN func_plist RPAREN       #funcCall      /* function call */
+        |   expr MULTI_OP    expr             #mult      /* multiplication & division */
+        |   expr ADDITIVE_OP expr             #add      /* addition */
+        |   expr COMPARE_OP  expr             #compare     /* compare equal */
+        |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN #overlay/* @lfred: to fix - lame overlay */
+        |   ID EQUAL expr                      #assign     /* assignment */
+        |   ID      #var
+        |   NUM     #num
+        |   STR     #string
+        ;
 
-                    if ("+".equals ($ADDITIVE_OP.text))                    
-                        $value = e1 + e2;
-                    else
-                        $value = e1 - e2;
-                    
-                    System.err.println (
-                        "ADD: " + $ADDITIVE_OP.text + ":"  + 
-                        $value + ":" + e1 + ":" + e2);
-                }
-        |   e1=expr    MULTIPLICATIVE_OP   e2=expr        /* multiplication & division */
-                {
-                    if ("*".equals ($MULTIPLICATIVE_OP.text))
-                        $value = $e1.value * $e2.value;
-                    else
-                        $value = $e1.value / $e2.value;
-                }
-        |   e1=expr    NE      e2=expr        /* not equal */
-                {
-                    if ($e1.value == $e2.value)
-                        $value = F_BOOL_TRUE;
-                    else
-                        $value = F_BOOL_FALSE;;
-                }
-        |   e1=expr    GT      e2=expr        /* less than */
-                {
-                    if ($e1.value - $e2.value > 0)
-                        $value = F_BOOL_TRUE;
-                    else
-                        $value = F_BOOL_FALSE;;
-                }
-        |   e1=expr    LT      e2=expr        /* less than */
-                {
-                    if ($e1.value - $e2.value < 0)
-                        $value = F_BOOL_TRUE;
-                    else
-                        $value = F_BOOL_FALSE;;
-                }
-        |   e1=expr    GET     e2=expr        /* less than */
-                {
-                    if ($e1.value - $e2.value >= 0)
-                        $value = F_BOOL_TRUE;
-                    else
-                        $value = F_BOOL_FALSE;
-                }
-        |   e1=expr    LET     e2=expr        /* less than */
-                {
-                    if ($e1.value - $e2.value <= 0)
-                        $value = F_BOOL_TRUE;
-                    else
-                        $value = F_BOOL_FALSE;
-                }
-        |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN /* @lfred: to fix - lame overlay */
-        |   ID      EQUAL   e1=expr        /* assignment */
-                {
-                    
+func_plist:
+        |   ( fpitem COMMA )* fpitem
+        ;
 
-                    int v = $e1.value;
+fpitem:
+            expr
+        ;
 
-                    /* find the right scope */
-                    Hashtable<String, AdeleTypeDes> sc = null;
-                    boolean found = false;
+type:   'int' | 'float' | 'char' | 'bool' | 'void' | 'string';
 
-                    for (int i = m_scope.size () - 1; i >= 0; --i) {
-                        
-                        sc = m_scope.elementAt (i);
 
-                        if (sc.containsKey ($ID.text)) {
-                            AdeleTypeDes atd = sc.get ($ID.text);
-                            atd.setValue (new Integer ($e1.value));
-                            $value = v;
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (found == false)
-                        System.err.println ("Error: undefined variable " + $ID.text);
-                } 
-        |   ID  
-                { 
-                    /* find the right scope */
-                    Hashtable<String, AdeleTypeDes> sc = null;
-                    boolean found = false;
-
-                    for (int i = m_scope.size () - 1; i >= 0; --i) {
-                        
-                        sc = m_scope.elementAt (i);
-
-                        if (sc.containsKey ($ID.text)) {
-                            AdeleTypeDes atd = sc.get ($ID.text);
-                            Integer x = (Integer)atd.getValue ();
-                            $value = x.intValue ();
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (found == false)
-                        System.err.println ("Error: undefined variable " + $ID.text);
-                }
-        |   NUM
-                {
-                    $value = Integer.parseInt ($NUM.text);
-                }
-        ; 
-
-func_plist:  | ( fpitem COMMA )* fpitem;
-fpitem:     ID | NUM | STR ;

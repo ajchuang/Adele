@@ -12,7 +12,7 @@
 \contentsline {subsection}{\numberline {5.2}Attach Horizontally/Vertically}{8}
 \contentsline {section}{\numberline {6}Predefined Functions}{9}
 \contentsline {subsection}{\numberline {6.1}draw}{9}
-\contentsline {subsection}{\numberline {6.2}print}{10}
-\contentsline {subsection}{\numberline {6.3}load}{11}
+\contentsline {subsection}{\numberline {6.2}print\_str}{10}
+\contentsline {subsection}{\numberline {6.3}load}{10}
 \contentsline {subsection}{\numberline {6.4}sleep}{13}
 \contentsline {section}{\numberline {7}Put Everything Altogether}{13}

@@ -16,6 +16,12 @@ fragment ADD:        '+'  ;
 fragment SUB:        '-'  ;
 fragment MULTI:      '*'  ;
 fragment DIV:        '/'  ;
+fragment HASH:       '#'  ;
+fragment GT:         '>'  ;
+fragment LT:         '<'  ;
+fragment GET:        '>=' ;
+fragment LET:        '<=' ;
+fragment NE:         '!=' ;
 LPAREN:     '('  ;
 RPAREN:     ')'  ;
 COMMA:      ','  ;
@@ -23,34 +29,32 @@ SEMICOLON:  ';'  ;
 EQUAL:      '='  ;
 OVERLAY:    '//' ;
 AT:         '@'  ;
-GT:         '>'  ;
-LT:         '<'  ;
-GET:        '>=' ;
-LET:        '<=' ;
-NE:         '!=' ;
 
-ADDITIVE_OP:    ADD | SUB ;
-MULTIPLICATIVE_OP:  MULTI | DIV ;
+ADDITIVE_OP:    ADD     | SUB ;
+MULTI_OP:       MULTI   | DIV ;
+COMPARE_OP:     NE | GT | LT | GET | LET ;
 
 /* types */
-K_INT:  'int';
-K_VOID: 'void';
-K_FLOAT: 'float';
+/*
+fragment INT:       'int'   ;
+fragment FLOAT:     'float' ;
+fragment CHAR:      'char'  ;
+fragment VOID:      'void'  ;
+fragment BOOL:      'bool'  ;
+fragment STRING:    'string';
+*/
 
 /* identifiers */
-ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;   // match lower-case identifiers
+ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;                   // match lower-case identifiers
 
 /* primitive types */
-fragment INT_NUM:    [-]?[1-9]+[0-9]* | [0] ;    // integers
-//fragment FLOAT_NUM:  [-]?[0-9]+ '.' [0-9]+ ;     // floating numbers
-fragment FLOAT_NUM: INT_NUM '.' [0-9]+; // is it better?
+fragment INT_NUM:    [-]?[1-9]+[0-9]* | [0] ;       // integers
+fragment FLOAT_NUM: INT_NUM '.' [0-9]+;             // is it better?
 fragment CHR:        [A-Za-z0-9_] ;
-//NUM:    FLOAT_NUM | INT_NUM ;
-NUM:    INT_NUM ;
+NUM:    FLOAT_NUM | INT_NUM ;
 STR:    '"' CHR* '"' ;
+
 
 /* spaces, tabs.. */
 WS:     [ \t\r\n]+ -> skip ;        // skip spaces, tabs, newlines
-
-/* comments */
-COMMENT: '#' .* ;
+LINE_COMMENT:   HASH ~[\r\n]* -> channel(HIDDEN) ;

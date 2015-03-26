@@ -29,9 +29,9 @@ public class adeleListenerImpl implements adeleListener {
     }
 
 	public void enterProg(adeleParser.ProgContext ctx) {
-        log (ctx);        
+        log (ctx);
     }
-    
+
     public void exitProg(adeleParser.ProgContext ctx) {
         log (ctx);
     }

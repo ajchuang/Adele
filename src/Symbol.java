@@ -13,4 +13,13 @@ public class Symbol { // A generic programming language symbol
         if ( type!=Type.tINVALID ) return '<'+getName()+":"+type+'>';
         return getName();
     }
+
+    public static Type getType (String tokenType) {
+        switch ( tokenType ) {
+            case "int" :   return Type.tINT;
+            case "float" :   return Type.tFLOAT;
+            case "void":    return Type.tVOID;
+        }
+        return Type.tINVALID;
+    }
 }

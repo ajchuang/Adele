@@ -7,7 +7,7 @@ ST=../lib/ST-4.0.8.jar
 .DEFAULT: compiler
 
 compiler:
-	@javac -cp $(ANTLR):$(ST):$(BUILD) -d $(BUILD) TestAdl.java *Phase.java *Scope.java *Symbol.java
+	@javac -cp $(ANTLR):$(ST):$(BUILD) -d $(BUILD) *.java
 
 define:
 	#@javac -d $(BUILD) AdeleTypeDes.java
