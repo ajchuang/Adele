@@ -1,3 +1,5 @@
+import java.util.*;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
@@ -5,8 +7,12 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 class DefPhase extends adeleBaseListener {
 
-    ParseTreeProperty<Scope> scopes = new ParseTreeProperty<Scope>();
-    ParseTreeProperty<Object> values = new ParseTreeProperty<Object>();
+
+
+    ParseTreeProperty<Scope>  scopes    = new ParseTreeProperty<Scope>();
+    ParseTreeProperty<Object> values    = new ParseTreeProperty<Object>();
+    ParseTreeProperty<Object> usrType   = new ParseTreeProperty<Object>();
+    
     GlobalScope globals;
     Scope currentScope;
 
