@@ -4,5 +4,5 @@ int main ()
     int x;
     x = 2;
     int y = 3;
-    print_str(0, 0, "Hello World!");
+    print_str(0, 0, "No kidding");
 end
