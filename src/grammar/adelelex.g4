@@ -52,7 +52,7 @@ fragment INT_NUM:    [-]?[1-9]+[0-9]* | [0] ;       // integers
 fragment FLOAT_NUM: INT_NUM '.' [0-9]+;             // is it better?
 fragment CHR:        [A-Za-z0-9_] ;
 NUM:    FLOAT_NUM | INT_NUM ;
-STR:    '"' CHR* '"' ;
+STR:    '"' .* '"' ;
 
 
 /* spaces, tabs.. */

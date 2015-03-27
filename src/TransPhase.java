@@ -1,3 +1,5 @@
+import java.util.*;
+
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.stringtemplate.v4.*;
@@ -10,7 +12,11 @@ public class TransPhase extends adeleBaseListener {
     String tmp;
     Scope currentScope; // resolve symbols starting in this scope
 
-    public TransPhase(GlobalScope globals,
+    Stack<String> m_funParam;
+
+
+    public TransPhase (
+        GlobalScope globals,
         ParseTreeProperty<Scope> scopes,
         ParseTreeProperty<Object> values) {
         this.scopes = scopes;
@@ -76,14 +82,47 @@ public class TransPhase extends adeleBaseListener {
         tmp += decl.render() + '\n';
     }
 
-    public void exitFuncCall(adeleParser.FuncCallContext ctx) {
+    public void enterFuncCall (adeleParser.FuncCallContext ctx) {
+        System.err.println ("Enter funcall: " + ctx.ID().getText());
+        m_funParam = new Stack<String> ();
+    }
+
+    public void exitFuncCall (adeleParser.FuncCallContext ctx) {
         // ST funccall = stg.getInstanceOf("funccall");
         // funccall.add("fname", ctx.ID().getText());
         // funccall.add("params", "");
         // tmp += funccall.render() + '\n';
-        tmp += ctx.getText();
+        //tmp += ctx.getText();
+        System.err.println ("Exit funcall: " + ctx.ID().getText());
 
+        ST funccall = stg.getInstanceOf ("funccall");
+        funccall.add ("fname", ctx.ID().getText());
+        
+        String p = new String ();
+        for (int i=0; i<m_funParam.size () - 1; ++i) {
+            p += m_funParam.get (i) + ",";
+        }
+
+        p += m_funParam.get(m_funParam.size() - 1);
+        System.err.println ("Exit funcall p: " + p);
+        
+        funccall.add ("params", p);
+        tmp += funccall.render ();
+
+        m_funParam = null;
     }
 
+    public void exitNum (adeleParser.NumContext ctx) {
+        System.err.println ("Exit Num: " + ctx.NUM ());
+        
+        if (m_funParam != null)
+            m_funParam.push (ctx.NUM ().getText ());
+    }
 
+    public void exitString (adeleParser.StringContext ctx) {
+        System.err.println ("Exit String: " + ctx.STR ());
+    
+        if (m_funParam != null)
+            m_funParam.push (ctx.STR ().getText ());
+    }
 }

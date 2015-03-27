@@ -66,7 +66,7 @@ class DefPhase extends adeleBaseListener {
         setValue(ctx, Integer.valueOf(numText));
     }
 
-    public void exitFpitem(adeleParser.FpitemContext ctx) {
+    public void exitFpItem(adeleParser.FpitemContext ctx) {
         Object right = getValue(ctx.expr());
         setValue(ctx, right);
     }

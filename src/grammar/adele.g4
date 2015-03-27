@@ -77,13 +77,13 @@ declaration:
 /*  2.  we allow int operation at this moment (todo: other types)             */
 /******************************************************************************/
 expr:
-            LPAREN expr RPAREN                 #parenExpr     /* parenthesis */
-        |   ID LPAREN func_plist RPAREN       #funcCall      /* function call */
-        |   expr MULTI_OP    expr             #mult      /* multiplication & division */
-        |   expr ADDITIVE_OP expr             #add      /* addition */
-        |   expr COMPARE_OP  expr             #compare     /* compare equal */
+            LPAREN expr RPAREN              #parenExpr      /* parenthesis */
+        |   ID LPAREN func_plist RPAREN     #funcCall       /* function call */
+        |   expr MULTI_OP    expr           #mult           /* multiplication & division */
+        |   expr ADDITIVE_OP expr           #add            /* addition */
+        |   expr COMPARE_OP  expr           #compare        /* compare equal */
         |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN #overlay/* @lfred: to fix - lame overlay */
-        |   ID EQUAL expr                      #assign     /* assignment */
+        |   ID EQUAL expr                   #assign         /* assignment */
         |   ID      #var
         |   NUM     #num
         |   STR     #string
