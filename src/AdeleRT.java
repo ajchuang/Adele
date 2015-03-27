@@ -1,3 +1,6 @@
+import java.util.*;
+import java.io.*;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.stringtemplate.v4.*;
@@ -8,9 +11,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.*;
-
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 public class AdeleRT {
 
@@ -23,6 +23,7 @@ public class AdeleRT {
         else
             is = System.in;
 
+        /* read file and create the parse tree */
         ANTLRInputStream input = new ANTLRInputStream (is);
         adeleLexer lexer = new adeleLexer (input);
         CommonTokenStream tokens = new CommonTokenStream (lexer);
@@ -30,14 +31,17 @@ public class AdeleRT {
         parser.setBuildParseTree (true);
         ParseTree tree = parser.prog ();
 
-        /* create symbol table */
-        ParseTreeWalker walker = new ParseTreeWalker();
-        DefPhase def = new DefPhase();
-        walker.walk(def, tree);
+        /* symbol table phase */
+        ParseTreeWalker walker = new ParseTreeWalker ();
+        DefPhase def = new DefPhase ();
+        walker.walk (def, tree);
 
-        /* perform translation */
-        TransPhase trans = new TransPhase(def.globals, def.scopes, def.values);
-        walker.walk(trans, tree);
+        /* translation phase */
+        ParseTreeProperty<String> codes = 
+            new ParseTreeProperty<String>();
+            
+        TransPhase trans = new TransPhase(def.globals, def.scopes, def.values, codes);
+        walker.walk (trans, tree);
     }
 
     public static void main (String[] args) {

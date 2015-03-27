@@ -7,8 +7,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 class DefPhase extends adeleBaseListener {
 
-
-
     ParseTreeProperty<Scope>  scopes    = new ParseTreeProperty<Scope>();
     ParseTreeProperty<Object> values    = new ParseTreeProperty<Object>();
     ParseTreeProperty<Object> usrType   = new ParseTreeProperty<Object>();

@@ -44,12 +44,12 @@ plist:
 /******************************************************************************/
 stmts:  stmt* ;
 stmt:
-            SEMICOLON
-        |   if_stmt
-        |   while_stmt
-        |   expr SEMICOLON
-        |   declaration SEMICOLON
-        |   RETURN expr SEMICOLON
+            SEMICOLON               #stm_empty
+        |   if_stmt                 #stm_if
+        |   while_stmt              #stm_while
+        |   expr SEMICOLON          #stm_expr
+        |   declaration SEMICOLON   #stm_dec
+        |   RETURN expr SEMICOLON   #stm_ret
         ;
 
 if_stmt:
@@ -82,7 +82,7 @@ expr:
         |   expr MULTI_OP    expr           #mult           /* multiplication & division */
         |   expr ADDITIVE_OP expr           #add            /* addition */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
-        |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN #overlay/* @lfred: to fix - lame overlay */
+        |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN #overlay   /* @lfred: to fix - lame overlay */
         |   ID EQUAL expr                   #assign         /* assignment */
         |   ID      #var
         |   NUM     #num
