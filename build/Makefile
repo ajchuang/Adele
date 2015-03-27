@@ -9,8 +9,6 @@ ST=$(LIB)/ST-4.0.8.jar
 
 .PHONY: clean grammar compiler
 
-.DEFAULT: compiler
-
 compiler:
 	@make -C $(GRAMMAR)
 	@javac -cp $(ANTLR):. *.java
