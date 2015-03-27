@@ -12,7 +12,7 @@ public class TransPhase extends adeleBaseListener {
     String tmp;
     Scope currentScope; // resolve symbols starting in this scope
 
-    Stack<Stack<String>> m_funParam;
+    Stack<Stack<String>> m_frags;
 
     public TransPhase (
         GlobalScope globals,
@@ -25,7 +25,7 @@ public class TransPhase extends adeleBaseListener {
         
         stg = new STGroupFile("../src/template/group.stg");
         tmp = "";
-        m_funParam = new Stack<Stack<String>> ();
+        m_frags = new Stack<Stack<String>> ();
     }
 
     public int getValue(ParseTree node) {
@@ -51,7 +51,7 @@ public class TransPhase extends adeleBaseListener {
         tmp = "";
     }
 
-    public void exitFunc(adeleParser.FuncContext ctx) {
+    public void exitFunc (adeleParser.FuncContext ctx) {
         currentScope = currentScope.getEnclosingScope();
 
         ST func = stg.getInstanceOf("funcdef");
@@ -76,17 +76,19 @@ public class TransPhase extends adeleBaseListener {
     }
 
     public void exitVarDeclAssign(adeleParser.VarDeclAssignContext ctx) {
-        ST decl = stg.getInstanceOf("vardecl");
-        decl.add("vname", ctx.ID());
-        if (ctx.expr() != null) {
-            decl.add("value", getValue(ctx.expr()));
+        ST decl = stg.getInstanceOf ("vardecl");
+        decl.add ("vname", ctx.ID ());
+        
+        if (ctx.expr () != null) {
+            decl.add ("value", getValue(ctx.expr()));
         }
+        
         tmp += decl.render() + '\n';
     }
 
     public void enterFuncCall (adeleParser.FuncCallContext ctx) {
         System.err.println ("Enter funcall: " + ctx.ID().getText());
-        m_funParam.push (new Stack<String> ());
+        m_frags.push (new Stack<String> ());
     }
 
     public void exitFuncCall (adeleParser.FuncCallContext ctx) {
@@ -101,7 +103,7 @@ public class TransPhase extends adeleBaseListener {
         funccall.add ("fname", ctx.ID().getText());
         
         String p = new String ();
-        Stack<String> param = m_funParam.pop ();
+        Stack<String> param = m_frags.pop ();
 
         for (int i=0; i<param.size () - 1; ++i) {
             p += param.get (i) + ",";
@@ -113,18 +115,30 @@ public class TransPhase extends adeleBaseListener {
         funccall.add ("params", p);
         tmp += funccall.render () + "\n";
     }
+    
+    public void exitAdd (adeleParser.AddContext ctx) {
+        System.err.println ("Exit Add: " + ctx.expr (0).getText () + ":" + ctx.expr (1).getText ());
+    }
 
     public void exitNum (adeleParser.NumContext ctx) {
         System.err.println ("Exit Num: " + ctx.NUM ());
         
-        if (m_funParam.size() > 0)
-            m_funParam.peek().push (ctx.NUM ().getText ());
+        if (m_frags.size() > 0)
+            m_frags.peek().push (ctx.NUM ().getText ());
     }
 
     public void exitString (adeleParser.StringContext ctx) {
         System.err.println ("Exit String: " + ctx.STR ());
         
-        if (m_funParam.size() > 0)
-            m_funParam.peek().push (ctx.STR ().getText ());
+        if (m_frags.size() > 0)
+            m_frags.peek().push (ctx.STR ().getText ());
+    }
+    
+    public void exitVar (adeleParser.VarContext ctx) {
+        System.err.println ("Exit String: " + ctx.ID ());
+        
+        /* for function */
+        if (m_frags.size() > 0)
+            m_frags.peek().push (ctx.ID ().getText ());
     }
 }

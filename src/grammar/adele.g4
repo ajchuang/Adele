@@ -90,11 +90,12 @@ expr:
         ;
 
 func_plist:
-        |   ( fpitem COMMA )* fpitem
+                                            #empty_fpis
+        |   ( fpitem COMMA )* fpitem        #fpis
         ;
 
 fpitem:
-            expr
+            expr                          
         ;
 
 type:   'int' | 'float' | 'char' | 'bool' | 'void' | 'string';
