@@ -71,6 +71,14 @@ var str2graph = function (str) {
   return g;
 }
 
+var sleep = function (milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }
+    }
+}
 
 var print_str = function(r, c, str) {
   if (r==undefined || c==undefined || str==undefined) {
@@ -84,7 +92,9 @@ var x;
 var main = function() {
     var x = 10;
     var y = 3;
-    print_str(x,y,"No kidding");
+    print_str(x,y,"Hello World!");
+    sleep(1000);
+    print_str(20,y,"No kidding");
 
 };
 jQuery(document).ready(function(){

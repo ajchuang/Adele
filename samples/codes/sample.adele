@@ -3,5 +3,8 @@ int x;
 int main ()
     int x = 10;
     int y = 3;
-    print_str(x, y, "No kidding");
+
+    print_str (x, y, "Hello World!");
+    sleep (1000);
+    print_str (20, y, "No kidding");
 end

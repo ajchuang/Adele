@@ -8,6 +8,7 @@ typeInitMap ::= [
 ]
 
 assign(lhs, rhs) ::= "$lhs$ = $rhs$;"
+add(lhs, rhs) ::= "$lhs$ + $rhs$;"
 
 funcdef(fname, params, body) ::= <<
 var $fname$ = function($params; separator=", "$) {
@@ -95,6 +96,16 @@ var str2graph = function (str) {
   return g;
 }
 
+var sleep = function (milliseconds) {
+/*
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }
+    }
+*/
+}
 
 var print_str = function(r, c, str) {
   if (r==undefined || c==undefined || str==undefined) {

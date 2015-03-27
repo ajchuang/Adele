@@ -12,6 +12,7 @@ public class TransPhase extends adeleBaseListener {
     String tmp;
     Scope currentScope; // resolve symbols starting in this scope
 
+    /* expression fragments */
     Stack<Stack<String>> m_frags;
 
     public TransPhase (
@@ -116,8 +117,25 @@ public class TransPhase extends adeleBaseListener {
         tmp += funccall.render () + "\n";
     }
     
+    public void enterAdd (adeleParser.AddContext ctx) {
+        System.err.println ("Enter Add: " + ctx.expr (0).getText () + ":" + ctx.expr (1).getText ());
+        m_frags.push (new Stack<String> ());
+    }
+    
     public void exitAdd (adeleParser.AddContext ctx) {
         System.err.println ("Exit Add: " + ctx.expr (0).getText () + ":" + ctx.expr (1).getText ());
+        Stack<String> c = m_frags.pop ();
+        String a = ctx.expr (0).getText () + "+" + ctx.expr (1).getText ();
+        
+        if (m_frags.size () > 0)
+            m_frags.peek().push (a);
+        else {
+            /* output a: this is the last expression */
+            ST add = stg.getInstanceOf ("add");
+            add.add ("lhs", ctx.expr (0).getText ());
+            add.add ("rhs", ctx.expr (1).getText ());
+            tmp += add.render () + "\n";
+        }
     }
 
     public void exitNum (adeleParser.NumContext ctx) {
