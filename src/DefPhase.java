@@ -39,9 +39,25 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitProg (adeleParser.ProgContext ctx) {
-        //System.out.println(globals);
     }
 
+    /* when entering group definition */
+    public void enterType_declaration (adeleParser.Type_declarationContext ctx) {
+        System.err.println ("enterType_declaration:" + ctx.ID ().getText ());
+    }
+
+    public void exitType_declaration (adeleParser.Type_declarationContext ctx) {
+        System.err.println ("exitType_declaration:" + ctx.ID ().getText ());
+    }
+
+    public void enterDec_item_prim (adeleParser.Dec_item_primContext ctx) {
+        System.err.println ("enterDec_item_prim: " + ctx.ID ().getText ());
+    }
+
+    public void exitDec_item_prim (adeleParser.Dec_item_primContext ctx) {
+        System.err.println ("exitDec_item_prim: " + ctx.ID ().getText ());
+    }
+    
     public void enterFunc (adeleParser.FuncContext ctx) {
         String name = ctx.id.getText();
         String typeStr = ctx.type().getText();
@@ -71,9 +87,6 @@ class DefPhase extends adeleBaseListener {
         Object right = getValue(ctx.expr());
         setValue(ctx, right);
     }
-
-    // public void exitFunc_plist (adeleParser.Func_plistContext ctx) {
-    // }
 
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
         defineVar(ctx.type(), ctx.ID().getSymbol());
