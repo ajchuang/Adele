@@ -85,7 +85,8 @@ declaration:
 expr:
             LPAREN expr RPAREN              #parenExpr      /* parenthesis */
         |   ID LPAREN func_plist RPAREN     #funcCall       /* function call */
-        |   gvid=ID DOT mvid=ID             #memberVar
+        |   ID LSB NUM RSB                  #arrayAccess
+        |   member_var                      #memberVar
         |   expr MULTI_OP    expr           #mult           /* multiplication & division */
         |   expr ADDITIVE_OP expr           #add            /* addition */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
@@ -94,6 +95,9 @@ expr:
         |   ID      #var
         |   NUM     #num
         |   STR     #string
+        ;
+member_var:
+            ID DOT member_var
         ;
 
 func_plist:
