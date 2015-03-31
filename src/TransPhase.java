@@ -95,7 +95,7 @@ public class TransPhase extends adeleBaseListener {
         
         String c = getCode (ctx.getChild (0));
         System.err.println ("Stm_expr: " + c);
-        System.out.println (c + ";");
+        System.err.println (c);
     }
 
     /**************************************************************************/
