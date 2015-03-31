@@ -70,9 +70,10 @@ while_stmt:
         ;
 
 declaration:
-            GROUP ID ID         #groupDecl
-        |   type ID             #varDecl
-        |   type ID EQUAL expr  #varDeclAssign
+            GROUP ID ID                             #groupDecl
+        |   type ID                                 #varDecl
+        |   type ID EQUAL expr                      #varDeclAssign
+        |   (type | GROUP ID) ID LSB INT_NUM RSB    #arrayDecl
         ;
 
 /******************************************************************************/
@@ -92,6 +93,7 @@ expr:
         |   ID      #var
         |   NUM     #num
         |   STR     #string
+        |   gvid=ID DOT mvid=ID
         ;
 
 func_plist:
