@@ -73,7 +73,7 @@ declaration:
             GROUP ID ID                             #groupDecl
         |   type ID                                 #varDecl
         |   type ID EQUAL expr                      #varDeclAssign
-        |   (type | GROUP ID) ID LSB INT_NUM RSB    #arrayDecl
+        |   (type | GROUP ID) ID LSB NUM RSB        #arrayDecl
         ;
 
 /******************************************************************************/
@@ -85,6 +85,7 @@ declaration:
 expr:
             LPAREN expr RPAREN              #parenExpr      /* parenthesis */
         |   ID LPAREN func_plist RPAREN     #funcCall       /* function call */
+        |   ID DOT ID                       #memberVar
         |   expr MULTI_OP    expr           #mult           /* multiplication & division */
         |   expr ADDITIVE_OP expr           #add            /* addition */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
@@ -93,7 +94,6 @@ expr:
         |   ID      #var
         |   NUM     #num
         |   STR     #string
-        |   gvid=ID DOT mvid=ID
         ;
 
 func_plist:
