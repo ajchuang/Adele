@@ -79,6 +79,7 @@ declaration:
 array_access:
             LSB NUM RSB array_access
         |   LSB NUM RSB
+        ;
 
 /******************************************************************************/
 /* expressions -                                                              */
@@ -90,7 +91,7 @@ expr:
             LPAREN expr RPAREN              #parenExpr      /* parenthesis */
         |   ID LPAREN func_plist RPAREN     #funcCall       /* function call */
         |   ID array_access                 #arrayAccess
-        |   member_var DOT ID               #memberVar
+        |   ID DOT member_access            #memberVar
         |   expr MULTI_OP    expr           #mult           /* multiplication & division */
         |   expr ADDITIVE_OP expr           #add            /* addition */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
@@ -103,7 +104,7 @@ expr:
 
 member_access:
             ID DOT member_access
-        ｜  ID
+        |   ID
         ;
 
 func_plist:
