@@ -29,6 +29,11 @@ SEMICOLON:  ';'  ;
 EQUAL:      '='  ;
 OVERLAY:    '//' ;
 AT:         '@'  ;
+LSB:		    '['  ;
+RSB:		    ']'  ;
+LBRACE:		  '{'  ;
+RBRACE:		  '}'  ;
+DOT			    '.'  ;
 
 ADDITIVE_OP:    ADD     | SUB ;
 MULTI_OP:       MULTI   | DIV ;
