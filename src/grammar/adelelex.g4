@@ -33,7 +33,7 @@ LSB:		    '['  ;
 RSB:		    ']'  ;
 LBRACE:		  '{'  ;
 RBRACE:		  '}'  ;
-DOT			    '.'  ;
+DOT:			    '.'  ;
 
 ADDITIVE_OP:    ADD     | SUB ;
 MULTI_OP:       MULTI   | DIV ;
