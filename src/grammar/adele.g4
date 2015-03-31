@@ -23,9 +23,14 @@ prog:
 /* type declarations */
 /******************************************************************************/
 type_declaration:
-            GROUP ID
-            (type ID SEMICOLON)+?
-            END
+            GROUP ID                
+            (type_dec_item SEMICOLON)+?   
+            END                     
+        ;
+
+type_dec_item:
+            type    vid=ID              #dec_item_prim
+        |   GROUP   gid=ID vid=ID       #dec_item_group
         ;
 
 /* function and its parameters */

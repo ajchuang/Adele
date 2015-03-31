@@ -90,20 +90,12 @@ public class TransPhase extends adeleBaseListener {
     /**************************************************************************/
     /* stmts                                                                  */
     /**************************************************************************/
-    public void enterStm_expr (adeleParser.Stm_exprContext ctx) {
-        System.err.println ("enterStm_expr");
-        
-        if (m_frags.size () != 0)
-            System.err.println ("!!! stmt in expr !!!");
-        
-        Stack<String> s = new Stack<String> ();
-        m_stmts.push (s);
-    }
-    
     public void exitStm_expr (adeleParser.Stm_exprContext ctx) {
         System.err.println ("exitStm_expr");
-        Stack<String> s = m_stmts.pop ();
-        //System.out.println (s.pop () + "; \n");
+        
+        String c = getCode (ctx.getChild (0));
+        System.err.println ("Stm_expr: " + c);
+        System.out.println (c + ";");
     }
 
     /**************************************************************************/
@@ -123,7 +115,7 @@ public class TransPhase extends adeleBaseListener {
         
         ST assign = stg.getInstanceOf ("assign");
         assign.add("lhs", ctx.ID ());
-        assign.add("rhs", getValue(ctx.expr()));
+        assign.add("rhs", getValue (ctx.expr ()));
         tmp += assign.render() + '\n';
     }
 
@@ -175,6 +167,7 @@ public class TransPhase extends adeleBaseListener {
         }
 
         tmp += funccall.render () + "\n";
+        setCode (ctx, funccall.render ());
     }
     
     public void exitFpis (adeleParser.FpisContext ctx) {

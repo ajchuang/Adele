@@ -1,6 +1,6 @@
 import java.util.*;
 
-class UserType extends AbsDataType {
+class UserType extends TypeBase {
     
     /* field name, type id */
     HashMap<String, Integer> m_fields;

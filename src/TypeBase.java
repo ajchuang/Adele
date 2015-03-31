@@ -1,14 +1,13 @@
 import java.util.*;
 
 /* base class for types */
-abstract class AbsDataType {
+class TypeBase {
 
     /* constants */
     final static public int M_TYPE_INT       = 1;
     final static public int M_TYPE_FLOAT     = 2;
     final static public int M_TYPE_STRING    = 3;
     final static public int M_TYPE_VOID      = 4;
-    final static public int M_TYPE_USER      = 5;
 
     static int m_typeCounter;
     static HashMap<String, Integer> m_typeMap;
@@ -34,7 +33,7 @@ abstract class AbsDataType {
         return m_typeMap.get (tName);
     }
 
-    public AbsDataType (String tName) throws Exception {
+    public TypeBase (String tName) throws Exception {
         
         /* check duplication */
         if (m_typeMap.containsKey (tName) == true)
