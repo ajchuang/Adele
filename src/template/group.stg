@@ -22,6 +22,14 @@ vardecl(vtype, vname, value) ::= "var $vname$$init(value)$;"
 
 init(value) ::= "$if(value)$ = $value$$endif$"
 
+ifstmt(expr, body) ::= <<if ($expr$) {
+  $body; separator="\n"$
+}>>
+
+whilestmt(expr, body) ::= <<while ($expr$) {
+  $body; separator="\n"$
+}>>
+
 befprog() ::= <<
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
