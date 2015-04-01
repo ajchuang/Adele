@@ -87,20 +87,14 @@ public class TransPhase extends adeleBaseListener {
         tmp = "";
     }
     
-    /**************************************************************************/
-    /* stmts                                                                  */
-    /**************************************************************************/
     public void exitStm_expr (adeleParser.Stm_exprContext ctx) {
         System.err.println ("exitStm_expr");
         
-        String c = getCode (ctx.getChild (0));
+        String c = getCode (ctx.expr()) + ';';
         System.err.println ("Stm_expr: " + c);
         System.err.println (c);
     }
 
-    /**************************************************************************/
-    /* exprs                                                                  */
-    /**************************************************************************/
     public void enterAssign (adeleParser.AssignContext ctx) {
         Stack<String> cexp = new Stack<String> ();
         m_frags.push (cexp);
@@ -166,7 +160,7 @@ public class TransPhase extends adeleBaseListener {
             }
         }
 
-        tmp += funccall.render () + "\n";
+        tmp += funccall.render () + ';' + "\n"; // To be modifed
         setCode (ctx, funccall.render ());
     }
     

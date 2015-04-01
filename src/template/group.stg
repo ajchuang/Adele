@@ -7,8 +7,8 @@ typeInitMap ::= [
     default:    "null" // anything other than an atomic type
 ]
 
-assign(lhs, rhs) ::= "$lhs$ = $rhs$;"
-add(lhs, rhs) ::= "$lhs$ + $rhs$;"
+assign(lhs, rhs) ::= "$lhs$ = $rhs$"
+add(lhs, rhs) ::= "$lhs$ + $rhs$"
 
 funcdef(fname, params, body) ::= <<
 var $fname$ = function($params; separator=", "$) {
@@ -16,7 +16,7 @@ var $fname$ = function($params; separator=", "$) {
 };
 >>
 
-funccall(fname, params) ::= <<$fname$($params; separator=", "$);>>
+funccall(fname, params) ::= <<$fname$($params; separator=", "$)>>
 
 vardecl(vtype, vname, value) ::= "var $vname$$init(value)$;"
 
