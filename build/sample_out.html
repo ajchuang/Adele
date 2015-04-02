@@ -90,20 +90,5 @@ var print_str = function(r, c, str) {
   g.at(r, c);
   canvas.draw();
 };
-var x;
-var main = function() {
-    var x = 10;
-    var y = 3;
-    print_str(x,y,"Hello World!");
-    sleep(1000);
-    print_str(20,y,"No kidding");
-
-};
-jQuery(document).ready(function(){
-  init();
-  main();
-});
-</script>
-<body>
-</body>
-</html>
+var init_global = 3;
+var unint_global;
