@@ -42,7 +42,12 @@ func:
         ;
 
 plist:
-        |   ( ((type) | (GROUP ID)) ID COMMA )* ( type ID | GROUP ID ID )
+        |   (pitem COMMA)* pitem
+        ;
+        
+pitem:
+            type pid=ID                 #pitem_prim
+        |   GROUP gid=ID pid=ID         #pitem_group
         ;
 
 /* statments: if, while, declarations */

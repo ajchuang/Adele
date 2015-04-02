@@ -10,7 +10,8 @@ class TypeBase {
     final static public int M_TYPE_VOID      = 4;
 
     static int m_typeCounter;
-    static HashMap<String, Integer> m_typeMap;
+    static HashMap<String, Integer>     m_typeMap;
+    static HashMap<String, TypeBase>    m_typeInf;
     
     /* data member for each type */
     int m_typeId;
@@ -18,6 +19,7 @@ class TypeBase {
 
     static {
         m_typeCounter = 6;
+        m_typeInf = new HashMap <String, TypeBase> ();
         m_typeMap = new HashMap <String, Integer> ();
         m_typeMap.put ("int",       M_TYPE_INT);
         m_typeMap.put ("float",     M_TYPE_FLOAT);
@@ -32,6 +34,10 @@ class TypeBase {
     static public int getTypeId (String tName) {
         return m_typeMap.get (tName);
     }
+    
+    static public TypeBase getTypeInfo (String tName) {
+        return m_typeInf.get (tName);
+    }
 
     public TypeBase (String tName) throws Exception {
         
@@ -39,17 +45,20 @@ class TypeBase {
         if (m_typeMap.containsKey (tName) == true)
            throw new Exception ("Type " + tName + " has been defined.");
 
+        m_typeInf.put (tName, this);
         m_typeMap.put (tName, m_typeCounter);
         m_typeId = m_typeCounter;
         m_typeName = tName;
         m_typeCounter++;
     }
 
-    int getTypeId () {
+    public int getTypeId () {
         return m_typeId; 
     }
 
-    String getTypeName () {
+    public String getTypeName () {
         return m_typeName; 
     }
+    
+    
 }

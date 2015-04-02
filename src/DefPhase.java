@@ -47,30 +47,64 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitType_declaration (adeleParser.Type_declarationContext ctx) {
-        System.err.println ("exitType_declaration:" + ctx.ID ().getText ());
-    }
-
-    public void enterDec_item_prim (adeleParser.Dec_item_primContext ctx) {
-        System.err.println ("enterDec_item_prim: " + ctx.ID ().getText ());
-    }
-
-    public void exitDec_item_prim (adeleParser.Dec_item_primContext ctx) {
-        System.err.println ("exitDec_item_prim: " + ctx.ID ().getText ());
+        
+        String typeName = ctx.ID ().getText ();
+        System.err.println ("exitType_declaration:" + typeName);
+        
+        try {
+            TypeGroup ut = new TypeGroup (typeName); 
+            
+            int nChild = ctx.getChildCount ();
+            
+            for (int i=0; i<nChild; ++i) {
+                
+                ParseTree node = ctx.getChild (i);
+                String mType = null, mName = null;
+                
+                if (node instanceof adeleParser.Dec_item_primContext) {
+                    adeleParser.Dec_item_primContext x = (adeleParser.Dec_item_primContext) node;
+                    mType = x.type ().getText ();
+                    mName = x.vid.getText ();
+                } else if (node instanceof adeleParser.Dec_item_groupContext) {
+                    adeleParser.Dec_item_groupContext x = (adeleParser.Dec_item_groupContext) node;
+                    mType = x.gid.getText ();
+                    mName = x.vid.getText ();
+                } else
+                    continue;
+                
+                if (ut.addField (mType, mName) == false) {
+                    throw new IllegalStateException ("illegal type definition");
+                }
+            }
+            
+            System.err.println ("" + ut);
+            
+        } catch (Exception e) {
+            throw new IllegalStateException ("illegal type definition");
+        }
     }
     
     public void enterFunc (adeleParser.FuncContext ctx) {
         String name = ctx.id.getText();
         String typeStr = ctx.type().getText();
         Symbol.Type type = Symbol.getType(typeStr);
-
+        
         FunctionSymbol function = new FunctionSymbol (name, type, currentScope);
         currentScope.define (function); // Define function in current scope
         saveScope (ctx, function);      // Push: set function's parent to current
         currentScope = function;        // Current scope is now function scope
+        
+        /* TODO: save the parameters for the function symbol */
+        //for (int i=0; i<ctx.getChildCount (); ++i) {
+        //    ParseTree node = ctx.getChild (i);
+        //}
     }
 
-    public void exitFunc(adeleParser.FuncContext ctx) {
+    public void exitFunc (adeleParser.FuncContext ctx) {
         currentScope = currentScope.getEnclosingScope (); // pop scope
+        
+        
+        
     }
 
     public void exitNum(adeleParser.NumContext ctx) {
