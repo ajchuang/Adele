@@ -3,6 +3,7 @@ int unint_global;
 
 group test_group
     int test;
+    group x xxx;
 end
 
 void main ()

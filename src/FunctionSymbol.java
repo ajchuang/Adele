@@ -2,6 +2,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class FunctionSymbol extends Symbol implements Scope {
+    
     Map<String, Symbol> arguments = new LinkedHashMap<String, Symbol>();
     Scope enclosingScope;
 
@@ -10,8 +11,8 @@ public class FunctionSymbol extends Symbol implements Scope {
         this.enclosingScope = enclosingScope;
     }
 
-    public Symbol resolve(String name) {
-        Symbol s = arguments.get(name);
+    public Symbol resolve (String name) {
+        Symbol s = arguments.get (name);
         if ( s!=null ) return s;
         // if not here, check any enclosing scope
         if ( getEnclosingScope() != null ) {
@@ -20,8 +21,8 @@ public class FunctionSymbol extends Symbol implements Scope {
         return null; // not found
     }
 
-    public void define(Symbol sym) {
-        arguments.put(sym.name, sym);
+    public void define (Symbol sym) {
+        arguments.put (sym.name, sym);
         sym.scope = this; // track the scope in each symbol
     }
 
@@ -30,3 +31,4 @@ public class FunctionSymbol extends Symbol implements Scope {
 
     public String toString() { return "function"+super.toString()+":"+arguments.values(); }
 }
+

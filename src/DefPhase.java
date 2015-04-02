@@ -89,16 +89,22 @@ class DefPhase extends adeleBaseListener {
         String typeStr = ctx.type().getText();
         Symbol.Type type = Symbol.getType(typeStr);
         
-        /* TODO: save the parameters for the function symbol */
-
         FunctionSymbol function = new FunctionSymbol (name, type, currentScope);
         currentScope.define (function); // Define function in current scope
         saveScope (ctx, function);      // Push: set function's parent to current
         currentScope = function;        // Current scope is now function scope
+        
+        /* TODO: save the parameters for the function symbol */
+        //for (int i=0; i<ctx.getChildCount (); ++i) {
+        //    ParseTree node = ctx.getChild (i);
+        //}
     }
 
-    public void exitFunc(adeleParser.FuncContext ctx) {
+    public void exitFunc (adeleParser.FuncContext ctx) {
         currentScope = currentScope.getEnclosingScope (); // pop scope
+        
+        
+        
     }
 
     public void exitNum(adeleParser.NumContext ctx) {
