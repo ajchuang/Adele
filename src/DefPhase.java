@@ -88,6 +88,8 @@ class DefPhase extends adeleBaseListener {
         String name = ctx.id.getText();
         String typeStr = ctx.type().getText();
         Symbol.Type type = Symbol.getType(typeStr);
+        
+        /* TODO: save the parameters for the function symbol */
 
         FunctionSymbol function = new FunctionSymbol (name, type, currentScope);
         currentScope.define (function); // Define function in current scope
