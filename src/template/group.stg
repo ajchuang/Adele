@@ -30,10 +30,16 @@ whilestmt(expr, body) ::= <<while ($expr$) {
   $body; separator="\n"$
 }>>
 
-befprog() ::= <<
+html(jssource) ::= <<
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script type="text/javascript">
+<script src="$jssource$"></script>
+<body>
+</body>
+</html>
+>>
+
+befprog() ::= <<
 var canvas = {
   width: 40,
   height: 30,
@@ -131,8 +137,4 @@ jQuery(document).ready(function(){
   init();
   main();
 });
-</script>
-<body>
-</body>
-</html>
 >>

@@ -61,16 +61,17 @@ public class TransPhase extends adeleBaseListener {
 
         // Output Javascript and HTML
         try {
-            PrintWriter jsOut = new PrintWriter(outName + ".html", "utf-8");
+            PrintWriter jsOut = new PrintWriter(outName + ".js", "utf-8");
             jsOut.println(prog.toString());
             jsOut.flush();
             jsOut.close();
 
-            /*PrintWriter htmlOut = new PrintWriter(outName + ".html", "utf-8");
-            htmlOut.println("<html>");
-            htmlOut.println("</html>");
+            ST html = stg.getInstanceOf("html");
+            html.add("jssource", outName + ".js");
+            PrintWriter htmlOut = new PrintWriter(outName + ".html", "utf-8");
+            htmlOut.println(html.render());
             htmlOut.flush();
-            htmlOut.close();*/
+            htmlOut.close();
         } catch (IOException ioe) {
             System.out.println("Failed in outputing files");
         }
