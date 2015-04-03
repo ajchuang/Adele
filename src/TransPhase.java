@@ -57,7 +57,7 @@ public class TransPhase extends adeleBaseListener {
         prog.append('\n');
         prog.append(aftprog.render());
 
-        System.err.println(prog.toString());
+        //System.err.println(prog.toString());
 
         // Output Javascript and HTML
         try {
