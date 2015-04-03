@@ -78,11 +78,11 @@ declaration:
             GROUP gid=ID id=ID                             #groupDecl
         |   type ID                                 #varDecl
         |   type ID EQUAL expr                      #varDeclAssign
-        |   (type | GROUP ID) ID array_access       #arrayDecl
+        |   (type | GROUP ID) ID array_dimen       #arrayDecl
         ;
 
-array_access:
-            LSB NUM RSB array_access
+array_dimen:
+            LSB NUM RSB array_dimen
         |   LSB NUM RSB
         ;
 
@@ -105,6 +105,11 @@ expr:
         |   ID      #var
         |   NUM     #num
         |   STR     #string
+        ;
+
+array_access:
+            LSB expr RSB array_access
+        |   LSB expr RSB
         ;
 
 member_access:
