@@ -31,22 +31,23 @@ public class AdeleRT {
         parser.setBuildParseTree (true);
         ParseTree tree = parser.prog ();
         ParseTreeWalker walker = new ParseTreeWalker ();
-        
+
+        SymbolTable symtab = new SymbolTable();
         /* Type, Func scan Phase */
-        ScanPhase scan = new ScanPhase ();
+        ScanPhase scan = new ScanPhase (symtab);
         walker.walk (scan, tree);
 
         /* Semantic Analysis Phase */
-        DefPhase def = new DefPhase ();
+        DefPhase def = new DefPhase (symtab);
         walker.walk (def, tree);
-        
+
         /****************************************************************************/
 
         /* translation phase */
-        ParseTreeProperty<String> codes = 
+        ParseTreeProperty<String> codes =
             new ParseTreeProperty<String>();
-            
-        TransPhase trans = new TransPhase (def.globals, def.scopes, def.values, codes);
+
+        TransPhase trans = new TransPhase (symtab.globals, def.scopes, def.values, codes);
         walker.walk (trans, tree);
     }
 

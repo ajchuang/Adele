@@ -1,7 +1,5 @@
 
 public class Symbol { // A generic programming language symbol
-    
-    public static enum Type {tINVALID, tVOID, tINT, tFLOAT}
 
     String name;      // All symbols at least have a name
     Type type;
@@ -10,21 +8,14 @@ public class Symbol { // A generic programming language symbol
     public Symbol(String name) { this.name = name; }
     public Symbol(String name, Type type) { this(name); this.type = type; }
     public String getName() { return name; }
+    
+    /* TODO: to fix. buggy */
+    static public Type getType (String vname) { return null; }
 
     public String toString () {
-        if (type != Type.tINVALID) 
-            return '<'+getName()+":"+type+'>';
-        return getName ();
-    }
-
-    public static Type getType (String tokenType) {
-        
-        switch ( tokenType ) {
-            case "int":     return Type.tINT;
-            case "float":   return Type.tFLOAT;
-            case "void":    return Type.tVOID;
-        }
-
-        return Type.tINVALID;
+        String s = "";
+        if ( scope!=null ) s = scope.getScopeName()+".";
+        if ( type!=null ) return '<'+s+getName()+":"+type+'>';
+        return s+getName();
     }
 }

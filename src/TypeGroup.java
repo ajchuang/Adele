@@ -28,7 +28,7 @@ class TypeGroup extends TypeBase {
     
     @Override
     public String toString () {
-        String s = new String (m_typeName + ": " + m_fields);
+        String s = new String (m_typeName + " : " + m_fields);
         return s;
     }
 }
