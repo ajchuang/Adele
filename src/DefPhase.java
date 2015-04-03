@@ -40,9 +40,9 @@ class DefPhase extends adeleBaseListener {
     /* when entering group definition */
     public void enterType_declaration (adeleParser.Type_declarationContext ctx) {
         System.err.println ("enterType_declaration:" + ctx.ID ().getText ());
-        GroupSymbol gs = new GroupSymbol(ctx.ID().getText(), currentScope);
-        currentScope.define(gs);
-        saveScope(ctx, gs); /* ZX: not sure if this step is necessary*/
+        GroupSymbol gs = (GroupSymbol)currentScope.resolve(ctx.ID ().getText ());
+        // currentScope.define(gs);
+        saveScope(ctx, gs);
         currentScope = gs;
     }
 
@@ -108,19 +108,23 @@ class DefPhase extends adeleBaseListener {
         currentScope = currentScope.getEnclosingScope ();
     }
 
-    public void exitNum(adeleParser.NumContext ctx) {
-        String numText = ctx.NUM().getText();
-        setValue(ctx, Integer.valueOf(numText));
-    }
-
     public void exitFpItem(adeleParser.FpitemContext ctx) {
         Object right = getValue(ctx.expr());
         setValue(ctx, right);
     }
 
-    public void exitAssign(adeleParser.AssignContext ctx) {
-        Object right = getValue(ctx.expr());
-        setValue(ctx, right);
+    /* declare a group variable */
+    public void exitGroupDecl (adeleParser.GroupDeclContext ctx) {
+        String typeStr = ctx.gid.getText();
+        Symbol type = currentScope.resolve(typeStr);
+        if (type == null) {
+            err("no such group: " + typeStr);
+        } else if (type instanceof FunctionSymbol) {
+            err(typeStr + " is not a group type");
+        } else {
+            GroupSymbol group = new GroupSymbol(ctx.id.getText(), (Scope)type);
+            currentScope.define(group);
+        }
     }
 
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
@@ -130,8 +134,31 @@ class DefPhase extends adeleBaseListener {
         currentScope.define(var);
     }
 
-    // public void exitType(adeleParser.TypeContext ctx) {
+    /********** expr **********/
+    public void exitAssign(adeleParser.AssignContext ctx) {
+        Object right = getValue(ctx.expr());
+        setValue(ctx, right);
+    }
 
-    // }
+    public void exitNum(adeleParser.NumContext ctx) {
+        String numText = ctx.NUM().getText();
+        setValue(ctx, Integer.valueOf(numText));
+    }
+
+    public void exitVar (adeleParser.VarContext ctx) {
+        String name = ctx.ID().getSymbol().getText();
+        Symbol var = currentScope.resolve(name);
+        if ( var==null ) {
+            err("no such variable: "+name);
+        }
+        if ( var instanceof FunctionSymbol ) {
+            err(name+" is not a variable");
+        }
+    }
+    /*************************/
+
+    private void err(String msg) {
+        System.err.println(msg);
+    }
 
 }

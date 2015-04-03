@@ -34,7 +34,7 @@ public class AdeleRT {
 
         SymbolTable symtab = new SymbolTable();
         /* Type, Func scan Phase */
-        ScanPhase scan = new ScanPhase ();
+        ScanPhase scan = new ScanPhase (symtab);
         walker.walk (scan, tree);
 
         /* Semantic Analysis Phase */

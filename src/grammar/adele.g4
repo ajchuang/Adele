@@ -23,9 +23,9 @@ prog:
 /* type declarations */
 /******************************************************************************/
 type_declaration:
-            GROUP ID                
-            (type_dec_item SEMICOLON)+?   
-            END                     
+            GROUP ID
+            (type_dec_item SEMICOLON)+?
+            END
         ;
 
 type_dec_item:
@@ -44,7 +44,7 @@ func:
 plist:
         |   (pitem COMMA)* pitem
         ;
-        
+
 pitem:
             type pid=ID                 #pitem_prim
         |   GROUP gid=ID pid=ID         #pitem_group
@@ -75,7 +75,7 @@ while_stmt:
         ;
 
 declaration:
-            GROUP ID ID                             #groupDecl
+            GROUP gid=ID id=ID                             #groupDecl
         |   type ID                                 #varDecl
         |   type ID EQUAL expr                      #varDeclAssign
         |   (type | GROUP ID) ID array_access       #arrayDecl
@@ -118,7 +118,7 @@ func_plist:
         ;
 
 fpitem:
-            expr                          
+            expr
         ;
 
 type:   'int' | 'float' | 'char' | 'bool' | 'void' | 'string';
