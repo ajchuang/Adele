@@ -26,13 +26,6 @@ class DefPhase extends adeleBaseListener {
         return values.get(node);
     }
 
-    public void defineVar (adeleParser.TypeContext typeCtx, Token nameToken) {
-        String typeStr = typeCtx.getText();
-        Type type = (Type)currentScope.resolve(typeStr);
-        VariableSymbol var = new VariableSymbol(nameToken.getText(), type);
-        currentScope.define(var); // Define symbol in current scope
-    }
-
     public void saveScope (ParserRuleContext ctx, Scope s) {
         scopes.put (ctx, s);
     }
@@ -47,6 +40,10 @@ class DefPhase extends adeleBaseListener {
     /* when entering group definition */
     public void enterType_declaration (adeleParser.Type_declarationContext ctx) {
         System.err.println ("enterType_declaration:" + ctx.ID ().getText ());
+        GroupSymbol gs = new GroupSymbol(ctx.ID().getText(), currentScope);
+        currentScope.define(gs);
+        saveScope(ctx, gs); /* ZX: not sure if this step is necessary*/
+        currentScope = gs;
     }
 
     public void exitType_declaration (adeleParser.Type_declarationContext ctx) {
@@ -54,8 +51,11 @@ class DefPhase extends adeleBaseListener {
         String typeName = ctx.ID ().getText ();
         System.err.println ("exitType_declaration:" + typeName);
 
+        currentScope = currentScope.getEnclosingScope();
+
+        /*
         try {
-            TypeGroup ut = new TypeGroup (typeName);
+            GroupSymbol ut = new GroupSymbol (typeName);
 
             int nChild = ctx.getChildCount ();
 
@@ -85,6 +85,7 @@ class DefPhase extends adeleBaseListener {
         } catch (Exception e) {
             throw new IllegalStateException ("illegal type definition");
         }
+        */
     }
 
     public void enterFunc (adeleParser.FuncContext ctx) {
@@ -104,10 +105,7 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitFunc (adeleParser.FuncContext ctx) {
-        currentScope = currentScope.getEnclosingScope (); // pop scope
-
-
-
+        currentScope = currentScope.getEnclosingScope ();
     }
 
     public void exitNum(adeleParser.NumContext ctx) {
@@ -126,7 +124,10 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
-        defineVar(ctx.type(), ctx.ID().getSymbol());
+        String typeStr = ctx.type().getText();
+        Type type = (Type)currentScope.resolve(typeStr);
+        VariableSymbol var = new VariableSymbol(ctx.ID().getText(), type);
+        currentScope.define(var);
     }
 
     // public void exitType(adeleParser.TypeContext ctx) {
