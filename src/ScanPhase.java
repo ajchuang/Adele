@@ -9,7 +9,7 @@ class ScanPhase extends adeleBaseListener {
 
     GlobalScope globals;
 
-    public ScanPhase(SymbolTable symtab) {
+    public ScanPhase (SymbolTable symtab) {
         globals = symtab.globals;
     }
 
@@ -18,7 +18,7 @@ class ScanPhase extends adeleBaseListener {
         String typeName = ctx.ID ().getText ();
         System.err.println ("exitType_declaration:" + typeName);
 
-        GroupSymbol gs = new GroupSymbol(typeName, globals);
+        GroupSymbol gs = new GroupSymbol (typeName, globals);
         globals.define(gs);
 
         // try {
@@ -31,32 +31,50 @@ class ScanPhase extends adeleBaseListener {
 
     public void enterFunc (adeleParser.FuncContext ctx) {
 
-        /*
         String name = ctx.id.getText();
-        String typeStr = ctx.type().getText();
-        Symbol.Type type = Symbol.getType(typeStr);
+        Type retType = Symbol.getType (ctx.type().getText());
+        
+        /* semantic check: no same name functions are allowed */
+        Symbol s = globals.resolve (name);
+         
+        /* TODO: we should use the errorhandler to handle this */
+        if (s != null && s instanceof FunctionSymbol) {
+            System.err.println ("Function " + name + " is duplicated.");
+            System.exit (0);
+        }
+        
+        /* create the function symbol and put it into the global scope */
+        FunctionSymbol function = new FunctionSymbol (name, retType, globals);
+        globals.define (function);
+        System.err.println ("Function " + name + " is defined.");
 
-        FunctionSymbol function = new FunctionSymbol (name, type, currentScope);
-        currentScope.define (function); // Define function in current scope
-        saveScope (ctx, function);      // Push: set function's parent to current
-        currentScope = function;        // Current scope is now function scope
-
-        for (int i=0; i<ctx.getChildCount (); ++i) {
-            ParseTree node = ctx.getChild (i);
-
-            if (node instanceof PlistContext) {
-                PlistContext pnode = (PlistContext) node;
-
-                for (int j=0; j<pnode.getChildCount(); ++j) {
-
-                    if (pnode instanceof Pitem_primContext) {
-
-                        System.err.println ("param: " + pnode.getText ());
-
-                    }
-                }
+        adeleParser.PlistContext plist = ctx.plist ();
+        List<adeleParser.PitemContext> items = plist.pitem ();
+        
+        for (int i=0; i<items.size(); ++i) {
+            
+            adeleParser.PitemContext item = items.get (i);
+            
+            if (item instanceof adeleParser.Pitem_primContext) {
+                
+                adeleParser.Pitem_primContext pitem = (adeleParser.Pitem_primContext) item;
+                System.err.println (
+                    "  found param: " + pitem.pid.getText () + 
+                    " of type " + pitem.type().getText ());
+                
+                /* to define in the function symbol */
+                //function.define ();
+                
+            } else if (item instanceof adeleParser.Pitem_groupContext) {
+                
+                adeleParser.Pitem_groupContext pitem = (adeleParser.Pitem_groupContext) item;
+                System.err.println (
+                    "  found param: " + pitem.pid.getText () + 
+                    " of type " + pitem.gid.getText ());
+                    
+                /* to define in the function symbol */
+                //function.define ();
             }
         }
-        */
     }
 }
