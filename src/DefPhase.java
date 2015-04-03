@@ -10,9 +10,13 @@ class DefPhase extends adeleBaseListener {
     ParseTreeProperty<Scope>  scopes    = new ParseTreeProperty<Scope>();
     ParseTreeProperty<Object> values    = new ParseTreeProperty<Object>();
     ParseTreeProperty<Object> usrType   = new ParseTreeProperty<Object>();
-    
+
     GlobalScope globals;
     Scope currentScope;
+
+    public DefPhase(SymbolTable symtab) {
+        globals = symtab.globals;
+    }
 
     public void setValue (ParseTree node, Object value) {
         values.put (node, value);
@@ -24,7 +28,7 @@ class DefPhase extends adeleBaseListener {
 
     public void defineVar (adeleParser.TypeContext typeCtx, Token nameToken) {
         String typeStr = typeCtx.getText();
-        Symbol.Type type = Symbol.getType(typeStr);
+        Type type = (Type)currentScope.resolve(typeStr);
         VariableSymbol var = new VariableSymbol(nameToken.getText(), type);
         currentScope.define(var); // Define symbol in current scope
     }
@@ -34,7 +38,6 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void enterProg (adeleParser.ProgContext ctx) {
-        globals = new GlobalScope(null);
         currentScope = globals;
     }
 
@@ -47,20 +50,20 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitType_declaration (adeleParser.Type_declarationContext ctx) {
-        
+
         String typeName = ctx.ID ().getText ();
         System.err.println ("exitType_declaration:" + typeName);
-        
+
         try {
-            TypeGroup ut = new TypeGroup (typeName); 
-            
+            TypeGroup ut = new TypeGroup (typeName);
+
             int nChild = ctx.getChildCount ();
-            
+
             for (int i=0; i<nChild; ++i) {
-                
+
                 ParseTree node = ctx.getChild (i);
                 String mType = null, mName = null;
-                
+
                 if (node instanceof adeleParser.Dec_item_primContext) {
                     adeleParser.Dec_item_primContext x = (adeleParser.Dec_item_primContext) node;
                     mType = x.type ().getText ();
@@ -71,29 +74,29 @@ class DefPhase extends adeleBaseListener {
                     mName = x.vid.getText ();
                 } else
                     continue;
-                
+
                 if (ut.addField (mType, mName) == false) {
                     throw new IllegalStateException ("illegal type definition");
                 }
             }
-            
+
             System.err.println ("" + ut);
-            
+
         } catch (Exception e) {
             throw new IllegalStateException ("illegal type definition");
         }
     }
-    
+
     public void enterFunc (adeleParser.FuncContext ctx) {
         String name = ctx.id.getText();
         String typeStr = ctx.type().getText();
-        Symbol.Type type = Symbol.getType(typeStr);
-        
+        Type type = (Type)currentScope.resolve(typeStr);
+
         FunctionSymbol function = new FunctionSymbol (name, type, currentScope);
         currentScope.define (function); // Define function in current scope
         saveScope (ctx, function);      // Push: set function's parent to current
         currentScope = function;        // Current scope is now function scope
-        
+
         /* TODO: save the parameters for the function symbol */
         //for (int i=0; i<ctx.getChildCount (); ++i) {
         //    ParseTree node = ctx.getChild (i);
@@ -102,9 +105,9 @@ class DefPhase extends adeleBaseListener {
 
     public void exitFunc (adeleParser.FuncContext ctx) {
         currentScope = currentScope.getEnclosingScope (); // pop scope
-        
-        
-        
+
+
+
     }
 
     public void exitNum(adeleParser.NumContext ctx) {

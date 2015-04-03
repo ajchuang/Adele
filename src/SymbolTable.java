@@ -1,9 +1,12 @@
+/* Symbol table stores symbols declared/builtin that can be
+** used as type
+*/
 import java.util.List;
 
 public class SymbolTable {
       /* constants */
     final static public int M_TYPE_USER      = 0; // user-defined type
-    final static public int M_TYPE_BOOLEAN    = 1;
+    final static public int M_TYPE_BOOLEAN   = 1;
     final static public int M_TYPE_CHAR      = 2;
     final static public int M_TYPE_INT       = 3;
     final static public int M_TYPE_FLOAT     = 4;
@@ -27,15 +30,14 @@ public class SymbolTable {
         null, _boolean, _char, _int, _float, _string, _void
     };
 
+    GlobalScope globals = new GlobalScope();
+
     public SymbolTable() {
-        
-        /* TODO: fix compile error */
-        /*
         for (Type t : indexToType) {
             if (t != null)
                 globals.define((BuiltInTypeSymbol)t);
         }
-        */
     }
 
+    public String toString() { return globals.toString(); }
 }
