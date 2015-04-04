@@ -7,4 +7,9 @@ int main ()
     print_str (x, y, "Hello World!");
     sleep (1000);
     print_str (20, y, "No kidding");
+
+    if (x)
+        sleep(5000);
+        print_str(0, 0, "Test if statement");
+    end
 end

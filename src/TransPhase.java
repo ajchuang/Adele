@@ -105,7 +105,7 @@ public class TransPhase extends adeleBaseListener {
         System.err.println(codes.get(ctx));
     }
 
-	public void exitStmts(adeleParser.StmtsContext ctx) {
+    public void exitStmts(adeleParser.StmtsContext ctx) {
         System.err.println("exitStmts:");
 
         StringBuilder stmts = new StringBuilder();
@@ -123,6 +123,10 @@ public class TransPhase extends adeleBaseListener {
         System.err.println(codes.get(ctx));
     }
 
+    public void exitStm_if(adeleParser.Stm_ifContext ctx) {
+        codes.put(ctx, codes.get(ctx.if_stmt()));
+    }
+
     public void exitStm_expr(adeleParser.Stm_exprContext ctx) {
         System.err.println("exitStm_expr:");
 
@@ -131,10 +135,28 @@ public class TransPhase extends adeleBaseListener {
         System.err.println(codes.get(ctx));
     }
 
-	public void exitStm_dec(adeleParser.Stm_decContext ctx) {
+    public void exitStm_dec(adeleParser.Stm_decContext ctx) {
         System.err.println("exitStm_dec:");
 
         codes.put(ctx, codes.get(ctx.declaration()) + ';');
+
+        System.err.println(codes.get(ctx));
+    }
+
+    public void enterIf_stmt(adeleParser.If_stmtContext ctx) {
+        //currentScope = scopes.get(ctx);
+    }
+
+    public void exitIf_stmt(adeleParser.If_stmtContext ctx) {
+        System.err.println("exitIf_stmt:" + ctx.getText());
+
+        // Mark for it excepts currently
+        //currentScope = currentScope.getEnclosingScope();
+
+        ST ifstmt = stg.getInstanceOf("ifstmt");
+        ifstmt.add("expr", codes.get(ctx.expr()));
+        ifstmt.add("body", codes.get(ctx.stmts()));
+        codes.put(ctx, ifstmt.render());
 
         System.err.println(codes.get(ctx));
     }
