@@ -21,3 +21,5 @@ clean:
 	@rm -f *.tokens
 	@rm -f *.java
 	@rm -f *.class
+	@rm -f *.html
+	@rm -f *.js
