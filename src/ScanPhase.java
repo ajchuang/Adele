@@ -63,7 +63,7 @@ class ScanPhase extends adeleBaseListener {
                     " of type " + pitem.type().getText ());
                 
                 /* to define in the function symbol */
-                //function.define ();
+                function.setParam (pitem.pid.getText (), null);
                 
             } else if (item instanceof adeleParser.Pitem_groupContext) {
                 
@@ -73,7 +73,7 @@ class ScanPhase extends adeleBaseListener {
                     " of type " + pitem.gid.getText ());
                     
                 /* to define in the function symbol */
-                //function.define ();
+                function.setParam (pitem.pid.getText (), null);
             }
         }
     }
