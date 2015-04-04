@@ -22,13 +22,17 @@ vardecl(vtype, vname, value) ::= "var $vname$$init(value)$"
 
 init(value) ::= "$if(value)$ = $value$$endif$"
 
-ifstmt(expr, body) ::= <<if ($expr$) {
-  $body; separator="\n"$
-}>>
+ifstmt(expr, body) ::= <<
+if ($expr$) {
+    $body; separator="\n"$
+}
+>>
 
-whilestmt(expr, body) ::= <<while ($expr$) {
-  $body; separator="\n"$
-}>>
+whilestmt(expr, body) ::= <<
+while ($expr$) {
+    $body; separator="\n"$
+}
+>>
 
 html(jssource) ::= <<
 <html>
