@@ -127,6 +127,10 @@ public class TransPhase extends adeleBaseListener {
         codes.put(ctx, codes.get(ctx.if_stmt()));
     }
 
+    public void exitStm_while(adeleParser.Stm_whileContext ctx) {
+        codes.put(ctx, codes.get(ctx.while_stmt()));
+    }
+
     public void exitStm_expr(adeleParser.Stm_exprContext ctx) {
         System.err.println("exitStm_expr:");
 
@@ -148,7 +152,7 @@ public class TransPhase extends adeleBaseListener {
     }
 
     public void exitIf_stmt(adeleParser.If_stmtContext ctx) {
-        System.err.println("exitIf_stmt:" + ctx.getText());
+        System.err.println("exitIf_stmt:");
 
         // Mark for it excepts currently
         //currentScope = currentScope.getEnclosingScope();
@@ -157,6 +161,24 @@ public class TransPhase extends adeleBaseListener {
         ifstmt.add("expr", codes.get(ctx.expr()));
         ifstmt.add("body", codes.get(ctx.stmts()));
         codes.put(ctx, ifstmt.render());
+
+        System.err.println(codes.get(ctx));
+    }
+
+    public void enterWhile_stmt(adeleParser.While_stmtContext ctx) {
+        //currentScope = scopes.get(ctx);
+    }
+
+    public void exitWhile_stmt(adeleParser.While_stmtContext ctx) {
+        System.err.println("exitWhile_stmt:");
+
+        // Mark for it excepts currently
+        //currentScope = currentScope.getEnclosingScope();
+
+        ST whilestmt = stg.getInstanceOf("whilestmt");
+        whilestmt.add("expr", codes.get(ctx.expr()));
+        whilestmt.add("body", codes.get(ctx.stmts()));
+        codes.put(ctx, whilestmt.render());
 
         System.err.println(codes.get(ctx));
     }
