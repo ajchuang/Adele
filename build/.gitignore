@@ -2,7 +2,9 @@
 *DS_Store
 *.java
 *.tokens
-#.html
+# ignore the generated result under build
+*.html
+*.js
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
