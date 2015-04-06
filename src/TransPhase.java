@@ -241,12 +241,40 @@ public class TransPhase extends adeleBaseListener {
         System.err.println("exitAdd: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
 
         /* output a: this is the last expression */
+        /*
         ST add = stg.getInstanceOf("add");
         add.add("lhs", codes.get(ctx.expr(0)));
         add.add("rhs", codes.get(ctx.expr(1)));
-
+        */
+    
         /* set the code to the node */
-        codes.put(ctx, add.render());
+        //codes.put(ctx, add.render());
+
+        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.ADDITIVE_OP() + codes.get(ctx.expr(1)));
+
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitMult(adeleParser.MultContext ctx) {
+        System.err.println("exitMult: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
+
+        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.MULTI_OP() + codes.get(ctx.expr(1)));
+
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitCompare(adeleParser.CompareContext ctx) {
+        System.err.println("exitCompare: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
+
+        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.COMPARE_OP() + codes.get(ctx.expr(1)));
+
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitParenExpr(adeleParser.ParenExprContext ctx) {
+        System.err.println("exitParenExpr: " + ctx.expr().getText());
+
+        codes.put(ctx, ctx.LPAREN() + codes.get(ctx.expr()) + ctx.RPAREN());
 
         System.err.println(codes.get(ctx));
     }
