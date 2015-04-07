@@ -5,11 +5,9 @@ int main ()
     int y = 3;
 
     print_str (x, y, "Hello World!");
-    sleep (1000);
     print_str (20, y, "No kidding");
 
     if (x)
-        sleep(5000);
         print_str(0, 0, "Test if statement");
     end
 
@@ -18,4 +16,10 @@ int main ()
         print_str(1, z, "Test while statement");
         y = 0;
     end
+
+    graph bg = str2graph("Test\nBackground Graph");
+    graph fg = str2graph("Test Foreground");
+    fg // bg @ (0, 0);
+    bg @ (10, x*2+y);
+    draw();
 end

@@ -52,7 +52,7 @@ public class TransPhase extends adeleBaseListener {
 
         StringBuilder prog = new StringBuilder();
         ST befprog = stg.getInstanceOf("befprog");
-        ST aftprog = stg.getInstanceOf("aftprog");
+        //ST aftprog = stg.getInstanceOf("aftprog");
 
         prog.append(befprog.render());
         for (int i = 0; i < ctx.getChildCount(); ++i) {
@@ -65,8 +65,6 @@ public class TransPhase extends adeleBaseListener {
                 }
             }
         }
-        prog.append('\n');
-        prog.append(aftprog.render());
 
         //System.err.println(prog.toString());
 
@@ -278,6 +276,31 @@ public class TransPhase extends adeleBaseListener {
 
         System.err.println(codes.get(ctx));
     }
+
+    public void exitOverlay(adeleParser.OverlayContext ctx) {
+        System.err.println("exitOverlay: ");
+        ST overlay = stg.getInstanceOf("overlay");
+        overlay.add("fg", ctx.ID(0).getText());
+        overlay.add("bg", ctx.ID(1).getText());
+        overlay.add("r", ctx.expr(0).getText());
+        overlay.add("c", ctx.expr(1).getText());
+
+        codes.put(ctx, overlay.render());
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitAtexpr(adeleParser.AtexprContext ctx) {
+        System.err.println("exitAt: ");
+        ST at = stg.getInstanceOf("at");
+        at.add("fg", ctx.ID().getText());
+        at.add("r", ctx.expr(0).getText());
+        at.add("c", ctx.expr(1).getText());
+
+        codes.put(ctx, at.render());
+        System.err.println(codes.get(ctx));
+    }
+
+
 
     public void exitFuncCall(adeleParser.FuncCallContext ctx) {
         System.err.println("exitFuncCall: " + ctx.ID().getText());
