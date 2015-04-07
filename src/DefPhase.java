@@ -40,8 +40,8 @@ class DefPhase extends adeleBaseListener {
     /* when entering group definition */
     public void enterType_declaration (adeleParser.Type_declarationContext ctx) {
         System.err.println ("enterType_declaration:" + ctx.ID ().getText ());
-        GroupSymbol gs = (GroupSymbol)currentScope.resolve(ctx.ID ().getText ());
-        // currentScope.define(gs);
+        String symbolName = "group " + ctx.ID ().getText ();
+        GroupSymbol gs = (GroupSymbol)currentScope.resolve(symbolName);
         saveScope(ctx, gs);
         currentScope = gs;
     }
@@ -89,7 +89,7 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void enterFunc (adeleParser.FuncContext ctx) {
-        String name = ctx.id.getText();
+        String name = ctx.ID().getText();
         String typeStr = ctx.type().getText();
         Type type = (Type)currentScope.resolve(typeStr);
 
@@ -113,25 +113,29 @@ class DefPhase extends adeleBaseListener {
         setValue(ctx, right);
     }
 
-    /* declare a group variable */
-    public void exitGroupDecl (adeleParser.GroupDeclContext ctx) {
-        String typeStr = ctx.gid.getText();
-        Symbol type = currentScope.resolve(typeStr);
-        if (type == null) {
-            err("no such group: " + typeStr);
-        } else if (type instanceof FunctionSymbol) {
-            err(typeStr + " is not a group type");
-        } else {
-            GroupSymbol group = new GroupSymbol(ctx.id.getText(), (Scope)type);
-            currentScope.define(group);
-        }
-    }
-
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
-        String typeStr = ctx.type().getText();
-        Type type = (Type)currentScope.resolve(typeStr);
+        Type type = (Type)getValue(ctx.type());
+        if (type == null)
+            return;
+
         VariableSymbol var = new VariableSymbol(ctx.ID().getText(), type);
         currentScope.define(var);
+    }
+
+    public void exitType(adeleParser.TypeContext ctx) {
+        String typeStr = ctx.start.getText();
+        /* typeStr = 'int','string',... or 'group' */
+
+        if (typeStr.equals("group"))
+            typeStr += " " + ctx.ID().getText();
+
+        Object type = currentScope.resolve(typeStr);
+        if (type == null) {
+            err("Type '" + typeStr + "' is not defined");
+            return;
+        }
+
+        setValue(ctx, type);
     }
 
     /********** expr **********/

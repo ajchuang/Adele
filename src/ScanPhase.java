@@ -18,7 +18,8 @@ class ScanPhase extends adeleBaseListener {
         String typeName = ctx.ID ().getText ();
         System.err.println ("exitType_declaration:" + typeName);
 
-        GroupSymbol gs = new GroupSymbol(typeName, globals);
+        /* save symbol name as 'group x', s.t. x can still be used as var name */
+        GroupSymbol gs = new GroupSymbol("group " + typeName, globals);
         globals.define(gs);
 
         // try {

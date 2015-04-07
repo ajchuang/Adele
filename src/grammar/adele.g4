@@ -29,14 +29,12 @@ type_declaration:
         ;
 
 type_dec_item:
-            type    vid=ID              #dec_item_prim
-        |   GROUP   gid=ID vid=ID       #dec_item_group
-        ;
+            type ID;
 
 /* function and its parameters */
 /******************************************************************************/
 func:
-            ( type | GROUP gid=ID ) id=ID LPAREN plist RPAREN
+            type ID LPAREN plist RPAREN
             stmts
             END
         ;
@@ -45,10 +43,7 @@ plist:
         |   (pitem COMMA)* pitem
         ;
 
-pitem:
-            type pid=ID                 #pitem_prim
-        |   GROUP gid=ID pid=ID         #pitem_group
-        ;
+pitem:  type ID;
 
 /* statments: if, while, declarations */
 /******************************************************************************/
@@ -75,10 +70,8 @@ while_stmt:
         ;
 
 declaration:
-            GROUP gid=ID id=ID                             #groupDecl
-        |   type ID                                 #varDecl
-        |   type ID EQUAL expr                      #varDeclAssign
-        |   (type | GROUP ID) ID array_access       #arrayDecl
+            type ID (EQUAL expr)?                   #varDecl
+        |   type ID array_access                    #arrayDecl
         ;
 
 array_access:
@@ -121,6 +114,8 @@ fpitem:
             expr
         ;
 
-type:   'int' | 'float' | 'char' | 'bool' | 'void' | 'string';
+type:       'int' | 'float' | 'char' | 'bool' | 'void' | 'string'
+        |   GROUP ID
+        ;
 
 
