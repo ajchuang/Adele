@@ -51,10 +51,12 @@ public class TransPhase extends adeleBaseListener {
         System.err.println("exitProg:");
 
         StringBuilder prog = new StringBuilder();
+        StringBuilder testprog = new StringBuilder();
         ST befprog = stg.getInstanceOf("befprog");
+        ST befprog_test = stg.getInstanceOf("befprog_test");
         //ST aftprog = stg.getInstanceOf("aftprog");
 
-        prog.append(befprog.render());
+        //prog.append(befprog.render());
         for (int i = 0; i < ctx.getChildCount(); ++i) {
             if (ctx.getChild(i) != null) {
                 if (ctx.getChild(i) instanceof TerminalNode) {
@@ -64,6 +66,17 @@ public class TransPhase extends adeleBaseListener {
                     prog.append(codes.get(ctx.getChild(i)));
                 }
             }
+        }
+        testprog.append(prog.toString());
+        prog.insert(0, befprog.render());
+        testprog.insert(0, befprog_test.render());
+
+        List<adeleParser.FuncContext> func_list = ctx.func();
+        for (int i = 0; i < func_list.size(); ++i) {
+            ST funcexports = stg.getInstanceOf("funcexports");
+            funcexports.add("fname", func_list.get(i).ID());
+            testprog.append('\n');
+            testprog.append(funcexports.render());
         }
 
         //System.err.println(prog.toString());
@@ -81,6 +94,11 @@ public class TransPhase extends adeleBaseListener {
             htmlOut.println(html.render());
             htmlOut.flush();
             htmlOut.close();
+
+            PrintWriter jsTestOut = new PrintWriter("../test/"+outName + "_test.js", "utf-8");
+            jsTestOut.println(testprog.toString());
+            jsTestOut.flush();
+            jsTestOut.close();
         } catch (IOException ioe) {
             System.out.println("Failed in outputing files");
         }
