@@ -126,6 +126,7 @@ var str2graph = function (str) {
   for (i in str) {
     if (str[i]=="\n") {
       height++;
+      if (cw>width) width = cw;
       cw = 0;
     } else {
       cw++;
@@ -155,7 +156,7 @@ var sleep = function (milliseconds) {
       }
   }
 };
-
+/*
 var print_str = function(r, c, str) {
   if (r==undefined || c==undefined || str==undefined) {
     r = 0; c = 0; str = "hello world";
@@ -164,10 +165,11 @@ var print_str = function(r, c, str) {
   g.at(r, c);
   canvas.draw();
 };
+*/
 
 var draw = function() {
   canvas.draw();
-}
+};
 
 jQuery(document).ready(function(){
   canvas.init();

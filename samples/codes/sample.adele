@@ -1,4 +1,16 @@
 int x;
+int flag;
+
+int gengraph(graph fg, graph bg)
+    fg // bg @ (0, 0);
+    return 0;
+end
+
+void print_str(int r, int c, string s)
+  graph g = str2graph(s);
+  g @ (r, c);
+  draw();
+end
 
 int main ()
     int x = 10;
@@ -19,7 +31,8 @@ int main ()
 
     graph bg = str2graph("Test\nBackground Graph");
     graph fg = str2graph("Test Foreground");
-    fg // bg @ (0, 0);
+
+    flag = gengraph(fg, bg);
     bg @ (10, x*2+y);
     draw();
 end

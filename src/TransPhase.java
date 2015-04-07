@@ -97,11 +97,45 @@ public class TransPhase extends adeleBaseListener {
 
         ST func = stg.getInstanceOf("funcdef");
         func.add("fname", ctx.ID());
+        func.add("params", codes.get(ctx.plist()));
         func.add("body", codes.get(ctx.stmts()));
         codes.put(ctx, func.render());
 
         System.err.println(codes.get(ctx));
     }
+
+    public void exitPlist(adeleParser.PlistContext ctx) {
+        System.err.println("exitPlist:");
+
+        StringBuilder plist = new StringBuilder();
+
+        if (ctx.getChild(0) != null) {
+            plist.append(codes.get(ctx.getChild(0)));
+        }
+        for (int i = 1; i < ctx.getChildCount(); ++i) {
+            if (ctx.getChild(i) != null &&
+                    !(ctx.getChild(i) instanceof TerminalNode)) {
+                /*
+                 * For function parameter list, the added part should not be
+                 * terminal.
+                 */
+                plist.append(",");
+                plist.append(codes.get(ctx.getChild(i)));
+            }
+        }
+        codes.put(ctx, plist.toString());
+
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitPitem_prim(adeleParser.Pitem_primContext ctx) {
+        System.err.println("exitPitem_prim:");
+
+        codes.put(ctx, ctx.ID().getText());
+
+        System.err.println(codes.get(ctx));
+    }
+
 
     public void exitStmts(adeleParser.StmtsContext ctx) {
         System.err.println("exitStmts:");
@@ -144,6 +178,15 @@ public class TransPhase extends adeleBaseListener {
 
         System.err.println(codes.get(ctx));
     }
+
+    public void exitStm_ret(adeleParser.Stm_retContext ctx){
+        System.err.println("exitStm_ret:");
+
+        codes.put(ctx, "return "+codes.get(ctx.expr())+';');
+
+        System.err.println(codes.get(ctx));
+    }
+
 
     public void enterIf_stmt(adeleParser.If_stmtContext ctx) {
         //currentScope = scopes.get(ctx);
