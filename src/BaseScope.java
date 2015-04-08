@@ -18,7 +18,15 @@ public abstract class BaseScope implements Scope {
 
     public void define(Symbol sym) {
         if (symbols.containsKey(sym.name)) {
-            System.err.println("variable "+sym.name
+            String symType;
+            if (sym instanceof VariableSymbol)
+                symType = "variable";
+            else if (sym instanceof GroupSymbol)
+                symType = "group";
+            else
+                symType = "function";
+
+            System.err.println(symType + " "+sym.name
                 + " is already defined in current scopes");
         } else {
             symbols.put(sym.name, sym);

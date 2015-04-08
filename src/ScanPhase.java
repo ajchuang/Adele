@@ -30,8 +30,15 @@ class ScanPhase extends adeleBaseListener {
         // }
     }
 
+    /*
+     * function must be defined after its return type has been defined;
+     * there will only be global functions
+     */
     public void enterFunc (adeleParser.FuncContext ctx) {
-
+        String funcName = ctx.ID().getText();
+        Type type = (Type)globals.resolve(ctx.type().getText());
+        FunctionSymbol fs = new FunctionSymbol("function " + funcName, type, globals);
+        globals.define(fs);
         /*
         String name = ctx.id.getText();
         String typeStr = ctx.type().getText();

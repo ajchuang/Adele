@@ -89,14 +89,13 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void enterFunc (adeleParser.FuncContext ctx) {
-        String name = ctx.ID().getText();
-        String typeStr = ctx.type().getText();
-        Type type = (Type)currentScope.resolve(typeStr);
+        String symbolName = "function " + ctx.ID().getText();
+        Type type = (Type)getValue(ctx.type());
 
-        FunctionSymbol function = new FunctionSymbol (name, type, currentScope);
-        currentScope.define (function); // Define function in current scope
-        saveScope (ctx, function);      // Push: set function's parent to current
-        currentScope = function;        // Current scope is now function scope
+        FunctionSymbol function =
+                (FunctionSymbol)currentScope.resolve(symbolName);
+        saveScope (ctx, function);
+        currentScope = function;
 
         /* TODO: save the parameters for the function symbol */
         //for (int i=0; i<ctx.getChildCount (); ++i) {
@@ -115,8 +114,6 @@ class DefPhase extends adeleBaseListener {
 
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
         Type type = (Type)getValue(ctx.type());
-        if (type == null)
-            return;
 
         VariableSymbol var = new VariableSymbol(ctx.ID().getText(), type);
         currentScope.define(var);
@@ -159,10 +156,19 @@ class DefPhase extends adeleBaseListener {
             err(name+" is not a variable");
         }
     }
+
+    public void exitFuncCall (adeleParser.FuncCallContext ctx) {
+        err("enter exitFuncCall");
+        String funcName = ctx.ID().getText();
+        Symbol fs = currentScope.resolve("function " + funcName);
+        if (fs == null)
+            err("no such function: " + funcName);
+    }
     /*************************/
 
     private void err(String msg) {
         System.err.println(msg);
+        // System.exit(1);
     }
 
 }
