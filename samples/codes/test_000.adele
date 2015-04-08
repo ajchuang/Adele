@@ -30,7 +30,7 @@ void main ()
     end
 end
 
-int calc ()
+int calc (int y, group test_group yy)
     int x = 10;
     return x;
 end

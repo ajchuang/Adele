@@ -8,8 +8,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 class ScanPhase extends adeleBaseListener {
 
     GlobalScope globals;
+    ParseTreeProperty<Type> values = new ParseTreeProperty<Type>();
 
-    public ScanPhase(SymbolTable symtab) {
+    public ScanPhase (SymbolTable symtab) {
         globals = symtab.globals;
     }
 
@@ -21,6 +22,7 @@ class ScanPhase extends adeleBaseListener {
         /* save symbol name as 'group x', s.t. x can still be used as var name */
         GroupSymbol gs = new GroupSymbol("group " + typeName, globals);
         globals.define(gs);
+        System.err.println(gs.getName() + " is created");
 
         // try {
         //     TypeGroup ut = new TypeGroup (typeName);
@@ -34,37 +36,60 @@ class ScanPhase extends adeleBaseListener {
      * function must be defined after its return type has been defined;
      * there will only be global functions
      */
-    public void enterFunc (adeleParser.FuncContext ctx) {
-        String funcName = ctx.ID().getText();
+    public void exitFunc (adeleParser.FuncContext ctx) {
+        String name = ctx.ID().getText();
         Type type = (Type)globals.resolve(ctx.type().getText());
-        FunctionSymbol fs = new FunctionSymbol("function " + funcName, type, globals);
+        FunctionSymbol fs = new FunctionSymbol("function " + name, type, globals);
         globals.define(fs);
+
         /*
-        String name = ctx.id.getText();
-        String typeStr = ctx.type().getText();
-        Symbol.Type type = Symbol.getType(typeStr);
+         * ZX: The following part is moved to BaseScope.java, in define()
+         *
+         * semantic check: no same name functions are allowed
 
-        FunctionSymbol function = new FunctionSymbol (name, type, currentScope);
-        currentScope.define (function); // Define function in current scope
-        saveScope (ctx, function);      // Push: set function's parent to current
-        currentScope = function;        // Current scope is now function scope
+        Symbol s = globals.resolve (name);
 
-        for (int i=0; i<ctx.getChildCount (); ++i) {
-            ParseTree node = ctx.getChild (i);
-
-            if (node instanceof PlistContext) {
-                PlistContext pnode = (PlistContext) node;
-
-                for (int j=0; j<pnode.getChildCount(); ++j) {
-
-                    if (pnode instanceof Pitem_primContext) {
-
-                        System.err.println ("param: " + pnode.getText ());
-
-                    }
-                }
-            }
+        TODO: we should use the errorhandler to handle this
+        if (s != null && s instanceof FunctionSymbol) {
+            System.err.println ("Function " + name + " is duplicated.");
+            System.exit (0);
         }
-        */
+         */
+
+        /* create the function symbol and put it into the global scope */
+        System.err.println ("Function " + name + " is defined.");
+
+        adeleParser.PlistContext plist = ctx.plist ();
+        List<adeleParser.PitemContext> items = plist.pitem ();
+
+        for (int i=0; i<items.size(); ++i) {
+
+            adeleParser.PitemContext pitem = items.get (i);
+            Type ptype = values.get(pitem.type());
+            if (ptype == null)
+                System.err.println("null");
+            System.err.println (
+                "  found param: " + pitem.ID().getText () +
+                " of type " + ptype.getName());
+
+            /* to define in the function symbol */
+            fs.setParam (pitem.ID().getText (), null);
+        }
+    }
+
+    public void exitType(adeleParser.TypeContext ctx) {
+        String typeStr = ctx.start.getText();
+        /* typeStr = 'int','string',... or 'group' */
+
+        if (typeStr.equals("group"))
+            typeStr += " " + ctx.ID().getText();
+
+        Type type = (Type)globals.resolve(typeStr);
+        if (type == null) {
+            System.err.println("Type '" + typeStr + "' is not defined");
+            return;
+        }
+
+        values.put(ctx, type);
     }
 }

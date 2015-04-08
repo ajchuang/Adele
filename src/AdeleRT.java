@@ -48,6 +48,13 @@ public class AdeleRT {
             new ParseTreeProperty<String>();
 
         TransPhase trans = new TransPhase (symtab.globals, def.scopes, def.values, codes);
+        // The codes below are marked for easier testing
+        /*if (fname != null) {
+            String filename = new File(fname).getName();
+            int pos = filename.lastIndexOf('.');
+            if (pos > 0)
+                trans.setOutputFilename(filename.substring(0, pos));
+        }*/
         walker.walk (trans, tree);
     }
 

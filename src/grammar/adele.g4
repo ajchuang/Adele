@@ -71,11 +71,11 @@ while_stmt:
 
 declaration:
             type ID (EQUAL expr)?                   #varDecl
-        |   type ID array_access                    #arrayDecl
+        |   type ID array_dimen                     #arrayDecl
         ;
 
-array_access:
-            LSB NUM RSB array_access
+array_dimen:
+            LSB NUM RSB array_dimen
         |   LSB NUM RSB
         ;
 
@@ -93,11 +93,17 @@ expr:
         |   expr MULTI_OP    expr           #mult           /* multiplication & division */
         |   expr ADDITIVE_OP expr           #add            /* addition */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
-        |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN #overlay   /* @lfred: to fix - lame overlay */
+        |   ID OVERLAY ID AT LPAREN expr COMMA expr RPAREN #overlay   /* @lfred: to fix - lame overlay */
+        |   ID AT LPAREN expr COMMA expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
         |   ID EQUAL expr                   #assign         /* assignment */
         |   ID      #var
         |   NUM     #num
         |   STR     #string
+        ;
+
+array_access:
+            LSB expr RSB array_access
+        |   LSB expr RSB
         ;
 
 member_access:
@@ -114,7 +120,7 @@ fpitem:
             expr
         ;
 
-type:       'int' | 'float' | 'char' | 'bool' | 'void' | 'string'
+type:       'int' | 'float' | 'char' | 'bool' | 'void' | 'string' | 'graph'
         |   GROUP ID
         ;
 
