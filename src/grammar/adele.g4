@@ -43,7 +43,10 @@ plist:
         |   (pitem COMMA)* pitem
         ;
 
-pitem:  type ID;
+pitem:
+            type pid=ID                 #pitem_prim
+        |   GROUP gid=ID pid=ID         #pitem_group  
+        ;
 
 /* statments: if, while, declarations */
 /******************************************************************************/
@@ -70,13 +73,15 @@ while_stmt:
         ;
 
 declaration:
-            type ID (EQUAL expr)?                   #varDecl
-        |   type ID array_dimen                     #arrayDecl
+            GROUP gid=ID id=ID                      #groupDecl
+        |   type ID                                 #varDecl
+        |   type ID EQUAL expr                      #varDeclAssign
+        |   (type | GROUP ID) ID array_dimen        #arrayDecl
         ;
 
 array_dimen:
-            LSB NUM RSB array_dimen
-        |   LSB NUM RSB
+            LSB NUM RSB array_dimen                 #arrayDimenRecursion
+        |   LSB NUM RSB                             #arrayDimenSingle
         ;
 
 /******************************************************************************/
@@ -96,14 +101,15 @@ expr:
         |   ID OVERLAY ID AT LPAREN expr COMMA expr RPAREN #overlay   /* @lfred: to fix - lame overlay */
         |   ID AT LPAREN expr COMMA expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
         |   ID EQUAL expr                   #assign         /* assignment */
+        |   ID array_access EQUAL expr      #arrayAssign
         |   ID      #var
         |   NUM     #num
         |   STR     #string
         ;
 
 array_access:
-            LSB expr RSB array_access
-        |   LSB expr RSB
+            LSB expr RSB array_access       #arrayAccessRecursion
+        |   LSB expr RSB                    #arrayAccessSingle
         ;
 
 member_access:
