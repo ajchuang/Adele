@@ -1,9 +1,14 @@
-int x;
+int x = 1;
 int flag;
 
 int gengraph(graph fg, graph bg)
     fg // bg @ (0, 0);
     return 0;
+end
+
+int scope()
+    int x = 2;
+    return x;
 end
 
 void print_str(int r, int c, string s)

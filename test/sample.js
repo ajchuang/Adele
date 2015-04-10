@@ -12,16 +12,22 @@ exports.testGraph = function(test) {
   , { g: f.str2graph("Another\ng2 test"), h: 2, w: 7}
   , { g: f.str2graph("Final one\nsecond line\nthird line ends"), h:3, w: 15}
   ];
-  var flag = true;
+  var flag = true, wrong_case_number;
   for (tci in testcase) {
     var tc = testcase[tci];
     if (tc.g.width!=tc.w || tc.g.height!=tc.h) {
       flag = false;
-      console.log("Test Case "+tci+" Error");
+      wrong_case_number = tci;
+      break;
     }
   }
 
-  test.ok(flag, "Test graph");
+  test.ok(flag, "Test graph Error " + wrong_case_number);
   test.done();
 };
 
+
+exports.testScope = function(test) {
+  test.ok(f.scope()==2, "Test scope error");
+  test.done();
+}
