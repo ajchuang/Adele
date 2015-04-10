@@ -13,9 +13,11 @@ class DefPhase extends adeleBaseListener {
 
     GlobalScope globals;
     Scope currentScope;
+    int errcount;
 
     public DefPhase(SymbolTable symtab) {
         globals = symtab.globals;
+        errcount = 0;
     }
 
     public void setValue (ParseTree node, Object value) {
@@ -35,11 +37,16 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitProg (adeleParser.ProgContext ctx) {
+        if (errcount > 0) {
+            String msg = errcount == 1 ? "1 error" : errcount+" errors";
+            print(msg);
+            System.exit(1);
+        }
     }
 
     /* when entering group definition */
     public void enterType_declaration (adeleParser.Type_declarationContext ctx) {
-        System.err.println ("enterType_declaration:" + ctx.ID ().getText ());
+        print ("enterType_declaration:" + ctx.ID ().getText ());
         String symbolName = "group " + ctx.ID ().getText ();
         GroupSymbol gs = (GroupSymbol)currentScope.resolve(symbolName);
         saveScope(ctx, gs);
@@ -49,7 +56,7 @@ class DefPhase extends adeleBaseListener {
     public void exitType_declaration (adeleParser.Type_declarationContext ctx) {
 
         String typeName = ctx.ID ().getText ();
-        System.err.println ("exitType_declaration:" + typeName);
+        print ("exitType_declaration:" + typeName);
 
         currentScope = currentScope.getEnclosingScope();
 
@@ -80,7 +87,7 @@ class DefPhase extends adeleBaseListener {
                 }
             }
 
-            System.err.println ("" + ut);
+            print ("" + ut);
 
         } catch (Exception e) {
             throw new IllegalStateException ("illegal type definition");
@@ -96,11 +103,6 @@ class DefPhase extends adeleBaseListener {
                 (FunctionSymbol)currentScope.resolve(symbolName);
         saveScope (ctx, function);
         currentScope = function;
-
-        /* TODO: save the parameters for the function symbol */
-        //for (int i=0; i<ctx.getChildCount (); ++i) {
-        //    ParseTree node = ctx.getChild (i);
-        //}
     }
 
     public void exitFunc (adeleParser.FuncContext ctx) {
@@ -128,7 +130,7 @@ class DefPhase extends adeleBaseListener {
 
         Object type = currentScope.resolve(typeStr);
         if (type == null) {
-            err("Type '" + typeStr + "' is not defined");
+            err(ctx.start.getLine(),"Type '" + typeStr + "' is not defined");
             return;
         }
 
@@ -150,25 +152,29 @@ class DefPhase extends adeleBaseListener {
         String name = ctx.ID().getSymbol().getText();
         Symbol var = currentScope.resolve(name);
         if ( var==null ) {
-            err("no such variable: "+name);
+            err(ctx.start.getLine(), "no such variable: "+name);
         }
         if ( var instanceof FunctionSymbol ) {
-            err(name+" is not a variable");
+            err(ctx.start.getLine(), name+" is not a variable");
         }
     }
 
     public void exitFuncCall (adeleParser.FuncCallContext ctx) {
-        err("enter exitFuncCall");
+        print("enter exitFuncCall");
         String funcName = ctx.ID().getText();
         Symbol fs = currentScope.resolve("function " + funcName);
         if (fs == null)
-            err("no such function: " + funcName);
+            err(ctx.start.getLine(), "no such function: " + funcName);
     }
     /*************************/
 
-    private void err(String msg) {
+    private void err(int line, String msg) {
+        System.err.println("line " + line + ": " + msg);
+        errcount++;
+    }
+
+    private void print(String msg) {
         System.err.println(msg);
-        // System.exit(1);
     }
 
 }
