@@ -47,16 +47,15 @@ class ScanPhase extends adeleBaseListener {
          *
          * semantic check: no same name functions are allowed
 
-        Symbol s = globals.resolve (name);
+            Symbol s = globals.resolve (name);
 
-        TODO: we should use the errorhandler to handle this
-        if (s != null && s instanceof FunctionSymbol) {
-            System.err.println ("Function " + name + " is duplicated.");
-            System.exit (0);
-        }
+            TODO: we should use the errorhandler to handle this
+            if (s != null && s instanceof FunctionSymbol) {
+                System.err.println ("Function " + name + " is duplicated.");
+                System.exit (0);
+            }
          */
 
-        /* create the function symbol and put it into the global scope */
         System.err.println ("Function " + name + " is defined.");
 
         adeleParser.PlistContext plist = ctx.plist ();
@@ -65,16 +64,18 @@ class ScanPhase extends adeleBaseListener {
         for (int i=0; i<items.size(); ++i) {
 
             adeleParser.PitemContext pitem = items.get (i);
-            Type ptype = values.get(pitem.type());
-            if (ptype == null)
-                System.err.println("null");
-            System.err.println (
-                "  found param: " + pitem.ID().getText () +
-                " of type " + ptype.getName());
+            String p_name = pitem.ID().getText();
+            Type p_type = values.get(pitem.type());
+            // if (ptype == null)
+            //     System.err.println("null");
 
-            /* to define in the function symbol */
-            fs.setParam (pitem.ID().getText (), null);
+            VariableSymbol vs = new VariableSymbol(p_name, p_type);
+            boolean succ = fs.setParam (p_name, vs);
+            if (!succ);
+                /* TODO: handle err */
         }
+
+        System.err.println("  "+fs.toString());
     }
 
     public void exitType(adeleParser.TypeContext ctx) {

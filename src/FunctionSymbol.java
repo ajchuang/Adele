@@ -23,8 +23,9 @@ public class FunctionSymbol extends ScopedSymbol {
     }
 
     public String toString() {
-        return "function "+name+"("+
-            arguments.keySet().toString()+")";
+        /* name contains 'function ' */
+        return name+
+        "("+arguments.values().toString()+")";
     }
 }
 
