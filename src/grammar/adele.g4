@@ -75,15 +75,15 @@ while_stmt:
         ;
 
 declaration:
-            GROUP gid=ID id=ID                             #groupDecl
+            GROUP gid=ID id=ID                      #groupDecl
         |   type ID                                 #varDecl
         |   type ID EQUAL expr                      #varDeclAssign
-        |   (type | GROUP ID) ID array_dimen       #arrayDecl
+        |   (type | GROUP ID) ID array_dimen        #arrayDecl
         ;
 
 array_dimen:
-            LSB NUM RSB array_dimen
-        |   LSB NUM RSB
+            LSB NUM RSB array_dimen                 #arrayDimenRecursion
+        |   LSB NUM RSB                             #arrayDimenSingle
         ;
 
 /******************************************************************************/
@@ -100,17 +100,17 @@ expr:
         |   expr MULTI_OP    expr           #mult           /* multiplication & division */
         |   expr ADDITIVE_OP expr           #add            /* addition */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
-        |   ID OVERLAY ID AT LPAREN expr COMMA expr RPAREN #overlay   /* @lfred: to fix - lame overlay */
-        |   ID AT LPAREN expr COMMA expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
+        |   ID OVERLAY ID AT LPAREN NUM COMMA NUM RPAREN #overlay   /* @lfred: to fix - lame overlay */
         |   ID EQUAL expr                   #assign         /* assignment */
+        |   ID array_access EQUAL expr      #arrayAssign
         |   ID      #var
         |   NUM     #num
         |   STR     #string
         ;
 
 array_access:
-            LSB expr RSB array_access
-        |   LSB expr RSB
+            LSB expr RSB array_access       #arrayAccessRecursion
+        |   LSB expr RSB                    #arrayAccessSingle
         ;
 
 member_access:
@@ -127,6 +127,6 @@ fpitem:
             expr
         ;
 
-type:   'int' | 'float' | 'char' | 'bool' | 'void' | 'string' | 'graph';
+type:   'int' | 'float' | 'char' | 'bool' | 'void' | 'string';
 
 
