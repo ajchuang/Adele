@@ -10,7 +10,8 @@ public class Symbol { // A generic programming language symbol
     public String getName() { return name; }
 
     /* TODO: to fix. buggy */
-    static public Type getType (String vname) { return null; }
+    // static public Type getType (String vname) { return null; }
+    public Type getType () { return type; }
 
     public String toString () {
         String s = "";

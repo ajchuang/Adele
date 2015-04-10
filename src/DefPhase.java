@@ -10,6 +10,7 @@ class DefPhase extends adeleBaseListener {
     ParseTreeProperty<Scope>  scopes    = new ParseTreeProperty<Scope>();
     ParseTreeProperty<Object> values    = new ParseTreeProperty<Object>();
     ParseTreeProperty<Object> usrType   = new ParseTreeProperty<Object>();
+    ParseTreeProperty<Type> types    = new ParseTreeProperty<Type>();
 
     GlobalScope globals;
     Scope currentScope;
@@ -26,6 +27,14 @@ class DefPhase extends adeleBaseListener {
 
     public Object getValue (ParseTree node) {
         return values.get(node);
+    }
+
+    public void setType (ParseTree node, Type type) {
+        types.put (node, type);
+    }
+
+    public Type getType (ParseTree node) {
+        return types.get(node);
     }
 
     public void saveScope (ParserRuleContext ctx, Scope s) {
@@ -115,7 +124,7 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
-        Type type = (Type)getValue(ctx.type());
+        Type type = getType(ctx.type());
 
         VariableSymbol var = new VariableSymbol(ctx.ID().getText(), type);
         currentScope.define(var);
@@ -128,19 +137,28 @@ class DefPhase extends adeleBaseListener {
         if (typeStr.equals("group"))
             typeStr += " " + ctx.ID().getText();
 
-        Object type = currentScope.resolve(typeStr);
+        Type type = (Type)currentScope.resolve(typeStr);
         if (type == null) {
             err(ctx.start.getLine(),"Type '" + typeStr + "' is not defined");
             return;
         }
 
-        setValue(ctx, type);
+        setType(ctx, type);
     }
 
     /********** expr **********/
     public void exitAssign(adeleParser.AssignContext ctx) {
-        Object right = getValue(ctx.expr());
-        setValue(ctx, right);
+        // Object right = getValue(ctx.expr());
+        // setValue(ctx, right);
+        String name = ctx.ID().getText();
+        Symbol var = currentScope.resolve(name);
+        if ( var==null ) {
+            err(ctx.start.getLine(), "no such variable: "+name);
+        }
+
+        print("ID type: " + var.getType());
+        print("expr type: " + getType(ctx.expr()).getName());
+
     }
 
     public void exitNum(adeleParser.NumContext ctx) {
@@ -149,23 +167,15 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitVar (adeleParser.VarContext ctx) {
-        String name = ctx.ID().getSymbol().getText();
+        String name = ctx.ID().getText();
         Symbol var = currentScope.resolve(name);
         if ( var==null ) {
             err(ctx.start.getLine(), "no such variable: "+name);
         }
-        if ( var instanceof FunctionSymbol ) {
-            err(ctx.start.getLine(), name+" is not a variable");
-        }
+
+        setType(ctx, var.getType());
     }
 
-    public void exitFuncCall (adeleParser.FuncCallContext ctx) {
-        print("enter exitFuncCall");
-        String funcName = ctx.ID().getText();
-        Symbol fs = currentScope.resolve("function " + funcName);
-        if (fs == null)
-            err(ctx.start.getLine(), "no such function: " + funcName);
-    }
     /*************************/
 
     private void err(int line, String msg) {
