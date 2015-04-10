@@ -127,6 +127,7 @@ fpitem:
             expr
         ;
 
-type:   'int' | 'float' | 'char' | 'bool' | 'void' | 'string';
-
+type:       'int' | 'float' | 'char' | 'bool' | 'void' | 'string' | 'graph'
+        |   GROUP ID
+        ;
 
