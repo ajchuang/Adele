@@ -205,7 +205,31 @@ public class TransPhase extends adeleBaseListener {
 
         System.err.println(codes.get(ctx));
     }
+    
+    public void exitArrayDecl(adeleParser.ArrayDeclContext ctx) {
+        System.err.println("exitArrayDecl: " + ctx.ID(0));
+    
+        codes.put(ctx, "var " + ctx.ID(0) + "=" + codes.get(ctx.array_dimen()));
 
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitArrayDimenSingle(adeleParser.ArrayDimenSingleContext ctx) {
+        System.err.println("exitArrayDimensingle: " + ctx.LSB() + ctx.NUM() + ctx.RSB());
+
+        codes.put(ctx, "new Array()");
+
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitArrayDimenRecursion(adeleParser.ArrayDimenRecursionContext ctx) {
+        System.err.println("exitArrayDimenRecursion: " + ctx.LSB() + ctx.NUM() + ctx.RSB() + codes.get(ctx.array_dimen()));
+    
+        codes.put(ctx, "new Array(" + codes.get(ctx.array_dimen()) + ")");
+
+        System.err.println(codes.get(ctx));
+    }
+    
     public void exitNum(adeleParser.NumContext ctx) {
         System.err.println("exitNum: " + ctx.NUM());
         codes.put(ctx, ctx.NUM().getText());
@@ -300,7 +324,29 @@ public class TransPhase extends adeleBaseListener {
         System.err.println(codes.get(ctx));
     }
 
+    public void exitArrayAccess(adeleParser.ArrayAccessContext ctx) {
+        System.err.println("exitArrayAccess: " + ctx.ID());
+    
+        codes.put(ctx, ctx.ID() + codes.get(ctx.array_access()));
 
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitArrayAccessSingle(adeleParser.ArrayAccessSingleContext ctx) {
+        System.err.println("exitArray_access_single: " + ctx.LSB() + ctx.expr().getText() + ctx.RSB());
+
+        codes.put(ctx, ctx.LSB() + ctx.expr().getText() + ctx.RSB());
+
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitArrayAccessRecursion(adeleParser.ArrayAccessRecursionContext ctx) {
+        System.err.println("exitArray_access_recursion: " + ctx.LSB() + ctx.expr().getText() + ctx.RSB() + codes.get(ctx.array_access()));
+    
+        codes.put(ctx, ctx.LSB() + ctx.expr().getText() + ctx.RSB() + codes.get(ctx.array_access()));
+
+        System.err.println(codes.get(ctx));
+    }
 
     public void exitFuncCall(adeleParser.FuncCallContext ctx) {
         System.err.println("exitFuncCall: " + ctx.ID().getText());
