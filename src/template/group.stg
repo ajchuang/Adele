@@ -49,6 +49,10 @@ html(jssource) ::= <<
 >>
 
 befprog() ::= <<
+var clone = function (a) {
+   return JSON.parse(JSON.stringify(a));
+};
+
 var Pixel = function() {
   this.chr = '';
 };
@@ -66,6 +70,7 @@ var Graph = function(cfg) {
   this.overlay = function(bg, r, c) {
     for (var i = 0; i <this.height; i++) {
       for (var j = 0; j < this.width; j++) {
+        if (i+r>=bg.height || j+c>=bg.width) continue;
         bg.buffer[i+r][j+c].chr = this.buffer[i][j].chr;
       }
     }
@@ -75,11 +80,17 @@ var Graph = function(cfg) {
   }
 };
 
+
 var Canvas = function(cfg) {
   this.width = cfg.w;
   this.height = cfg.h;
   this.grid = cfg.g;
   this.buffer = [];
+  this.screen = [];
+  this.timeline = [];
+  this.interval = [];
+  this.sleeptime = 0;
+
   this.init = function () {
     jQuery(document.body).css('width', this.width*this.grid +'px').css('height', this.heigth*this.grid +'px');
 
@@ -94,21 +105,39 @@ var Canvas = function(cfg) {
 
     for (var i = 0; i < this.height; i++) {
       this.buffer[i] = [];
+      this.screen[i] = [];
       for (var j = 0; j < this.width; j++) {
         var p = new Pixel();
-        p.div = pixeldiv.clone().addClass('row-'+i).addClass('col-'+j).appendTo(document.body);
         this.buffer[i][j] = p;
+        this.screen[i][j] = pixeldiv.clone().addClass('row-'+i).addClass('col-'+j).appendTo(document.body);
       }
     }
-    this.draw();
+    this.timeline.push(this.buffer);
   };
   this.draw = function () {
+    this.timeline.push(clone(this.buffer));
+    this.interval.push(this.sleeptime);
+    this.sleeptime = 0;
+  };
+  this.flush = function () {
     for (var i = 0; i < this.height; i++) {
       for (var j = 0; j < this.width; j++) {
-        var p = this.buffer[i][j];
-        p.div.html(p.chr);
+        this.buffer[i][j] = new Pixel();
       }
     }
+  };
+  this.sleep = function(time) {
+    this.sleeptime = this.sleeptime + time;
+  };
+  this.play = function(fn) {
+    for (var i = 0; i < this.height; i++) {
+      for (var j = 0; j < this.width; j++) {
+        var p = this.timeline[fn][i][j];
+        this.screen[i][j].html(p.chr);
+      }
+    }
+    if (this.interval[fn]!=undefined) setTimeout(function(){
+    canvas.play(fn+1); }, this.interval[fn]);
   };
 };
 
@@ -151,12 +180,7 @@ var str2graph = function (str) {
 };
 
 var sleep = function (milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-      if ((new Date().getTime() - start) > milliseconds){
-          break;
-      }
-  }
+  canvas.sleep(milliseconds);
 };
 /*
 var print_str = function(r, c, str) {
@@ -173,9 +197,14 @@ var draw = function() {
   canvas.draw();
 };
 
+var flush = function() {
+  canvas.flush();
+};
+
 jQuery(document).ready(function(){
   canvas.init();
   main();
+  canvas.play(0);
 });
 
 >>
