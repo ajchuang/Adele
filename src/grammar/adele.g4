@@ -76,7 +76,7 @@ declaration:
             GROUP gid=ID id=ID                      #groupDecl
         |   type ID                                 #varDecl
         |   type ID EQUAL expr                      #varDeclAssign
-        |   (type | GROUP ID) ID array_dimen        #arrayDecl
+        |   (type | GROUP gid=ID) id=ID array_dimen #arrayDecl
         ;
 
 array_dimen:

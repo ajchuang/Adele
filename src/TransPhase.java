@@ -146,14 +146,13 @@ public class TransPhase extends adeleBaseListener {
         System.err.println(codes.get(ctx));
     }
 
-    public void exitPitem(adeleParser.PitemContext ctx) {
+    public void exitPitem_prim(adeleParser.Pitem_primContext ctx) {
         System.err.println("exitPitem:");
 
         codes.put(ctx, ctx.ID().getText());
 
         System.err.println(codes.get(ctx));
     }
-
 
     public void exitStmts(adeleParser.StmtsContext ctx) {
         System.err.println("exitStmts:");
@@ -247,11 +246,31 @@ public class TransPhase extends adeleBaseListener {
 
         ST decl = stg.getInstanceOf("vardecl");
         decl.add("vname", ctx.ID());
-        if (ctx.expr() != null)
-            decl.add("value", codes.get(ctx.expr()));
         codes.put(ctx, decl.render());
 
         System.err.println(codes.get(ctx));
+    }
+
+    public void exitVarDeclAssign(adeleParser.VarDeclAssignContext ctx) {
+        ST decl = stg.getInstanceOf("vardecl");
+        decl.add("vname", ctx.ID());
+        decl.add("value", codes.get(ctx.expr()));
+        codes.put(ctx, decl.render());
+    }
+
+    public void exitArrayDecl(adeleParser.ArrayDeclContext ctx) {
+        String decl_type = "";
+        if (ctx.type() != null)
+            decl_type = ctx.type().getText();
+        codes.put(ctx, decl_type + ctx.id.getText() + codes.get(ctx.array_dimen()));
+    }
+
+    public void exitArrayDimenRecursion(adeleParser.ArrayDimenRecursionContext ctx) {
+        codes.put(ctx, '[' + ctx.NUM().getText() + ']' + codes.get(ctx.array_dimen()));
+    }
+
+    public void exitArrayDimenSingle(adeleParser.ArrayDimenSingleContext ctx) {
+        codes.put(ctx, '[' + ctx.NUM().getText() + ']');
     }
 
     public void exitNum(adeleParser.NumContext ctx) {
@@ -348,7 +367,13 @@ public class TransPhase extends adeleBaseListener {
         System.err.println(codes.get(ctx));
     }
 
+    public void exitArrayAccess(adeleParser.ArrayAccessContext ctx) {
+        codes.put(ctx, ctx.ID().getText() + codes.get(ctx.array_access()));
+    }
 
+    public void exitArrayAssign(adeleParser.ArrayAssignContext ctx) {
+        codes.put(ctx, ctx.ID().getText() + codes.get(ctx.array_access()) + '=' + codes.get(ctx.expr()));
+    }
 
     public void exitFuncCall(adeleParser.FuncCallContext ctx) {
         System.err.println("exitFuncCall: " + ctx.ID().getText());
@@ -359,6 +384,14 @@ public class TransPhase extends adeleBaseListener {
         codes.put(ctx, funccall.render());
 
         System.err.println(codes.get(ctx));
+    }
+
+    public void exitArrayAccessRecursion(adeleParser.ArrayAccessRecursionContext ctx) {
+        codes.put(ctx, '[' + codes.get(ctx.expr()) + ']' + codes.get(ctx.array_access()));
+    }
+
+    public void exitArrayAccessSingle(adeleParser.ArrayAccessSingleContext ctx) {
+        codes.put(ctx, '[' + codes.get(ctx.expr()) + ']');
     }
 
     public void exitFpis(adeleParser.FpisContext ctx) {
