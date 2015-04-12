@@ -1,0 +1,63 @@
+int A[20];
+
+void drawhist()
+  flush();
+  graph g;
+  g = str2graph('#');
+  int i = 0;
+  while (i<20)
+    int j = 0;
+    while (j<A[i])
+      g @ (i, j);
+      j = j + 1;
+    end
+    i = i + 1;
+  end
+  draw();
+  sleep(500);
+end
+
+void qsort (int left, int right)
+  int i = left;
+  int j = right;
+  int tmp;
+  int pivot = A[(i+j)/2];
+
+  while (i<=j)
+    while (A[i]<pivot)
+      i = i + 1;
+    end
+
+    while (A[j]>pivot)
+      j = j - 1;
+    end
+
+      if (i<=j)
+      tmp = A[i];
+      A[i] = A[j];
+      A[j] = tmp;
+      i = i + 1;
+      j = j - 1;
+    end
+  end
+
+  if (left < j)
+      qsort (left, j)
+  end
+
+  if (right > i)
+      qsort (i, right)
+  end
+
+  drawhist();
+
+end
+
+
+int main ()
+  int t = 20;
+  while (t)
+    A[20-t] = t;
+  end
+  qsort(0, 19);
+end
