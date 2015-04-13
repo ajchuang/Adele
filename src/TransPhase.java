@@ -52,11 +52,13 @@ public class TransPhase extends adeleBaseListener {
 
         StringBuilder prog = new StringBuilder();
         StringBuilder testprog = new StringBuilder();
+
         ST befprog = stg.getInstanceOf("befprog");
         ST befprog_test = stg.getInstanceOf("befprog_test");
         //ST aftprog = stg.getInstanceOf("aftprog");
 
         //prog.append(befprog.render());
+        prog.append("\n/***** Start of source codes semantics *****/\n");
         for (int i = 0; i < ctx.getChildCount(); ++i) {
             if (ctx.getChild(i) != null) {
                 if (ctx.getChild(i) instanceof TerminalNode) {
@@ -67,6 +69,7 @@ public class TransPhase extends adeleBaseListener {
                 }
             }
         }
+        prog.append("\n/***** End of source codes semantics *****/\n");
         testprog.append(prog.toString());
         prog.insert(0, befprog.render());
         testprog.insert(0, befprog_test.render());
