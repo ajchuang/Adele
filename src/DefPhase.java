@@ -136,24 +136,58 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitArrayDecl(adeleParser.ArrayDeclContext ctx) {
-        Type elementType = getType(ctx.type());
+        // Type elementType = getType(ctx.type());
 
-        /* get dimension */
-        List<adeleParser.Array_dimenContext> dimensions = ctx.array_dimen();
-        int dimen = dimensions.size();
+        // /* get dimension */
+        // List<adeleParser.Array_dimenContext> dimensions = ctx.array_dimen();
+        // int dimen = dimensions.size();
 
-        /* TODO: record and check num in brackets */
+        // /* TODO: record and check num in brackets */
 
-        ArrayType symbolType = new ArrayType(elementType, dimen);
+        // ArrayType symbolType = new ArrayType(elementType, dimen);
         // print(ctx.ID().getText()+" type: "+symbolType.getName());
         // print(ctx.ID().getText()+" dimen: " + symbolType.getDimension());
-        VariableSymbol vs = new VariableSymbol(ctx.ID().getText(), symbolType);
+        // VariableSymbol vs = new VariableSymbol(ctx.ID().getText(), symbolType);
     }
 
     /********** expr **********/
+    public void exitParenExpr(adeleParser.ParenExprContext ctx) {
+        setType(ctx, getType(ctx.expr()));
+    }
+
+    public void exitFuncCall (adeleParser.FuncCallContext ctx) {
+        print("enter exitFuncCall");
+        String funcName = ctx.ID().getText();
+        FunctionSymbol fs =
+            (FunctionSymbol)currentScope.resolve("function " + funcName);
+        if (fs == null)
+            err(ctx.start.getLine(), "no such function: " + funcName);
+        else
+            setType(ctx, fs.getType()); // return type is recorded during scanphase
+
+        /* TODO: check param type, do this after resolving expr type */
+        // Map<String, Symbol> args = fs.getMembers();
+        // List<adeleParser.FpitemContext> items = ctx.func_plist().fpitem();
+        // for (int i=0; i<items.size(); ++i) {
+        //     adeleParser.FpitemContext pitem = items.get (i);
+        // }
+    }
+
+    /* TODO */
+    public void exitArray_access(adeleParser.Array_accessContext ctx) {
+    }
+    public void exitMemberVar(adeleParser.MemberVarContext ctx) {
+    }
+    public void exitMult(adeleParser.MultContext ctx) {
+    }
+    public void exitAdd(adeleParser.AddContext ctx) {
+    }
+    public void exitCompare(adeleParser.CompareContext ctx) {
+        setType(ctx, SymbolTable._boolean);
+    }
+    public void exitAtexpr(adeleParser.AtexprContext ctx) {
+    }
     public void exitAssign(adeleParser.AssignContext ctx) {
-        // Object right = getValue(ctx.expr());
-        // setValue(ctx, right);
         String name = ctx.ID().getText();
         Symbol var = currentScope.resolve(name);
         if ( var==null ) {
@@ -167,7 +201,14 @@ class DefPhase extends adeleBaseListener {
 
     public void exitNum(adeleParser.NumContext ctx) {
         String numText = ctx.NUM().getText();
-        setValue(ctx, Integer.valueOf(numText));
+        Type type;
+
+        if (numText.indexOf('.') == -1)
+            type = SymbolTable._int;
+        else
+            type = SymbolTable._float;
+
+        setType(ctx, type);
     }
 
     public void exitVar (adeleParser.VarContext ctx) {
@@ -175,9 +216,9 @@ class DefPhase extends adeleBaseListener {
         Symbol var = currentScope.resolve(name);
         if ( var==null ) {
             err(ctx.start.getLine(), "no such variable: "+name);
+        } else {
+            setType(ctx, var.getType());
         }
-
-        setType(ctx, var.getType());
     }
 
     /*************************/
