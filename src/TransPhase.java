@@ -389,10 +389,10 @@ public class TransPhase extends adeleBaseListener {
                 graph.append("str2graph(\"");
                 String line = reader.readLine();
                 if (line != null) {
-                    graph.append(line);
+                    graph.append(line.replace("\\", "\\\\"));
                     while ((line = reader.readLine()) != null) {
                         graph.append("\\n");
-                        graph.append(line);
+                        graph.append(line.replace("\\", "\\\\"));
                     }
                 }
                 graph.append("\")");
