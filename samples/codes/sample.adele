@@ -20,6 +20,9 @@ end
 int main ()
     int x = 10;
     int y = 3;
+    graph cat = load("../samples/graphs/graph_cat.txt");
+    cat @ (20, 20);
+    draw();
 
     print_str (x, y, "Hello World!");
     print_str (20, y, "No kidding");

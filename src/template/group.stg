@@ -97,6 +97,7 @@ var Canvas = function(cfg) {
     var pixeldiv = jQuery('<div>').addClass('pixel').css({
       "width": this.grid+'px',
       "height": this.grid+'px',
+      "font-family": "courier",
       "font-size": this.grid*.7+'px',
       "float": "left",
       "text-align": "center",

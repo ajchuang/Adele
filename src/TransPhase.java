@@ -377,9 +377,29 @@ public class TransPhase extends adeleBaseListener {
         System.err.println("exitFuncCall: " + ctx.ID().getText());
 
         ST funccall = stg.getInstanceOf("funccall");
-        funccall.add("fname", ctx.ID().getText());
-        funccall.add("params", codes.get(ctx.func_plist()));
-        codes.put(ctx, funccall.render());
+        if (ctx.ID().getText().equals("load")) {
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader(codes.get(ctx.func_plist()).replace("\"", "")));
+                StringBuilder graph = new StringBuilder();
+                graph.append("str2graph(\"");
+                String line = reader.readLine();
+                if (line != null) {
+                    graph.append(line);
+                    while ((line = reader.readLine()) != null) {
+                        graph.append("\\n");
+                        graph.append(line);
+                    }
+                }
+                graph.append("\")");
+                codes.put(ctx, graph.toString());
+            } catch (IOException ioe) {
+                System.err.println("Exception in opening file of loading");
+            }
+        } else {
+            funccall.add("fname", ctx.ID().getText());
+            funccall.add("params", codes.get(ctx.func_plist()));
+            codes.put(ctx, funccall.render());
+        }
 
         System.err.println(codes.get(ctx));
     }
