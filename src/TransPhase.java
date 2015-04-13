@@ -146,7 +146,7 @@ public class TransPhase extends adeleBaseListener {
         System.err.println(codes.get(ctx));
     }
 
-    public void exitPitem_prim(adeleParser.Pitem_primContext ctx) {
+    public void exitPitem(adeleParser.PitemContext ctx) {
         System.err.println("exitPitem:");
 
         codes.put(ctx, ctx.ID().getText());
@@ -246,23 +246,18 @@ public class TransPhase extends adeleBaseListener {
 
         ST decl = stg.getInstanceOf("vardecl");
         decl.add("vname", ctx.ID());
+        if (ctx.expr() != null)
+            decl.add("value", codes.get(ctx.expr()));
         codes.put(ctx, decl.render());
 
         System.err.println(codes.get(ctx));
-    }
-
-    public void exitVarDeclAssign(adeleParser.VarDeclAssignContext ctx) {
-        ST decl = stg.getInstanceOf("vardecl");
-        decl.add("vname", ctx.ID());
-        decl.add("value", codes.get(ctx.expr()));
-        codes.put(ctx, decl.render());
     }
 
     public void exitArrayDecl(adeleParser.ArrayDeclContext ctx) {
         String decl_type = "";
         if (ctx.type() != null)
             decl_type = ctx.type().getText();
-        codes.put(ctx, decl_type + ctx.id.getText() + codes.get(ctx.array_dimen()));
+        codes.put(ctx, decl_type + ctx.ID().getText() + codes.get(ctx.array_dimen()));
     }
 
     public void exitArrayDimenRecursion(adeleParser.ArrayDimenRecursionContext ctx) {

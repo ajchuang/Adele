@@ -44,9 +44,7 @@ plist:
         ;
 
 pitem:
-            type pid=ID                 #pitem_prim
-        |   GROUP gid=ID pid=ID         #pitem_group  
-        ;
+            type ID;
 
 /* statments: if, while, declarations */
 /******************************************************************************/
@@ -73,10 +71,8 @@ while_stmt:
         ;
 
 declaration:
-            GROUP gid=ID id=ID                      #groupDecl
-        |   type ID                                 #varDecl
-        |   type ID EQUAL expr                      #varDeclAssign
-        |   (type | GROUP gid=ID) id=ID array_dimen #arrayDecl
+            type ID (EQUAL expr)?                   #varDecl
+        |   type ID array_dimen                     #arrayDecl
         ;
 
 array_dimen:
