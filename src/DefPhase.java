@@ -123,27 +123,26 @@ class DefPhase extends adeleBaseListener {
         setValue(ctx, right);
     }
 
+    /************* declaration *************/
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
         Type type = getType(ctx.type());
-
         VariableSymbol var = new VariableSymbol(ctx.ID().getText(), type);
         currentScope.define(var);
     }
 
-    public void exitType(adeleParser.TypeContext ctx) {
-        String typeStr = ctx.start.getText();
-        /* typeStr = 'int','string',... or 'group' */
+    public void exitArrayDecl(adeleParser.ArrayDeclContext ctx) {
+        Type elementType = getType(ctx.type());
 
-        if (typeStr.equals("group"))
-            typeStr += " " + ctx.ID().getText();
+        /* get dimension */
+        List<adeleParser.Array_dimenContext> dimensions = ctx.array_dimen();
+        int dimen = dimensions.size();
 
-        Type type = (Type)currentScope.resolve(typeStr);
-        if (type == null) {
-            err(ctx.start.getLine(),"Type '" + typeStr + "' is not defined");
-            return;
-        }
+        /* TODO: record and check num in brackets */
 
-        setType(ctx, type);
+        ArrayType symbolType = new ArrayType(elementType, dimen);
+        // print(ctx.ID().getText()+" type: "+symbolType.getName());
+        // print(ctx.ID().getText()+" dimen: " + symbolType.getDimension());
+        VariableSymbol vs = new VariableSymbol(ctx.ID().getText(), symbolType);
     }
 
     /********** expr **********/
@@ -177,6 +176,21 @@ class DefPhase extends adeleBaseListener {
     }
 
     /*************************/
+    public void exitType(adeleParser.TypeContext ctx) {
+        String typeStr = ctx.start.getText();
+        /* typeStr = 'int','string',... or 'group' */
+
+        if (typeStr.equals("group"))
+            typeStr += " " + ctx.ID().getText();
+
+        Type type = (Type)currentScope.resolve(typeStr);
+        if (type == null) {
+            err(ctx.start.getLine(),"Type '" + typeStr + "' is not defined");
+            return;
+        }
+
+        setType(ctx, type);
+    }
 
     private void err(int line, String msg) {
         System.err.println("line " + line + ": " + msg);
