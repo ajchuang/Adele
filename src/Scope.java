@@ -5,7 +5,7 @@ public interface Scope {
     public Scope getEnclosingScope();
 
     /** Define a symbol in the current scope */
-    public void define(Symbol sym);
+    public boolean define(Symbol sym);
 
     /** Look up name in this scope or in enclosing scope if not here */
     public Symbol resolve(String name);

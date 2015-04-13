@@ -25,10 +25,15 @@ public abstract class ScopedSymbol extends Symbol implements Scope {
 
     public Symbol resolveType(String name) { return resolve(name); }
 
-    public void define(Symbol sym) {
-    getMembers().put(sym.name, sym);
-    sym.scope = this; // track the scope in each symbol
-  }
+    public boolean define(Symbol sym) {
+        if (getMembers().containsKey(sym.name)) {
+            return false;
+        } else {
+            getMembers().put(sym.name, sym);
+            sym.scope = this;
+            return true;
+        }
+    }
 
     public Scope getEnclosingScope() { return enclosingScope; }
 

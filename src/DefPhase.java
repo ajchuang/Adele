@@ -125,9 +125,14 @@ class DefPhase extends adeleBaseListener {
 
     /************* declaration *************/
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
+        String name = ctx.ID().getText();
         Type type = getType(ctx.type());
-        VariableSymbol var = new VariableSymbol(ctx.ID().getText(), type);
-        currentScope.define(var);
+        VariableSymbol var = new VariableSymbol(name, type);
+        if (!currentScope.define(var)) {
+            err(ctx.start.getLine(),
+                    "Variable "+name+" is already defined in "+
+                    currentScope.getScopeName());
+        }
     }
 
     public void exitArrayDecl(adeleParser.ArrayDeclContext ctx) {

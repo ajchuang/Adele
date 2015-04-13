@@ -9,8 +9,7 @@ class GroupSymbol extends ScopedSymbol implements Type, Scope {
         super (name, parent);
     }
 
-    /*********by alfred*********/
-    public boolean addField (String type, String name) {
+    // public boolean addField (String type, String name) {
 
         /* TODO: fix compile errors */
         /*
@@ -25,9 +24,9 @@ class GroupSymbol extends ScopedSymbol implements Type, Scope {
         // add to the field
         m_fields.put (name, getTypeId (type));
         */
-        
-        return true;
-    }
+
+    //     return true;
+    // }
     /******************/
 
     public int getTypeIndex() { return 0; } //return SymbolTable.tUSER; }
@@ -37,8 +36,9 @@ class GroupSymbol extends ScopedSymbol implements Type, Scope {
 
     @Override
     public String toString () {
-        //String s = new String (m_typeName + ": " + m_fields);
-        //return s;
-        return "";
+        // name is inherited from Symbol
+        String s = new String (this.name +
+            "(" + m_fields.values().toString()+")");
+        return s;
     }
 }

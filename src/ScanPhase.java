@@ -9,7 +9,7 @@ class ScanPhase extends adeleBaseListener {
 
     int errcount;
     GlobalScope globals;
-    ParseTreeProperty<Type> values = new ParseTreeProperty<Type>();
+    ParseTreeProperty<Type> types = new ParseTreeProperty<Type>();
 
     public ScanPhase (SymbolTable symtab) {
         globals = symtab.globals;
@@ -75,14 +75,14 @@ class ScanPhase extends adeleBaseListener {
 
             adeleParser.PitemContext pitem = items.get (i);
             String p_name = pitem.ID().getText();
-            Type p_type = values.get(pitem.type());
+            Type p_type = types.get(pitem.type());
             // if (ptype == null)
             //     err("null");
 
             VariableSymbol vs = new VariableSymbol(p_name, p_type);
-            boolean succ = fs.setParam (p_name, vs);
-            if (!succ)
-                err(ctx.start.getLine(), "Failed to set params");
+            if (!fs.define (vs))
+                err(ctx.start.getLine(),
+                    "Param named '"+p_name+"' already exists");
         }
 
         print("  "+fs.toString());
@@ -101,7 +101,7 @@ class ScanPhase extends adeleBaseListener {
             return;
         }
 
-        values.put(ctx, type);
+        types.put(ctx, type);
     }
 
     private void err(int line, String msg) {

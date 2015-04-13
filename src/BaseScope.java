@@ -16,21 +16,23 @@ public abstract class BaseScope implements Scope {
         return null; // not found
     }
 
-    public void define(Symbol sym) {
+    public boolean define(Symbol sym) {
         if (symbols.containsKey(sym.name)) {
-            String symType;
-            if (sym instanceof VariableSymbol)
-                symType = "variable";
-            else if (sym instanceof GroupSymbol)
-                symType = "group";
-            else
-                symType = "function";
+            // String symType;
+            // if (sym instanceof VariableSymbol)
+            //     symType = "variable";
+            // else if (sym instanceof GroupSymbol)
+            //     symType = "group";
+            // else
+            //     symType = "function";
 
-            System.err.println(symType + " "+sym.name
-                + " is already defined in current scopes");
+            // System.err.println(symType + " "+sym.name
+            //     + " is already defined in current scopes");
+            return false;
         } else {
             symbols.put(sym.name, sym);
             sym.scope = this; // track the scope in each symbol
+            return true;
         }
     }
 
