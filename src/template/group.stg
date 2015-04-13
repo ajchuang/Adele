@@ -24,6 +24,8 @@ funcexports(fname) ::= <<exports.$fname$ = $fname$;>>
 
 vardecl(vtype, vname, value) ::= "var $vname$$init(value)$"
 
+arraydecl(aname, len) ::= "var $aname$ = function(){ var ar = []; for (var i=0; i<$len$; i++) ar[i]=0;  return ar; }()"
+
 init(value) ::= "$if(value)$ = $value$$endif$"
 
 ifstmt(expr, body) ::= <<
@@ -200,6 +202,10 @@ var draw = function() {
 
 var flush = function() {
   canvas.flush();
+};
+
+var random = function(max) {
+  return Math.floor(Math.random()*max);
 };
 
 jQuery(document).ready(function(){

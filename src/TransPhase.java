@@ -260,7 +260,12 @@ public class TransPhase extends adeleBaseListener {
         String decl_type = "";
         if (ctx.type() != null)
             decl_type = ctx.type().getText();
-        codes.put(ctx, decl_type + ctx.ID().getText() + codes.get(ctx.array_dimen()));
+        ST adecl = stg.getInstanceOf("arraydecl");
+        adecl.add("aname", ctx.ID().getText());
+        adecl.add("len", codes.get(ctx.array_dimen()));
+        codes.put(ctx, adecl.render());
+
+        System.err.println(codes.get(ctx));
     }
 
     public void exitArrayDimenRecursion(adeleParser.ArrayDimenRecursionContext ctx) {

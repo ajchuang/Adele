@@ -1,11 +1,11 @@
-int A[20];
+int A[30];
 
 void drawhist()
   flush();
   graph g;
-  g = str2graph('#');
+  g = str2graph("#");
   int i = 0;
-  while (i<20)
+  while (i<30)
     int j = 0;
     while (j<A[i])
       g @ (i, j);
@@ -14,14 +14,14 @@ void drawhist()
     i = i + 1;
   end
   draw();
-  sleep(500);
+  sleep(100);
 end
 
 void qsort (int left, int right)
   int i = left;
   int j = right;
   int tmp;
-  int pivot = A[(i+j)/2];
+  int pivot = A[i];
 
   while (i<=j)
     while (A[i]<pivot)
@@ -32,7 +32,7 @@ void qsort (int left, int right)
       j = j - 1;
     end
 
-      if (i<=j)
+    if (i<=j)
       tmp = A[i];
       A[i] = A[j];
       A[j] = tmp;
@@ -41,23 +41,42 @@ void qsort (int left, int right)
     end
   end
 
+  drawhist();
+
   if (left < j)
-      qsort (left, j)
+      qsort (left, j);
   end
 
   if (right > i)
-      qsort (i, right)
+      qsort (i, right);
   end
 
-  drawhist();
+end
 
+void bbsort(int len)
+  int i = 0;
+  while (i<len-1)
+    int j = i + 1;
+    while (j < len)
+      if (A[i]>A[j])
+        int tmp = A[i];
+        A[i] = A[j];
+        A[j] = tmp;
+      end
+      j = j + 1;
+      drawhist();
+    end
+    i = i + 1;
+  end
 end
 
 
 int main ()
-  int t = 20;
+  int t = 30;
   while (t)
-    A[20-t] = t;
+    A[30-t] = random(40);
+    t = t - 1;
   end
-  qsort(0, 19);
+  qsort(0, 29);
+  #bbsort(30);
 end

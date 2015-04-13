@@ -44,10 +44,12 @@ public class SymbolTable {
         new FunctionSymbol("function load", _graph, globals);
     public final FunctionSymbol _sleep =
         new FunctionSymbol("function sleep", _void, globals);
-
-
+    public final FunctionSymbol _flush =
+        new FunctionSymbol("function flush", _void, globals);
+    public final FunctionSymbol _random =
+        new FunctionSymbol("function random", _int, globals);
     public final FunctionSymbol[] builtInFunctions = {
-        _str2graph, _draw, _load, _sleep
+        _str2graph, _draw, _load, _sleep, _flush, _random
     };
 
     public SymbolTable() {
