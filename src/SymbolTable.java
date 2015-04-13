@@ -12,6 +12,7 @@ public class SymbolTable {
     final static public int M_TYPE_FLOAT     = 4;
     final static public int M_TYPE_STRING    = 5;
     final static public int M_TYPE_VOID      = 6;
+    final static public int M_TYPE_GRAPH     = 7;
 
     public static final BuiltInTypeSymbol _boolean =
         new BuiltInTypeSymbol("bool", M_TYPE_BOOLEAN);
@@ -25,17 +26,38 @@ public class SymbolTable {
         new BuiltInTypeSymbol("string", M_TYPE_STRING);
     public static final BuiltInTypeSymbol _void =
         new BuiltInTypeSymbol("void", M_TYPE_VOID);
+    public static final BuiltInTypeSymbol _graph =
+        new BuiltInTypeSymbol("graph", M_TYPE_GRAPH);
+
 
     public static final Type[] indexToType = {
-        null, _boolean, _char, _int, _float, _string, _void
+        null, _boolean, _char, _int, _float, _string, _void, _graph
     };
 
     GlobalScope globals = new GlobalScope();
+
+    public final FunctionSymbol _str2graph =
+        new FunctionSymbol("function str2graph", _graph, globals);
+    public final FunctionSymbol _draw =
+        new FunctionSymbol("function draw", _void, globals);
+    public final FunctionSymbol _load =
+        new FunctionSymbol("function load", _graph, globals);
+    public final FunctionSymbol _sleep =
+        new FunctionSymbol("function sleep", _void, globals);
+
+
+    public final FunctionSymbol[] builtInFunctions = {
+        _str2graph, _draw, _load, _sleep
+    };
 
     public SymbolTable() {
         for (Type t : indexToType) {
             if (t != null)
                 globals.define((BuiltInTypeSymbol)t);
+        }
+
+        for (FunctionSymbol fs: builtInFunctions) {
+            globals.define(fs);
         }
     }
 

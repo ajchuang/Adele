@@ -51,6 +51,7 @@ class DefPhase extends adeleBaseListener {
             print(msg);
             System.exit(1);
         }
+        print("pass DefPhase");
     }
 
     /* when entering group definition */
@@ -188,14 +189,14 @@ class DefPhase extends adeleBaseListener {
     public void exitAtexpr(adeleParser.AtexprContext ctx) {
     }
     public void exitAssign(adeleParser.AssignContext ctx) {
-        String name = ctx.ID().getText();
-        Symbol var = currentScope.resolve(name);
-        if ( var==null ) {
-            err(ctx.start.getLine(), "no such variable: "+name);
-        }
+        // String name = ctx.ID().getText();
+        // Symbol var = currentScope.resolve(name);
+        // if ( var==null ) {
+        //     err(ctx.start.getLine(), "no such variable: "+name);
+        // }
 
-        print("ID type: " + var.getType());
-        print("expr type: " + getType(ctx.expr()).getName());
+        // print("ID type: " + var.getType());
+        // print("expr type: " + getType(ctx.expr()).getName());
 
     }
 
