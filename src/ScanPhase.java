@@ -24,6 +24,7 @@ class ScanPhase extends adeleBaseListener {
         }
     }
 
+    /* members' types should already be defined */
     public void exitType_declaration (adeleParser.Type_declarationContext ctx) {
 
         String typeName = ctx.ID ().getText ();
@@ -34,6 +35,21 @@ class ScanPhase extends adeleBaseListener {
         globals.define(gs);
         print(gs.getName() + " is created");
 
+        List<adeleParser.Type_dec_itemContext> fields = ctx.type_dec_item();
+        for (adeleParser.Type_dec_itemContext field: fields) {
+            String f_name = field.ID().getText();
+            /* if type hasn't been defined, error is handled by exitType() */
+            Type f_type = types.get(field.type());
+
+            VariableSymbol vs = new VariableSymbol(f_name, f_type);
+            if (!gs.define (vs)) {
+                err(ctx.start.getLine(),
+                    "Field named '"+f_name+"' already exists");
+            }
+        }
+
+        print("  "+gs.toString());
+
         // try {
         //     TypeGroup ut = new TypeGroup (typeName);
         //     err ("User-defined Type: " + ut);
@@ -43,8 +59,8 @@ class ScanPhase extends adeleBaseListener {
     }
 
     /*
-     * function must be defined after its return type has been defined;
-     * there will only be global functions
+     * function must be defined after its return type and params' type have
+     * been defined; there will only be global functions
      */
     public void exitFunc (adeleParser.FuncContext ctx) {
         String name = ctx.ID().getText();
