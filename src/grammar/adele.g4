@@ -43,8 +43,7 @@ plist:
         |   (pitem COMMA)* pitem
         ;
 
-pitem:
-            type ID;
+pitem:  type ID;
 
 /* statments: if, while, declarations */
 /******************************************************************************/
@@ -72,13 +71,11 @@ while_stmt:
 
 declaration:
             type ID (EQUAL expr)?                   #varDecl
-        |   type ID array_dimen                     #arrayDecl
+        |   type ID (array_dimen)+                  #arrayDecl
         ;
 
 array_dimen:
-            LSB NUM RSB array_dimen                 #arrayDimenRecursion
-        |   LSB NUM RSB                             #arrayDimenSingle
-        ;
+            LSB NUM RSB;
 
 /******************************************************************************/
 /* expressions -                                                              */
@@ -89,29 +86,25 @@ array_dimen:
 expr:
             LPAREN expr RPAREN              #parenExpr      /* parenthesis */
         |   ID LPAREN func_plist RPAREN     #funcCall       /* function call */
-        |   ID array_access                 #arrayAccess
-        |   ID DOT member_access            #memberVar
+        |   ID (array_access)+              #arrayAccess
+        |   ID (member_access)+             #memberVar
         |   expr MULTI_OP    expr           #mult           /* multiplication & division */
         |   expr ADDITIVE_OP expr           #add            /* addition */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
         |   ID OVERLAY ID AT LPAREN expr COMMA expr RPAREN #overlay   /* @lfred: to fix - lame overlay */
         |   ID AT LPAREN expr COMMA expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
         |   ID EQUAL expr                   #assign         /* assignment */
-        |   ID array_access EQUAL expr      #arrayAssign
+        |   ID (array_access)+ EQUAL expr   #arrayAssign
         |   ID      #var
         |   NUM     #num
         |   STR     #string
         ;
 
 array_access:
-            LSB expr RSB array_access       #arrayAccessRecursion
-        |   LSB expr RSB                    #arrayAccessSingle
-        ;
+            LSB expr RSB;
 
 member_access:
-            ID DOT member_access
-        |   ID
-        ;
+            DOT ID;
 
 func_plist:
                                             #empty_fpis
