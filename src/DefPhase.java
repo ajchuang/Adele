@@ -174,15 +174,18 @@ class DefPhase extends adeleBaseListener {
         // }
     }
 
-    /* TODO */
     public void exitArray_access(adeleParser.Array_accessContext ctx) {
     }
     public void exitMemberVar(adeleParser.MemberVarContext ctx) {
     }
     public void exitMult(adeleParser.MultContext ctx) {
     }
+    
+    /* @lfred: let's try something */
     public void exitAdd(adeleParser.AddContext ctx) {
+    
     }
+     
     public void exitCompare(adeleParser.CompareContext ctx) {
         setType(ctx, SymbolTable._boolean);
     }
@@ -244,8 +247,8 @@ class DefPhase extends adeleBaseListener {
         errcount++;
     }
 
-    private void print(String msg) {
-        System.err.println(msg);
+    private void print (String msg) {
+        System.err.println ("[DefPhase]" +  msg);
     }
 
 }
