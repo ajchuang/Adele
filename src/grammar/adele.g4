@@ -85,6 +85,7 @@ array_dimen:
 /******************************************************************************/
 expr:
             LPAREN expr RPAREN              #parenExpr      /* parenthesis */
+        |   LPAREN (type | GROUP ID) RPAREN expr #cast      /* cast */
         |   ID LPAREN func_plist RPAREN     #funcCall       /* function call */
         |   ID (array_access)+              #arrayAccess
         |   ID (member_access)+             #memberVar

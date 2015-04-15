@@ -242,8 +242,10 @@ class DefPhase extends adeleBaseListener {
         setType(ctx, type);
     }
 
-    private void err(int line, String msg) {
-        System.err.println("line " + line + ": " + msg);
+
+    /* Utility functions */
+    private void err (int line, String msg) {
+        System.err.println ("line " + line + ": " + msg);
         errcount++;
     }
 
