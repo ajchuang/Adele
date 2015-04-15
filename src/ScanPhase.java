@@ -9,10 +9,12 @@ class ScanPhase extends adeleBaseListener {
 
     int errcount;
     GlobalScope globals;
+    Scope currentScope;
     ParseTreeProperty<Type> types = new ParseTreeProperty<Type>();
 
     public ScanPhase (SymbolTable symtab) {
         globals = symtab.globals;
+        currentScope = globals;
         errcount = 0;
     }
 
@@ -21,20 +23,21 @@ class ScanPhase extends adeleBaseListener {
             String msg = errcount == 1 ? "1 error" : errcount+" errors";
             print(msg);
             System.exit(1);
-        }
+        } else
+            print("pass ScanPhase");
+    }
+
+    public void enterType_declaration (adeleParser.Type_declarationContext ctx) {
+        String typeName = ctx.ID ().getText ();
+        GroupSymbol gs = new GroupSymbol("group " + typeName, globals);
+        globals.define(gs);
+        currentScope = gs;
     }
 
     /* members' types should already be defined */
     public void exitType_declaration (adeleParser.Type_declarationContext ctx) {
 
-        String typeName = ctx.ID ().getText ();
-        print ("exitType_declaration:" + typeName);
-
         /* save symbol name as 'group x', s.t. x can still be used as var name */
-        GroupSymbol gs = new GroupSymbol("group " + typeName, globals);
-        globals.define(gs);
-        print(gs.getName() + " is created");
-
         List<adeleParser.Type_dec_itemContext> fields = ctx.type_dec_item();
         for (adeleParser.Type_dec_itemContext field: fields) {
             String f_name = field.ID().getText();
@@ -42,14 +45,14 @@ class ScanPhase extends adeleBaseListener {
             Type f_type = types.get(field.type());
 
             VariableSymbol vs = new VariableSymbol(f_name, f_type);
-            if (!gs.define (vs)) {
+            if (!currentScope.define (vs)) {
                 err(ctx.start.getLine(),
                     "Field named '"+f_name+"' already exists");
             }
         }
 
-        print("  "+gs.toString());
-
+        print("  "+currentScope.toString());
+        currentScope = globals;
         // try {
         //     TypeGroup ut = new TypeGroup (typeName);
         //     err ("User-defined Type: " + ut);
@@ -58,16 +61,19 @@ class ScanPhase extends adeleBaseListener {
         // }
     }
 
-    /*
-     * function must be defined after its return type and params' type have
-     * been defined; there will only be global functions
-     */
-    public void exitFunc (adeleParser.FuncContext ctx) {
+    public void enterFunc (adeleParser.FuncContext ctx) {
         String name = ctx.ID().getText();
         Type type = (Type)globals.resolve(ctx.type().getText());
         FunctionSymbol fs = new FunctionSymbol("function " + name, type, globals);
         globals.define(fs);
+        currentScope = fs;
+    }
 
+    /*
+     * return type and params' type should already be defined;
+     * there will only be global functions
+     */
+    public void exitFunc (adeleParser.FuncContext ctx) {
         /*
          * ZX: The following part is moved to BaseScope.java, in define()
          *
@@ -82,8 +88,6 @@ class ScanPhase extends adeleBaseListener {
             }
          */
 
-        print ("Function " + name + " is defined.");
-
         adeleParser.PlistContext plist = ctx.plist ();
         List<adeleParser.PitemContext> items = plist.pitem ();
 
@@ -96,15 +100,20 @@ class ScanPhase extends adeleBaseListener {
             //     err("null");
 
             VariableSymbol vs = new VariableSymbol(p_name, p_type);
-            if (!fs.define (vs))
+            if (!currentScope.define (vs))
                 err(ctx.start.getLine(),
                     "Param named '"+p_name+"' already exists");
         }
 
-        print("  "+fs.toString());
+        print("  "+currentScope.toString());
+        currentScope = globals;
     }
 
     public void exitType(adeleParser.TypeContext ctx) {
+        /* For now don't check types in group and func blocks */
+        if (currentScope != globals)
+            return;
+
         String typeStr = ctx.start.getText();
         /* typeStr = 'int','string',... or 'group' */
 
