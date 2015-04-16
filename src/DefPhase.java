@@ -152,18 +152,19 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitArrayDecl(adeleParser.ArrayDeclContext ctx) {
-        // Type elementType = getType(ctx.type());
+        Type elementType = getType(ctx.type());
 
-        // /* get dimension */
-        // List<adeleParser.Array_dimenContext> dimensions = ctx.array_dimen();
-        // int dimen = dimensions.size();
+        /* get dimension */
+        List<adeleParser.Array_dimenContext> dimensions = ctx.array_dimen();
+        int dimen = dimensions.size();
 
-        // /* TODO: record and check num in brackets */
+        /* TODO: record and check num in brackets */
 
-        // ArrayType symbolType = new ArrayType(elementType, dimen);
-        // print(ctx.ID().getText()+" type: "+symbolType.getName());
-        // print(ctx.ID().getText()+" dimen: " + symbolType.getDimension());
-        // VariableSymbol vs = new VariableSymbol(ctx.ID().getText(), symbolType);
+        ArrayType symbolType = new ArrayType(elementType, dimen);
+        print(ctx.ID().getText()+" type: "+symbolType.getName());
+        print(ctx.ID().getText()+" dimen: " + symbolType.getDimension());
+        VariableSymbol vs = new VariableSymbol(ctx.ID().getText(), symbolType);
+        currentScope.define(vs);
     }
 
     /********** expr **********/

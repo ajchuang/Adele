@@ -5,6 +5,7 @@ tot=0
 
 for FILE in fail_*.adele
 do
+    echo "===========" >> fail_output.txt
     echo $FILE >> fail_output.txt
     java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:../build/ AdeleRT $FILE 2> tmp.txt
 
