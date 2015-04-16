@@ -90,13 +90,15 @@ expr:
         |   ID (array_access)+              #arrayAccess
         |   ID (member_access)+             #memberVar
         |   expr MULTI_OP    expr           #mult           /* multiplication & division */
-        |   expr ADDITIVE_OP expr           #add            /* addition */
+        |   expr ADD expr           #add            /* addition */
+        |   expr SUB expr           #sub            /* sub */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
         |   ID OVERLAY ID AT LPAREN expr COMMA expr RPAREN #overlay   /* @lfred: to fix - lame overlay */
         |   ID AT LPAREN expr COMMA expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
         |   ID EQUAL expr                   #assign         /* assignment */
         |   ID (array_access)+ EQUAL expr   #arrayAssign
         |   ID      #var
+        |   SUB NUM #negNum
         |   NUM     #num
         |   STR     #string
         ;

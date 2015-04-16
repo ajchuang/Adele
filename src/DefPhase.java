@@ -320,6 +320,28 @@ class DefPhase extends adeleBaseListener {
             setType (ctx, SymbolTable._int);
         }
     }
+
+    public void exitSub (adeleParser.SubContext ctx) {
+   
+        adeleParser.ExprContext expr_l = ctx.expr (0);
+        adeleParser.ExprContext expr_r = ctx.expr (1);
+
+        if (expr_l != null && expr_r != null) {
+            int type_l = getType (expr_l).getTypeIndex ();
+            int type_r = getType (expr_r).getTypeIndex ();
+            Type op = SymbolTable.arithAddOp[type_l][type_r];
+
+            if (op == null) {
+                err (ctx.start.getLine(), "Type does not support arithmatic operation.");
+                setType (ctx, SymbolTable._int);
+            } else {
+                setType (ctx, op);
+            }
+        } else {
+            err (ctx.start.getLine(), "Type (unknown) does not support arithmatic operation.");
+            setType (ctx, SymbolTable._int);
+        }
+    }
      
     public void exitCompare (adeleParser.CompareContext ctx) {
         
@@ -383,6 +405,19 @@ class DefPhase extends adeleBaseListener {
             
             setType (ctx, SymbolTable._int);
         }
+    }
+
+    public void exitNegNum (adeleParser.NegNumContext ctx) {
+        print ("enter here?");
+        String numText = ctx.SUB() + ctx.NUM ().getText ();
+        Type type;
+
+        if (numText.indexOf ('.') == -1)
+            type = SymbolTable._int;
+        else
+            type = SymbolTable._float;
+
+        setType (ctx, type);
     }
 
     public void exitNum (adeleParser.NumContext ctx) {
