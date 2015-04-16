@@ -9,7 +9,7 @@ public class FunctionSymbol extends ScopedSymbol {
         super(name, retType, enclosingScope);
     }
 
-    public Map<String, Symbol> getMembers() { return arguments; }
+    public Map<String, Symbol> getMembers () { return arguments; }
 
     // public boolean setParam (String name, Symbol param) {
 

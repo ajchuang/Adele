@@ -160,13 +160,11 @@ class DefPhase extends adeleBaseListener {
         int dimen = dimensions.size();
 
         /* TODO: record and check num in brackets */
-        /*
         ArrayType symbolType = new ArrayType(elementType, dimen);
         print(ctx.ID().getText()+" type: "+symbolType.getName());
         print(ctx.ID().getText()+" dimen: " + symbolType.getDimension());
         VariableSymbol vs = new VariableSymbol(ctx.ID().getText(), symbolType);
         currentScope.define(vs);
-        */
     }
 
     /********** expr **********/
@@ -211,17 +209,27 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitArrayAccess (adeleParser.ArrayAccessContext ctx) {
+        
         String name = ctx.ID ().getText ();
         Symbol s = currentScope.resolve (name);
-       
-        print ("Accessing array: " + name + ":" + s.getType ());
+        int ln = ctx.start.getLine ();
 
-        if (s != null) {
-            setType (ctx, s.getType ()); 
-        } else { 
-            err (ctx.start.getLine(), "Unknown array: " + name);
+        if (s == null) {
+            err (ln, "Unknown array symbol: " + name);
             setType (ctx, SymbolTable._int);
+            return;
         }
+
+        Type t = s.getType ();
+        if (t instanceof ArrayType == false) {
+            err (ln, "Incorrect type (not array): " + name);
+            setType (ctx, SymbolTable._int);
+            return;
+        }
+
+        ArrayType as = (ArrayType) t;
+        print ("Accessing array: " + name + ":" + as);
+        setType (ctx, as.getElmType ()); 
     }
 
     public void exitMemberVar(adeleParser.MemberVarContext ctx) {
@@ -244,7 +252,7 @@ class DefPhase extends adeleBaseListener {
                 setType (ctx, op);
             }
         } else {
-            err (ctx.start.getLine(), "Type does not support arithmatic operation.");
+            err (ctx.start.getLine(), "Type (unknown) does not support arithmatic operation.");
             setType (ctx, SymbolTable._int);
         }
     }
@@ -267,7 +275,7 @@ class DefPhase extends adeleBaseListener {
                 setType (ctx, op);
             }
         } else {
-            err (ctx.start.getLine(), "Type does not support arithmatic operation.");
+            err (ctx.start.getLine(), "Type (unknown) does not support arithmatic operation.");
             setType (ctx, SymbolTable._int);
         }
     }
@@ -283,7 +291,8 @@ class DefPhase extends adeleBaseListener {
             boolean allow = SymbolTable.compOp[type_l][type_r];
             
             if (allow == false) {
-                err (ctx.start.getLine (), "Comparison op not allowed.");
+                err (ctx.start.getLine (), "Type mismatch: comparison not allowed.");
+                print ("type: " + type_l + ":" + type_r);
             }
         }
 

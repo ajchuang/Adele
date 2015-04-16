@@ -2,7 +2,7 @@
 #make clean
 #make
 #java -cp ../lib/antlr-4.5-complete.jar:. org.antlr.v4.runtime.misc.TestRig adele prog -gui
-src=../samples/codes/sample.adele
+src=../samples/codes/qsort.adele
 dst=./output.html
 
 if [ -f "$1" ]; then
