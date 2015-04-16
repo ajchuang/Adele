@@ -170,14 +170,15 @@ class DefPhase extends adeleBaseListener {
     }
 
     /********** expr **********/
-    public void exitParenExpr(adeleParser.ParenExprContext ctx) {
-        setType(ctx, getType(ctx.expr()));
+    public void exitParenExpr (adeleParser.ParenExprContext ctx) {
+        setType(ctx, getType (ctx.expr ()));
     }
 
     public void exitFuncCall (adeleParser.FuncCallContext ctx) {
        
         String fname = ctx.ID ().getText ();
         Symbol func = currentScope.resolve ("function " + fname);
+        FunctionSymbol fs = null;
 
         /* check if this function is defined */
         if (func == null) {
@@ -186,14 +187,27 @@ class DefPhase extends adeleBaseListener {
             return;
         }
 
+        /* check if the symbol is a function */
+        if (func instanceof FunctionSymbol)
+            fs = (FunctionSymbol)func;
+        else {
+            err (ctx.start.getLine (), "Symbol " + fname + " is not a function");             
+            setType (ctx, SymbolTable._int);
+            return;
+        }
+
+        /* set the type using function return type */
         setType (ctx, func.getType ()); 
         
         /* TODO: check param type, do this after resolving expr type */
-        // Map<String, Symbol> args = fs.getMembers();
-        // List<adeleParser.FpitemContext> items = ctx.func_plist().fpitem();
-        // for (int i=0; i<items.size(); ++i) {
-        //     adeleParser.FpitemContext pitem = items.get (i);
-        // }
+        /*
+        Map<String, Symbol> args = fs.getMembers();
+        List<adeleParser.FpitemContext> items = ctx.func_plist().fpitem();
+        
+        for (int i=0; i<items.size(); ++i) {
+             adeleParser.FpitemContext pitem = items.get (i);
+        }
+        */
     }
 
     public void exitArrayAccess (adeleParser.ArrayAccessContext ctx) {
