@@ -33,6 +33,7 @@ public class AdeleRT {
         ParseTreeWalker walker = new ParseTreeWalker ();
 
         SymbolTable symtab = new SymbolTable();
+        
         /* Type, Func scan Phase */
         ScanPhase scan = new ScanPhase (symtab);
         walker.walk (scan, tree);

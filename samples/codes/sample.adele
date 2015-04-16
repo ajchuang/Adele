@@ -20,6 +20,10 @@ end
 int main ()
     int x = 10;
     int y = 3;
+    bool bb;
+
+    x = bb + x;
+
     graph cat = load("../samples/graphs/graph_cat.txt");
     cat @ (20, 20);
     draw();
