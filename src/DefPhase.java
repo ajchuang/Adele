@@ -219,16 +219,37 @@ class DefPhase extends adeleBaseListener {
     }
     public void exitAtexpr(adeleParser.AtexprContext ctx) {
     }
-    public void exitAssign(adeleParser.AssignContext ctx) {
-        // String name = ctx.ID().getText();
-        // Symbol var = currentScope.resolve(name);
-        // if ( var==null ) {
-        //     err(ctx.start.getLine(), "no such variable: "+name);
-        // }
 
-        // print("ID type: " + var.getType());
-        // print("expr type: " + getType(ctx.expr()).getName());
+    public void exitAssign (adeleParser.AssignContext ctx) {
+        String name = ctx.ID().getText();
+        Symbol var = currentScope.resolve(name);
+        
+        if (var == null) {
+            err (ctx.start.getLine(), "no such variable: "+name);
+        } else {
 
+            Type type_r = getType (ctx.expr ());
+            Type type_l = getType (ctx.ID ());
+
+            if (type_r != null && type_l != null) {
+                int type_li = type_l.getTypeIndex ();
+                int type_ri = type_r.getTypeIndex ();
+
+                Type ans = SymbolTable.assignOp[type_li][type_ri];
+
+                if (ans == null) {
+                    if (type_li == type_ri && type_li == SymbolTable.M_TYPE_USER) {
+                        setType (ctx, type_r);
+                    } else {
+                        err (ctx.start.getLine(), "Assignment with incompatible types"); 
+                    }
+                } else {
+                    setType (ctx, ans);
+                }
+            } else {
+                err (ctx.start.getLine(), "Assignment with incompatible types"); 
+            }
+        }
     }
 
     public void exitNum(adeleParser.NumContext ctx) {

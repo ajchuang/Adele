@@ -58,6 +58,18 @@ public class SymbolTable {
         /* GRP  */  {   null,   null,   null,   null,   null,   null,   null,   _graph  }
     };
 
+    public static final Type assignOp[][] = {
+                    /*  USER,   BOOL,   CHAR,   INT,    FLOAT,  STRING, VOID,   GRAPH */
+        /* USER */  {   null,   null,   null,   null,   null,   null,   null,   null    },
+        /* BOOL */  {   null,   _boolean,null,  null,   null,   null,   null,   null    },
+        /* CHAR */  {   null,   null,   _int,   _int,   _float, null,   null,   null    },
+        /* INT  */  {   null,   null,   _int,   _int,   _float, null,   null,   null    },
+        /* FLT  */  {   null,   null,   _float, _float, _float, null,   null,   null    },
+        /* STR  */  {   null,   null,   null,   null,   null,   _string,null,   null    },
+        /* VOID */  {   null,   null,   null,   null,   null,   null,   _void,  null    },
+        /* GRP  */  {   null,   null,   null,   null,   null,   null,   null,   _graph  }
+    };
+
     GlobalScope globals = new GlobalScope();
 
     public final FunctionSymbol _str2graph =
