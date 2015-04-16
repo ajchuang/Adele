@@ -1,0 +1,6 @@
+# array - access (index out of bound)
+
+int main()
+  int arr[3];
+  int x = arr[5];  # err
+end

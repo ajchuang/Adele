@@ -1,0 +1,7 @@
+# array
+
+int main()
+  int arr[3];     # decl
+  arr[0] = 1;     # assign
+  int x = arr[0]; # access
+end

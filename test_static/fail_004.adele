@@ -1,0 +1,6 @@
+# array - assign (index out of bound)
+
+int main()
+  int arr[3];
+  arr[4] = 1;     # err
+end

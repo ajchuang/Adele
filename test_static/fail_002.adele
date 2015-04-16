@@ -1,0 +1,10 @@
+# function － param type should be defined before func definition
+
+int foo(group x a)  # err
+  group x a;
+  return a;
+end
+
+group x
+  int a;
+end
