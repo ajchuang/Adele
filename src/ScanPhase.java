@@ -12,6 +12,7 @@ class ScanPhase extends adeleBaseListener {
     Scope currentScope;
     ParseTreeProperty<Type> types = new ParseTreeProperty<Type>();
     boolean check_type = false;
+    FunctionSymbol curFunc = null;
 
     public ScanPhase (SymbolTable symtab) {
         globals = symtab.globals;
@@ -79,16 +80,25 @@ class ScanPhase extends adeleBaseListener {
         globals.define(fs);
         currentScope = fs;
         check_type = true;
+        curFunc = fs;
     }
 
-    public void exitPitem(adeleParser.PitemContext ctx) {
-        String p_name = ctx.ID().getText();
-        Type p_type = types.get(ctx.type());
+    public void exitPitem (adeleParser.PitemContext ctx) {
+        
+        String p_name = ctx.ID ().getText ();
+        Type p_type = types.get (ctx.type ());
+        int ln = ctx.start.getLine ();
 
-        VariableSymbol vs = new VariableSymbol(p_name, p_type);
-        if (!currentScope.define (vs))
-            err(ctx.start.getLine(),
-                "Param named '"+p_name+"' already exists");
+        if (p_type == null) {
+            err (ln, "Type, " + ctx.type ().getText () + " is not valid.");
+            return;
+        }
+
+        VariableSymbol vs = new VariableSymbol (p_name, p_type);
+
+        if (curFunc.defineParam (currentScope, vs) == false) {
+            err (ln, "Param, " + p_name + ", is not valid");
+        }
     }
 
     public void exitPlist(adeleParser.PlistContext ctx) {
@@ -96,8 +106,9 @@ class ScanPhase extends adeleBaseListener {
     }
 
     public void exitFunc (adeleParser.FuncContext ctx) {
-        print("  "+currentScope.toString());
+        print ("Leaving  " + currentScope.toString());
         currentScope = globals;
+        curFunc = null;
     }
 
     public void exitType(adeleParser.TypeContext ctx) {
@@ -120,7 +131,7 @@ class ScanPhase extends adeleBaseListener {
         types.put(ctx, type);
     }
 
-    private void err(int line, String msg) {
+    private void err (int line, String msg) {
         System.err.println ("[ERROR] line " + line + ": " + msg);
         errcount++;
     }

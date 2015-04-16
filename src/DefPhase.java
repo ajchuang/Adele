@@ -123,7 +123,7 @@ class DefPhase extends adeleBaseListener {
 
     public void enterFunc (adeleParser.FuncContext ctx) {
         String symbolName = "function " + ctx.ID().getText();
-        Type type = (Type)getValue(ctx.type());
+        //Type type = (Type)getValue(ctx.type());
 
         FunctionSymbol function =
                 (FunctionSymbol)currentScope.resolve(symbolName);
@@ -136,8 +136,9 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitFpItem (adeleParser.FpitemContext ctx) {
-        Object right = getValue(ctx.expr());
-        setValue(ctx, right);
+        //Object right = getValue (ctx.expr());
+        //setValue (ctx, right);
+        setType (ctx, getType (ctx.expr ()));
     }
 
     /************* declaration *************/
@@ -178,10 +179,11 @@ class DefPhase extends adeleBaseListener {
         String fname = ctx.ID ().getText ();
         Symbol func = currentScope.resolve ("function " + fname);
         FunctionSymbol fs = null;
+        int ln = ctx.start.getLine ();
 
         /* check if this function is defined */
         if (func == null) {
-            err (ctx.start.getLine (), "Undefined function: " + fname);
+            err (ln, "Undefined function: " + fname);
             setType (ctx, SymbolTable._int);
             return;
         }
@@ -190,7 +192,7 @@ class DefPhase extends adeleBaseListener {
         if (func instanceof FunctionSymbol)
             fs = (FunctionSymbol)func;
         else {
-            err (ctx.start.getLine (), "Symbol " + fname + " is not a function");             
+            err (ln, "Symbol " + fname + " is not a function");             
             setType (ctx, SymbolTable._int);
             return;
         }
@@ -200,14 +202,37 @@ class DefPhase extends adeleBaseListener {
         print ("calling func " + fname + ":" + func.getType ());
 
         /* TODO: check param type, do this after resolving expr type */
-        /*
-        Map<String, Symbol> args = fs.getMembers();
-        List<adeleParser.FpitemContext> items = ctx.func_plist().fpitem();
-        
-        for (int i=0; i<items.size(); ++i) {
-             adeleParser.FpitemContext pitem = items.get (i);
+        ArrayList<Symbol> plist = fs.getParams ();
+        adeleParser.Func_plistContext plc = ctx.func_plist ();
+
+        /* empty list */
+        if (plc instanceof adeleParser.Empty_fpisContext) {
+            if (plist.size () != 0) {
+                err (ln, "Too many parameters.");
+            }
+            return;
         }
-        */
+
+        adeleParser.FpisContext fpc = (adeleParser.FpisContext) ctx.func_plist ();
+        List<adeleParser.FpitemContext> items = fpc.fpitem ();
+        
+        if (plist.size () != items.size ()) {
+            err (ln, "Parameter count does not match.");
+            print (plist.size () + ":" + items.size ());
+            return;
+        }
+
+        /* iterate the loop */
+        for (int i=0; i<items.size(); ++i) {
+            adeleParser.FpitemContext pitem = items.get (i);
+            Type t = getType (pitem.expr ());
+            Symbol s = plist.get (i);
+
+            if (t != s.getType ()) {
+                err (ln, "Parameter, " + pitem.expr ().getText () + ", does not match."); 
+                print (t + ":" + s.getType ());
+            }
+        }
     }
 
     public void exitArrayAccess (adeleParser.ArrayAccessContext ctx) {
@@ -234,7 +259,22 @@ class DefPhase extends adeleBaseListener {
         setType (ctx, as.getElmType ()); 
     }
 
-    public void exitMemberVar(adeleParser.MemberVarContext ctx) {
+    /* TODO: @lfred */
+    public void exitMemberVar (adeleParser.MemberVarContext ctx) {
+        /*
+        List<adeleParser.member_accessContext> mem = ctx.member_access ();
+        Iterator<adeleParser.member_accessContext> it = mem.iterator ();
+        adeleParser.member_accessContext curr = null;
+
+        String s;
+
+        while (it.hasNext ()) {
+            curr = it.next ();    
+            s += curr.ID ().getText ();
+        }
+
+        print (s);
+        */
     }
 
     public void exitMult (adeleParser.MultContext ctx) {
@@ -259,7 +299,6 @@ class DefPhase extends adeleBaseListener {
         }
     }
     
-    /* @lfred: let's try something */
     public void exitAdd (adeleParser.AddContext ctx) {
    
         adeleParser.ExprContext expr_l = ctx.expr (0);
@@ -357,6 +396,11 @@ class DefPhase extends adeleBaseListener {
             type = SymbolTable._float;
 
         setType (ctx, type);
+    }
+
+    public void exitString (adeleParser.StringContext ctx) {
+        print ("Processing string literal: " + ctx.STR ().getText ());
+        setType (ctx, SymbolTable._string);
     }
 
     public void exitVar (adeleParser.VarContext ctx) {

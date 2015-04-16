@@ -1,31 +1,53 @@
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class FunctionSymbol extends ScopedSymbol {
 
-    Map<String, Symbol> arguments = new LinkedHashMap<String, Symbol>();
+    ArrayList<Symbol> m_params;
+    Map<String, Symbol> m_locals;
 
-    public FunctionSymbol(String name, Type retType, Scope enclosingScope) {
-        super(name, retType, enclosingScope);
+    public FunctionSymbol (String name, Type retType, Scope enclosingScope) {
+        super (name, retType, enclosingScope);
+        m_params = new ArrayList<Symbol> ();
+        m_locals = new LinkedHashMap<String, Symbol>();
     }
 
-    public Map<String, Symbol> getMembers () { return arguments; }
+    public boolean defineParam (Scope curScope, Symbol param) {
+        
+        Iterator<Symbol> it = m_params.iterator ();
+        String p_name = param.getName ();
+        
+        while (it.hasNext ()) {
+            Symbol s = it.next ();
 
-    // public boolean setParam (String name, Symbol param) {
+            if (s.getName ().equals (p_name))
+                return false;
+        }
 
-    //     if (arguments.containsKey (name) == true) {
-    //         System.err.println ("[ERROR] duplicate argument name, " + name);
-    //         return false;
-    //     }
+        if (curScope.define (param)) {
+            m_params.add (param);
+            return true;
+        } 
+        
+        return false;
+    }
 
-    //     arguments.put (name, param);
-    //     return true;
-    // }
+    public void defineParam_def (Symbol param) {
+        m_params.add (param);
+    }
 
-    public String toString() {
+    public ArrayList<Symbol> getParams () {
+        return m_params;
+    }
+
+    @Override
+    public Map<String, Symbol> getMembers () {
+        return m_locals; 
+    }
+    
+    @Override
+    public String toString () {
         /* name contains 'function ' */
-        return name+
-        "("+arguments.values().toString()+")";
+        return name;
     }
 }
 

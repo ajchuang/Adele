@@ -96,9 +96,26 @@ public class SymbolTable {
         new FunctionSymbol("function flush", _void, globals);
     public final FunctionSymbol _random =
         new FunctionSymbol("function random", _int, globals);
+    
     public final FunctionSymbol[] builtInFunctions = {
         _str2graph, _draw, _load, _sleep, _flush, _random
     };
+
+    /* static initialization */
+    {
+        /* initializa global function symbols */
+        VariableSymbol v1 = new VariableSymbol ("str", _string);
+        _str2graph.defineParam_def (v1);
+        
+        VariableSymbol v2 = new VariableSymbol ("str", _string);
+        _load.defineParam_def (v2);
+
+        VariableSymbol v3 = new VariableSymbol ("ms", _int);
+        _sleep.defineParam_def (v3);
+        
+        VariableSymbol v4 = new VariableSymbol ("max", _int);
+        _random.defineParam_def (v4);
+    }
 
     public SymbolTable() {
         for (Type t : indexToType) {
