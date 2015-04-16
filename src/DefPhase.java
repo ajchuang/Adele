@@ -172,15 +172,19 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitFuncCall (adeleParser.FuncCallContext ctx) {
-        print("enter exitFuncCall");
-        String funcName = ctx.ID().getText();
-        FunctionSymbol fs =
-            (FunctionSymbol)currentScope.resolve("function " + funcName);
-        if (fs == null)
-            err(ctx.start.getLine(), "no such function: " + funcName);
-        else
-            setType(ctx, fs.getType()); // return type is recorded during scanphase
+       
+        String fname = ctx.ID ().getText ();
+        Symbol func = currentScope.resolve ("function " + fname);
 
+        /* check if this function is defined */
+        if (func == null) {
+            err (ctx.start.getLine (), "Undefined function: " + fname);
+            setType (ctx, SymbolTable._int);
+            return;
+        }
+
+        setType (ctx, func.getType ()); 
+        
         /* TODO: check param type, do this after resolving expr type */
         // Map<String, Symbol> args = fs.getMembers();
         // List<adeleParser.FpitemContext> items = ctx.func_plist().fpitem();
@@ -189,25 +193,40 @@ class DefPhase extends adeleBaseListener {
         // }
     }
 
-    public void exitArray_access(adeleParser.Array_accessContext ctx) {
+    public void exitArrayAccess (adeleParser.ArrayAccessContext ctx) {
+        String name = ctx.ID ().getText ();
+        Symbol s = currentScope.resolve (name);
+        
+        if (s != null) {
+            setType (ctx, s.getType ()); 
+        } else { 
+            err (ctx.start.getLine(), "Unknown array: " + name);
+            setType (ctx, SymbolTable._int);
+        }
     }
 
     public void exitMemberVar(adeleParser.MemberVarContext ctx) {
     }
 
     public void exitMult (adeleParser.MultContext ctx) {
+
         adeleParser.ExprContext expr_l = ctx.expr (0);
         adeleParser.ExprContext expr_r = ctx.expr (1);
 
-        int type_l = getType (expr_l).getTypeIndex ();
-        int type_r = getType (expr_r).getTypeIndex ();
-        Type op = SymbolTable.arithMultiOp[type_l][type_r];
+        if (expr_l != null && expr_r != null) {
+            int type_l = getType (expr_l).getTypeIndex ();
+            int type_r = getType (expr_r).getTypeIndex ();
+            Type op = SymbolTable.arithMultiOp[type_l][type_r];
 
-        if (op == null) {
-            err (ctx.start.getLine(), "Type does not support arithmatic operation.");
-            setType (ctx, getType (expr_l));
+            if (op == null) {
+                err (ctx.start.getLine(), "Type does not support arithmatic operation.");
+                setType (ctx, SymbolTable._int);
+            } else {
+                setType (ctx, op);
+            }
         } else {
-            setType (ctx, op);
+            err (ctx.start.getLine(), "Type does not support arithmatic operation.");
+            setType (ctx, SymbolTable._int);
         }
     }
     
@@ -217,21 +236,41 @@ class DefPhase extends adeleBaseListener {
         adeleParser.ExprContext expr_l = ctx.expr (0);
         adeleParser.ExprContext expr_r = ctx.expr (1);
 
-        int type_l = getType (expr_l).getTypeIndex ();
-        int type_r = getType (expr_r).getTypeIndex ();
-        Type op = SymbolTable.arithAddOp[type_l][type_r];
+        if (expr_l != null && expr_r != null) {
+            int type_l = getType (expr_l).getTypeIndex ();
+            int type_r = getType (expr_r).getTypeIndex ();
+            Type op = SymbolTable.arithAddOp[type_l][type_r];
 
-        if (op == null) {
-            err (ctx.start.getLine(), "Type does not support arithmatic operation.");
-            setType (ctx, getType (expr_l));
+            if (op == null) {
+                err (ctx.start.getLine(), "Type does not support arithmatic operation.");
+                setType (ctx, SymbolTable._int);
+            } else {
+                setType (ctx, op);
+            }
         } else {
-            setType (ctx, op);
+            err (ctx.start.getLine(), "Type does not support arithmatic operation.");
+            setType (ctx, SymbolTable._int);
         }
     }
      
-    public void exitCompare(adeleParser.CompareContext ctx) {
-        setType(ctx, SymbolTable._boolean);
+    public void exitCompare (adeleParser.CompareContext ctx) {
+        
+        adeleParser.ExprContext expr_l = ctx.expr (0);
+        adeleParser.ExprContext expr_r = ctx.expr (1);
+
+        if (expr_l != null && expr_r != null) {
+            int type_l = getType (expr_l).getTypeIndex ();
+            int type_r = getType (expr_r).getTypeIndex ();
+            boolean allow = SymbolTable.compOp[type_l][type_r];
+            
+            if (allow == false) {
+                err (ctx.start.getLine (), "Comparison op not allowed.");
+            }
+        }
+
+        setType (ctx, SymbolTable._boolean);
     }
+
     public void exitAtexpr(adeleParser.AtexprContext ctx) {
     }
 
@@ -256,7 +295,7 @@ class DefPhase extends adeleBaseListener {
                     if (type_li == type_ri && type_li == SymbolTable.M_TYPE_USER) {
                         setType (ctx, type_r);
                     } else {
-                        err (ctx.start.getLine(), "Assignment with incompatible types"); 
+                        err (ctx.start.getLine(), "Assignment with incompatible types: " + type_l + ":" + type_r); 
                     }
                 } else {
                     setType (ctx, ans);
@@ -304,4 +343,5 @@ class DefPhase extends adeleBaseListener {
 
         setType(ctx, type);
     }
+
 }

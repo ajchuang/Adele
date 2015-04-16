@@ -70,6 +70,18 @@ public class SymbolTable {
         /* GRP  */  {   null,   null,   null,   null,   null,   null,   null,   _graph  }
     };
 
+    public static final boolean compOp[][] = {
+                    /*  USER,   BOOL,   CHAR,   INT,    FLOAT,  STRING, VOID,   GRAPH */
+        /* USER */  {   false,  false,  false,  false,  false,  false,  false,  false   },
+        /* BOOL */  {   false,  true,   false,  false,  false,  false,  false,  false   },
+        /* CHAR */  {   false,  false,  true,   true,   true,   false,  false,  false   },
+        /* INT  */  {   false,  false,  true,   true,   true,   false,  false,  false   },
+        /* FLT  */  {   false,  false,  true,   true,   true,   false,  false,  false   },
+        /* STR  */  {   false,  false,  false,  false,  false,  true,   false,  false   },                   
+        /* VOID */  {   false,  false,  false,  false,  false,  false,  true,   false   },
+        /* GRP  */  {   false,  false,  false,  false,  false,  false,  false,  true    }
+    };
+
     GlobalScope globals = new GlobalScope();
 
     public final FunctionSymbol _str2graph =
