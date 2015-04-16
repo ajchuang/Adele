@@ -21,6 +21,9 @@ class DefPhase extends adeleBaseListener {
         errcount = 0;
     }
 
+    /**************************************************************************/
+    /* Utility functions                                                      */
+    /**************************************************************************/
     public void setValue (ParseTree node, Object value) {
         values.put (node, value);
     }
@@ -41,6 +44,18 @@ class DefPhase extends adeleBaseListener {
         scopes.put (ctx, s);
     }
 
+    private void err (int line, String msg) {
+        System.err.println ("[ERROR] line " + line + ": " + msg);
+        errcount++;
+    }
+
+    private void print (String msg) {
+        System.err.println ("[DefPhase] " +  msg);
+    }
+
+    /**************************************************************************/
+    /* Grammar handler function                                               */
+    /**************************************************************************/
     public void enterProg (adeleParser.ProgContext ctx) {
         currentScope = globals;
     }
@@ -274,8 +289,7 @@ class DefPhase extends adeleBaseListener {
         }
     }
 
-    /*************************/
-    public void exitType(adeleParser.TypeContext ctx) {
+    public void exitType (adeleParser.TypeContext ctx) {
         String typeStr = ctx.start.getText();
         /* typeStr = 'int','string',... or 'group' */
 
@@ -290,16 +304,4 @@ class DefPhase extends adeleBaseListener {
 
         setType(ctx, type);
     }
-
-
-    /* Utility functions */
-    private void err (int line, String msg) {
-        System.err.println ("line " + line + ": " + msg);
-        errcount++;
-    }
-
-    private void print (String msg) {
-        System.err.println ("[DefPhase]" +  msg);
-    }
-
 }
