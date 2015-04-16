@@ -19,13 +19,17 @@ class ScanPhase extends adeleBaseListener {
         errcount = 0;
     }
 
-    public void exitProg(adeleParser.ProgContext ctx) {
+    public void enterProg (adeleParser.ProgContext ctx) {
+        print ("Phase Started.");
+    }
+
+    public void exitProg (adeleParser.ProgContext ctx) {
         if (errcount > 0) {
             String msg = errcount == 1 ? "1 error" : errcount+" errors";
-            print(msg);
-            System.exit(1);
+            print (msg);
+            System.exit (1);
         } else
-            print("pass ScanPhase");
+            print ("Phase Completed. Continue.");
     }
 
     public void enterType_declaration (adeleParser.Type_declarationContext ctx) {
@@ -117,11 +121,11 @@ class ScanPhase extends adeleBaseListener {
     }
 
     private void err(int line, String msg) {
-        System.err.println("line " + line + ": " + msg);
+        System.err.println ("[ERROR] line " + line + ": " + msg);
         errcount++;
     }
 
-    private void print(String msg) {
-        System.err.println(msg);
+    private void print (String msg) {
+        System.err.println ("    [ScanPhase] " + msg);
     }
 }
