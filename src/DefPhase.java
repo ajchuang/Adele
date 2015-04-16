@@ -142,9 +142,10 @@ class DefPhase extends adeleBaseListener {
 
     /************* declaration *************/
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
-        String name = ctx.ID().getText();
-        Type type = getType(ctx.type());
-        VariableSymbol var = new VariableSymbol(name, type);
+        String name = ctx.ID ().getText ();
+        Type type = getType (ctx.type());
+        VariableSymbol var = new VariableSymbol (name, type);
+        
         if (!currentScope.define(var)) {
             err(ctx.start.getLine(),
                     "Variable "+name+" is already defined in "+
@@ -196,7 +197,8 @@ class DefPhase extends adeleBaseListener {
 
         /* set the type using function return type */
         setType (ctx, func.getType ()); 
-        
+        print ("calling func " + fname + ":" + func.getType ());
+
         /* TODO: check param type, do this after resolving expr type */
         /*
         Map<String, Symbol> args = fs.getMembers();
@@ -303,47 +305,58 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitAssign (adeleParser.AssignContext ctx) {
+        
         String name = ctx.ID().getText();
-        Symbol var = currentScope.resolve(name);
+        Symbol var = currentScope.resolve (name);
         
         if (var == null) {
             err (ctx.start.getLine(), "no such variable: "+name);
-        } else {
+            setType (ctx, SymbolTable._int);
+            return;
+        } 
 
-            Type type_r = getType (ctx.expr ());
-            Type type_l = getType (ctx.ID ());
+        Type type_r = getType (ctx.expr ());
+        Type type_l = var.getType ();
 
-            if (type_r != null && type_l != null) {
-                int type_li = type_l.getTypeIndex ();
-                int type_ri = type_r.getTypeIndex ();
+        if (type_r != null && type_l != null) {
+            
+            int type_li = type_l.getTypeIndex ();
+            int type_ri = type_r.getTypeIndex ();
 
-                Type ans = SymbolTable.assignOp[type_li][type_ri];
+            Type ans = SymbolTable.assignOp[type_li][type_ri];
 
-                if (ans == null) {
-                    if (type_li == type_ri && type_li == SymbolTable.M_TYPE_USER) {
-                        setType (ctx, type_r);
-                    } else {
-                        err (ctx.start.getLine(), "Assignment with incompatible types: " + type_l + ":" + type_r); 
-                    }
+            if (ans == null) {
+                if (type_li == type_ri && type_li == SymbolTable.M_TYPE_USER) {
+                    setType (ctx, type_r);
                 } else {
-                    setType (ctx, ans);
+                    err (ctx.start.getLine(),"Assignment with incompatible types: " + type_l + ":" + type_r); 
+                    setType (ctx, SymbolTable._int);
                 }
             } else {
-                err (ctx.start.getLine(), "Assignment with incompatible types"); 
+                setType (ctx, ans);
             }
+        } else {
+            if (type_l == null)
+                err (ctx.start.getLine(), "Assignment (left) with incompatible types (unknown)"); 
+            
+            if (type_r == null)
+                err (ctx.start.getLine(), "Assignment (right) with incompatible types (unknown)"); 
+            
+            setType (ctx, SymbolTable._int);
         }
     }
 
-    public void exitNum(adeleParser.NumContext ctx) {
-        String numText = ctx.NUM().getText();
+    public void exitNum (adeleParser.NumContext ctx) {
+        
+        String numText = ctx.NUM ().getText ();
         Type type;
 
-        if (numText.indexOf('.') == -1)
+        if (numText.indexOf ('.') == -1)
             type = SymbolTable._int;
         else
             type = SymbolTable._float;
 
-        setType(ctx, type);
+        setType (ctx, type);
     }
 
     public void exitVar (adeleParser.VarContext ctx) {
@@ -371,5 +384,4 @@ class DefPhase extends adeleBaseListener {
 
         setType(ctx, type);
     }
-
 }
