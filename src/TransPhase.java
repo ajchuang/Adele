@@ -322,7 +322,25 @@ public class TransPhase extends adeleBaseListener {
         /* set the code to the node */
         //codes.put(ctx, add.render());
 
-        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.ADDITIVE_OP() + codes.get(ctx.expr(1)));
+        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.ADD() + codes.get(ctx.expr(1)));
+
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitSub(adeleParser.SubContext ctx) {
+        System.err.println("exitSub: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
+
+        /* output a: this is the last expression */
+        /*
+        ST add = stg.getInstanceOf("add");
+        add.add("lhs", codes.get(ctx.expr(0)));
+        add.add("rhs", codes.get(ctx.expr(1)));
+        */
+
+        /* set the code to the node */
+        //codes.put(ctx, add.render());
+
+        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.SUB() + codes.get(ctx.expr(1)));
 
         System.err.println(codes.get(ctx));
     }
@@ -347,6 +365,12 @@ public class TransPhase extends adeleBaseListener {
                 sb.append(codes.get(ctx.array_access(i)));
 
         codes.put(ctx, ctx.ID().getText() + sb.toString());
+    }
+
+    public void exitNegNum(adeleParser.NegNumContext ctx) {
+        System.err.println("exitNegNum: " + ctx.SUB() + ctx.NUM());
+        codes.put(ctx, ctx.SUB() + ctx.NUM().getText());
+        System.err.println(codes.get(ctx));
     }
 
     public void exitNum(adeleParser.NumContext ctx) {
