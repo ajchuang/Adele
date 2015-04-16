@@ -55,7 +55,7 @@ end
 
 void bbsort(int len)
   int i = 0;
-  while (i<len-1)
+  while (i<len- 1)
     int j = i + 1;
     while (j < len)
       if (A[i]>A[j])

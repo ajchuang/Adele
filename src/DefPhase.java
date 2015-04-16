@@ -201,7 +201,7 @@ class DefPhase extends adeleBaseListener {
         setType (ctx, func.getType ()); 
         print ("calling func " + fname + ":" + func.getType ());
 
-        /* TODO: check param type, do this after resolving expr type */
+        /* check param type, do this after resolving expr type */
         ArrayList<Symbol> plist = fs.getParams ();
         adeleParser.Func_plistContext plc = ctx.func_plist ();
 
@@ -248,6 +248,7 @@ class DefPhase extends adeleBaseListener {
         }
 
         Type t = s.getType ();
+        
         if (t instanceof ArrayType == false) {
             err (ln, "Incorrect type (not array): " + name);
             setType (ctx, SymbolTable._int);
@@ -261,20 +262,57 @@ class DefPhase extends adeleBaseListener {
 
     /* TODO: @lfred */
     public void exitMemberVar (adeleParser.MemberVarContext ctx) {
-        /*
-        List<adeleParser.member_accessContext> mem = ctx.member_access ();
-        Iterator<adeleParser.member_accessContext> it = mem.iterator ();
-        adeleParser.member_accessContext curr = null;
+        
+        List<adeleParser.Member_accessContext> mem = ctx.member_access ();
+        Iterator<adeleParser.Member_accessContext> it = mem.iterator ();
+        adeleParser.Member_accessContext curr = null;
+        int ln = ctx.start.getLine ();
 
-        String s;
+        String s = new String ();
+        Symbol starting = currentScope.resolve (ctx.ID ().getText ());
+
+        if (starting instanceof GroupSymbol == false) {
+            err (ln, starting + " is not a group symbol");
+            setType (ctx, SymbolTable._int);
+            return;
+        }
+
+        GroupSymbol gs = (GroupSymbol) starting;
+        Type curType = gs.getType ();
 
         while (it.hasNext ()) {
+
+            Symbol cs = null;
             curr = it.next ();    
-            s += curr.ID ().getText ();
+            
+            if (gs != null) {
+                cs = gs.resolveMember (curr.ID ().getText ());
+                curType = cs.getType ();
+            } else {
+                curType = null;
+            }
+
+            if (cs == null) {
+                err (ln, starting + " is not a member");
+                setType (ctx, SymbolTable._int);
+                return;
+            }
+
+            if (cs instanceof GroupSymbol) {
+                gs = (GroupSymbol) cs;
+                curType = gs.getType ();
+            } else
+                gs = null;
+        }
+
+        if (curType != null)
+            setType (ctx, curType);
+        else {
+            err (ln, "Bad member access");
+            setType (ctx, SymbolTable._int);
         }
 
         print (s);
-        */
     }
 
     public void exitMult (adeleParser.MultContext ctx) {
