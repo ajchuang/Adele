@@ -10,7 +10,7 @@ class DefPhase extends adeleBaseListener {
     ParseTreeProperty<Scope>  scopes    = new ParseTreeProperty<Scope>();
     ParseTreeProperty<Object> values    = new ParseTreeProperty<Object>();
     ParseTreeProperty<Object> usrType   = new ParseTreeProperty<Object>();
-    ParseTreeProperty<Type> types    = new ParseTreeProperty<Type>();
+    ParseTreeProperty<Type> types       = new ParseTreeProperty<Type>();
 
     GlobalScope globals;
     Scope currentScope;
@@ -119,7 +119,7 @@ class DefPhase extends adeleBaseListener {
         currentScope = currentScope.getEnclosingScope ();
     }
 
-    public void exitFpItem(adeleParser.FpitemContext ctx) {
+    public void exitFpItem (adeleParser.FpitemContext ctx) {
         Object right = getValue(ctx.expr());
         setValue(ctx, right);
     }
@@ -176,14 +176,42 @@ class DefPhase extends adeleBaseListener {
 
     public void exitArray_access(adeleParser.Array_accessContext ctx) {
     }
+
     public void exitMemberVar(adeleParser.MemberVarContext ctx) {
     }
-    public void exitMult(adeleParser.MultContext ctx) {
+
+    public void exitMult (adeleParser.MultContext ctx) {
+        adeleParser.ExprContext expr_l = ctx.expr (0);
+        adeleParser.ExprContext expr_r = ctx.expr (1);
+
+        int type_l = getType (expr_l).getTypeIndex ();
+        int type_r = getType (expr_r).getTypeIndex ();
+        Type op = SymbolTable.arithMultiOp[type_l][type_r];
+
+        if (op == null) {
+            err (ctx.start.getLine(), "Type does not support arithmatic operation.");
+            setType (ctx, getType (expr_l));
+        } else {
+            setType (ctx, op);
+        }
     }
     
     /* @lfred: let's try something */
-    public void exitAdd(adeleParser.AddContext ctx) {
-    
+    public void exitAdd (adeleParser.AddContext ctx) {
+   
+        adeleParser.ExprContext expr_l = ctx.expr (0);
+        adeleParser.ExprContext expr_r = ctx.expr (1);
+
+        int type_l = getType (expr_l).getTypeIndex ();
+        int type_r = getType (expr_r).getTypeIndex ();
+        Type op = SymbolTable.arithAddOp[type_l][type_r];
+
+        if (op == null) {
+            err (ctx.start.getLine(), "Type does not support arithmatic operation.");
+            setType (ctx, getType (expr_l));
+        } else {
+            setType (ctx, op);
+        }
     }
      
     public void exitCompare(adeleParser.CompareContext ctx) {

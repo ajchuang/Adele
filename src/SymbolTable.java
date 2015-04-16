@@ -34,6 +34,30 @@ public class SymbolTable {
         null, _boolean, _char, _int, _float, _string, _void, _graph
     };
 
+    public static final Type arithAddOp[][] = {
+                    /*  USER,   BOOL,   CHAR,   INT,    FLOAT,  STRING, VOID,   GRAPH */
+        /* USER */  {   null,   null,   null,   null,   null,   null,   null,   null    },
+        /* BOOL */  {   null,   null,   null,   null,   null,   null,   null,   null    },
+        /* CHAR */  {   null,   null,   _char,  _int,   _float, _string,null,   null    },
+        /* INT  */  {   null,   null,   _int,   _int,   _float, _string,null,   null    },
+        /* FLT  */  {   null,   null,   _float, _float, _float, _string,null,   null    },
+        /* STR  */  {   null,   null,   _string,_string,_string,_string,null,   null    },
+        /* VOID */  {   null,   null,   null,   null,   null,   null,   null,   null    },
+        /* GRP  */  {   null,   null,   null,   null,   null,   null,   null,   _graph  }
+    };
+
+    public static final Type arithMultiOp[][] = {
+                    /*  USER,   BOOL,   CHAR,   INT,    FLOAT,  STRING, VOID,   GRAPH */
+        /* USER */  {   null,   null,   null,   null,   null,   null,   null,   null    },
+        /* BOOL */  {   null,   null,   null,   null,   null,   null,   null,   null    },
+        /* CHAR */  {   null,   null,   _int,   _int,   _float, null,   null,   null    },
+        /* INT  */  {   null,   null,   _int,   _int,   _float, null,   null,   null    },
+        /* FLT  */  {   null,   null,   _float, _float, _float, null,   null,   null    },
+        /* STR  */  {   null,   null,   null,   null,   null,   null,   null,   null    },
+        /* VOID */  {   null,   null,   null,   null,   null,   null,   null,   null    },
+        /* GRP  */  {   null,   null,   null,   null,   null,   null,   null,   _graph  }
+    };
+
     GlobalScope globals = new GlobalScope();
 
     public final FunctionSymbol _str2graph =
