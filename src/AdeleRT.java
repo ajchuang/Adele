@@ -26,16 +26,24 @@ public class AdeleRT {
         /* read file and create the parse tree */
         ANTLRInputStream input = new ANTLRInputStream (is);
         adeleLexer lexer = new adeleLexer (input);
+        lexer.addErrorListener (SimpleErrorListener._INST);
         CommonTokenStream tokens = new CommonTokenStream (lexer);
+        
         adeleParser parser = new adeleParser (tokens);
         parser.setBuildParseTree (true);
-
+        parser.addErrorListener (SimpleErrorListener._INST);
+        
         /* start parsing */
         ParseTree tree = parser.prog ();
-        ParseTreeWalker walker = new ParseTreeWalker ();
+        
+        if (SimpleErrorListener._INST.getErrCount () > 0) {
+            System.err.println ("[ERROR] Syntax errors. Stop");
+            return;
+        }
 
         /* create the symbol table instance */
         SymbolTable symtab = new SymbolTable();
+        ParseTreeWalker walker = new ParseTreeWalker ();
         
         /**********************************************************************/
         /* information collection phase                                       */
