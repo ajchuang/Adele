@@ -29,22 +29,29 @@ public class AdeleRT {
         CommonTokenStream tokens = new CommonTokenStream (lexer);
         adeleParser parser = new adeleParser (tokens);
         parser.setBuildParseTree (true);
+
+        /* start parsing */
         ParseTree tree = parser.prog ();
         ParseTreeWalker walker = new ParseTreeWalker ();
 
+        /* create the symbol table instance */
         SymbolTable symtab = new SymbolTable();
         
-        /* Type, Func scan Phase */
+        /**********************************************************************/
+        /* information collection phase                                       */
+        /**********************************************************************/
         ScanPhase scan = new ScanPhase (symtab);
         walker.walk (scan, tree);
 
-        /* Semantic Analysis Phase */
+        /**********************************************************************/
+        /* semantic check phase                                               */
+        /**********************************************************************/
         DefPhase def = new DefPhase (symtab);
         walker.walk (def, tree);
 
-        /****************************************************************************/
-
-        /* translation phase */
+        /**********************************************************************/
+        /* translation phase                                                  */
+        /**********************************************************************/
         ParseTreeProperty<String> codes =
             new ParseTreeProperty<String>();
 

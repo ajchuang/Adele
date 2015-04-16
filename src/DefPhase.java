@@ -16,7 +16,7 @@ class DefPhase extends adeleBaseListener {
     Scope currentScope;
     int errcount;
 
-    public DefPhase(SymbolTable symtab) {
+    public DefPhase (SymbolTable symtab) {
         globals = symtab.globals;
         errcount = 0;
     }
@@ -50,23 +50,24 @@ class DefPhase extends adeleBaseListener {
     }
 
     private void print (String msg) {
-        System.err.println ("[DefPhase] " +  msg);
+        System.err.println ("    [DefPhase] " +  msg);
     }
 
     /**************************************************************************/
     /* Grammar handler function                                               */
     /**************************************************************************/
     public void enterProg (adeleParser.ProgContext ctx) {
+        print ("Phase Started.");
         currentScope = globals;
     }
 
     public void exitProg (adeleParser.ProgContext ctx) {
         if (errcount > 0) {
-            String msg = errcount == 1 ? "1 error" : errcount+" errors";
-            print(msg);
+            String msg = (errcount == 1) ? "1 error" : errcount + " errors";
+            print (msg);
             System.exit(1);
-        }
-        print("pass DefPhase");
+        } else
+            print ("Phase Completed. Continue.");
     }
 
     /* when entering group definition */
@@ -159,12 +160,13 @@ class DefPhase extends adeleBaseListener {
         int dimen = dimensions.size();
 
         /* TODO: record and check num in brackets */
-
+        /*
         ArrayType symbolType = new ArrayType(elementType, dimen);
         print(ctx.ID().getText()+" type: "+symbolType.getName());
         print(ctx.ID().getText()+" dimen: " + symbolType.getDimension());
         VariableSymbol vs = new VariableSymbol(ctx.ID().getText(), symbolType);
         currentScope.define(vs);
+        */
     }
 
     /********** expr **********/
@@ -197,7 +199,9 @@ class DefPhase extends adeleBaseListener {
     public void exitArrayAccess (adeleParser.ArrayAccessContext ctx) {
         String name = ctx.ID ().getText ();
         Symbol s = currentScope.resolve (name);
-        
+       
+        print ("Accessing array: " + name + ":" + s.getType ());
+
         if (s != null) {
             setType (ctx, s.getType ()); 
         } else { 
