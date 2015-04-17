@@ -178,6 +178,51 @@ class DefPhase extends adeleBaseListener {
     }
 
     /*-----------------------------------------------------------------------*/
+    /* statements (in the order in the grammar)                              */
+    /*-----------------------------------------------------------------------*/
+    public void enterStm_if (adeleParser.Stm_ifContext ctx) {
+        InnerScope is = new InnerScope (currentScope);
+        saveScope (ctx, is); 
+        currentScope = is;
+    }
+   
+    public void exitStm_if (adeleParser.Stm_ifContext ctx) {
+        
+        int ln = ctx.start.getLine ();
+        currentScope = currentScope.getEnclosingScope (); 
+        Type exprType = getType (ctx.if_stmt().expr());
+
+        if (exprType != SymbolTable._boolean &&
+            exprType != SymbolTable._int     &&
+            exprType != SymbolTable._char) {
+
+            err (ln, "The expression in if statement is not allowed.");
+        }
+
+        return;
+    }
+    
+    public void enterStm_while (adeleParser.Stm_whileContext ctx) {
+        InnerScope is = new InnerScope (currentScope);
+        saveScope (ctx, is); 
+        currentScope = is;
+    }
+
+    public void exitStm_while (adeleParser.Stm_whileContext ctx) {
+        
+        int ln = ctx.start.getLine ();
+        currentScope = currentScope.getEnclosingScope (); 
+        Type exprType = getType (ctx.while_stmt().expr()); 
+        
+        if (exprType != SymbolTable._boolean &&
+            exprType != SymbolTable._int     &&
+            exprType != SymbolTable._char) {
+            err (ln, "The expression in while statement is not boolean.");
+        }
+
+        return;
+    }
+    /*-----------------------------------------------------------------------*/
     /* expressions (in the order in the grammar)                             */
     /*-----------------------------------------------------------------------*/
     public void exitParenExpr (adeleParser.ParenExprContext ctx) {
