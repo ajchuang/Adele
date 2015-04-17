@@ -402,39 +402,6 @@ public class TransPhase extends adeleBaseListener {
         codes.put(ctx, ctx.NUM().getText());
     }
 
-    public void exitAssign(adeleParser.AssignContext ctx) {
-        System.err.println("exitAssign: " + codes.get(ctx.expr()));
-
-        ST assign = stg.getInstanceOf("assign");
-        assign.add("lhs", ctx.ID());
-        assign.add("rhs", codes.get(ctx.expr()));
-        codes.put(ctx, assign.render());
-
-        System.err.println(codes.get(ctx));
-    }
-
-    public void exitMult(adeleParser.MultContext ctx) {
-        System.err.println("exitMult: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
-
-        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.MULTI_OP() + codes.get(ctx.expr(1)));
-
-        System.err.println(codes.get(ctx));
-    }
-
-    public void exitVar(adeleParser.VarContext ctx) {
-        System.err.println("exitVar: " + ctx.ID());
-        codes.put(ctx, ctx.ID().getText());
-        System.err.println(codes.get(ctx));
-    }
-
-    public void exitCompare(adeleParser.CompareContext ctx) {
-        System.err.println("exitCompare: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
-
-        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.COMPARE_OP() + codes.get(ctx.expr(1)));
-
-        System.err.println(codes.get(ctx));
-    }
-
     public void exitAdd(adeleParser.AddContext ctx) {
         System.err.println("exitAdd: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
 
@@ -471,49 +438,26 @@ public class TransPhase extends adeleBaseListener {
         System.err.println(codes.get(ctx));
     }
 
-    public void exitAtexpr(adeleParser.AtexprContext ctx) {
-        System.err.println("exitAt: ");
-        ST at = stg.getInstanceOf("at");
-        at.add("fg", ctx.ID().getText());
-        at.add("r", ctx.expr(0).getText());
-        at.add("c", ctx.expr(1).getText());
-
-        codes.put(ctx, at.render());
-        System.err.println(codes.get(ctx));
-    }
-
-    public void exitArrayAccess(adeleParser.ArrayAccessContext ctx) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < ctx.getChildCount(); ++i)
-            if (ctx.array_access(i) == null)
-                break;
-            else
-                sb.append(codes.get(ctx.array_access(i)));
-
-        codes.put(ctx, ctx.ID().getText() + sb.toString());
-    }
-
     public void exitNegNum(adeleParser.NegNumContext ctx) {
         System.err.println("exitNegNum: " + ctx.SUB() + ctx.NUM());
         codes.put(ctx, ctx.SUB() + ctx.NUM().getText());
         System.err.println(codes.get(ctx));
     }
 
-    public void exitNum(adeleParser.NumContext ctx) {
-        System.err.println("exitNum: " + ctx.NUM());
-        codes.put(ctx, ctx.NUM().getText());
+    public void exitCompare(adeleParser.CompareContext ctx) {
+        System.err.println("exitCompare: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
+
+        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.COMPARE_OP() + codes.get(ctx.expr(1)));
+
         System.err.println(codes.get(ctx));
     }
 
-    public void exitArrayAssign(adeleParser.ArrayAssignContext ctx) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < ctx.getChildCount(); ++i)
-            if (ctx.array_access(i) == null)
-                break;
-            else
-                sb.append(codes.get(ctx.array_access(i)));
+    public void exitMult(adeleParser.MultContext ctx) {
+        System.err.println("exitMult: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
 
-        codes.put(ctx, ctx.ID().getText() + sb.toString() + '=' + codes.get(ctx.expr()));
+        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.MULTI_OP() + codes.get(ctx.expr(1)));
+
+        System.err.println(codes.get(ctx));
     }
 
     public void exitOverlay(adeleParser.OverlayContext ctx) {
@@ -534,11 +478,45 @@ public class TransPhase extends adeleBaseListener {
         System.err.println(codes.get(ctx));
     }
 
+    public void exitArrayAssign(adeleParser.ArrayAssignContext ctx) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ctx.getChildCount(); ++i)
+            if (ctx.array_access(i) == null)
+                break;
+            else
+                sb.append(codes.get(ctx.array_access(i)));
+
+        codes.put(ctx, ctx.ID().getText() + sb.toString() + '=' + codes.get(ctx.expr()));
+    }
+
+    public void exitVar(adeleParser.VarContext ctx) {
+        System.err.println("exitVar: " + ctx.ID());
+        codes.put(ctx, ctx.ID().getText());
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitNum(adeleParser.NumContext ctx) {
+        System.err.println("exitNum: " + ctx.NUM());
+        codes.put(ctx, ctx.NUM().getText());
+        System.err.println(codes.get(ctx));
+    }
+
     public void exitParenExpr(adeleParser.ParenExprContext ctx) {
         System.err.println("exitParenExpr: " + ctx.expr().getText());
 
         codes.put(ctx, ctx.LPAREN() + codes.get(ctx.expr()) + ctx.RPAREN());
 
+        System.err.println(codes.get(ctx));
+    }
+
+    public void exitAtexpr(adeleParser.AtexprContext ctx) {
+        System.err.println("exitAt: ");
+        ST at = stg.getInstanceOf("at");
+        at.add("fg", ctx.ID().getText());
+        at.add("r", ctx.expr(0).getText());
+        at.add("c", ctx.expr(1).getText());
+
+        codes.put(ctx, at.render());
         System.err.println(codes.get(ctx));
     }
 
@@ -573,8 +551,34 @@ public class TransPhase extends adeleBaseListener {
         System.err.println(codes.get(ctx));
     }
 
+    public void exitArrayAccess(adeleParser.ArrayAccessContext ctx) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ctx.getChildCount(); ++i)
+            if (ctx.array_access(i) == null)
+                break;
+            else
+                sb.append(codes.get(ctx.array_access(i)));
+
+        codes.put(ctx, ctx.ID().getText() + sb.toString());
+    }
+
+    public void exitAssign(adeleParser.AssignContext ctx) {
+        System.err.println("exitAssign: " + codes.get(ctx.expr()));
+
+        ST assign = stg.getInstanceOf("assign");
+        assign.add("lhs", ctx.ID());
+        assign.add("rhs", codes.get(ctx.expr()));
+        codes.put(ctx, assign.render());
+
+        System.err.println(codes.get(ctx));
+    }
+
     public void exitArray_access(adeleParser.Array_accessContext ctx) {
         codes.put(ctx, '[' + codes.get(ctx.expr()) + ']');
+    }
+
+    public void exitMember_access(adeleParser.Member_accessContext ctx) { 
+
     }
 
     public void exitFpis(adeleParser.FpisContext ctx) {
