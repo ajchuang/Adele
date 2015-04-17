@@ -164,10 +164,15 @@ class DefPhase extends adeleBaseListener {
 
         /* TODO: record and check num in brackets */
         ArrayType symbolType = new ArrayType(elementType, dimen);
-        print(ctx.ID().getText()+" type: "+symbolType.getName());
-        print(ctx.ID().getText()+" dimen: " + symbolType.getDimension());
-        VariableSymbol vs = new VariableSymbol(ctx.ID().getText(), symbolType);
-        currentScope.define(vs);
+        // print(ctx.ID().getText()+" type: "+symbolType.getName());
+        // print(ctx.ID().getText()+" dimen: " + symbolType.getDimension());
+        String name = ctx.ID().getText();
+        VariableSymbol vs = new VariableSymbol(name, symbolType);
+        if (!currentScope.define(vs)) {
+            err(ctx.start.getLine (),
+                    "Variable " + name + " is already defined in "+
+                    currentScope.getScopeName ());
+        }
     }
 
     /********** expr **********/
