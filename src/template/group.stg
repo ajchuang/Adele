@@ -100,7 +100,7 @@ var Canvas = function(cfg) {
       "width": this.grid+'px',
       "height": this.grid+'px',
       "font-family": "Monaco",
-      "font-size": this.grid*.7+'px',
+      "font-size": this.grid*.8+'px',
       "float": "left",
       "text-align": "center",
       "background-color": "#CFF"
