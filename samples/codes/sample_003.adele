@@ -13,6 +13,9 @@ end
 int main ()
     int x;
     int y;
+
+    char z = (char) x;
+
     group x xx;
     return xx.mem;
 end
