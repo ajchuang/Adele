@@ -1,1 +1,1 @@
-./adele_run.sh ../samples/codes/sample.adele ./output
+./adelecc ../samples/codes/sample.adele ./output

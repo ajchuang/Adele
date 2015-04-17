@@ -1,1 +1,1 @@
-./adele_run.sh ../samples/codes/qsort.adele ./output
+./adelecc ../samples/codes/qsort.adele ./output
