@@ -1,5 +1,12 @@
 int A[30];
 
+void draw_str (string x) 
+    graph g;
+    g = str2graph(x);
+    g @ (5, 30);
+    draw ();
+end
+
 void drawhist()
   flush();
   graph g;
@@ -14,7 +21,7 @@ void drawhist()
     i = i + 1;
   end
   draw();
-  sleep(100);
+  sleep(120);
 end
 
 void qsort (int left, int right)
@@ -72,11 +79,16 @@ end
 
 
 int main ()
+
+  draw_str ("Go!");
+  sleep (1000);
+
   int t = 30;
   while (t)
     A[30-t] = random(39) + 1;
     t = t - 1;
   end
   qsort(0, 29);
+  draw_str ("Done");
   #bbsort(30);
 end
