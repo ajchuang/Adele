@@ -13,7 +13,7 @@ if [ -f "$1" ]; then
     fi
 fi
 
-java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:. AdeleRT $src
+java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:. AdeleRT $src $dst
 
 if [ -f $dst ]; then
     open $dst

@@ -14,7 +14,7 @@ import org.antlr.v4.runtime.tree.*;
 
 public class AdeleRT {
 
-    public void process (String fname) throws Exception {
+    public void process (String fname, String oName) throws Exception {
 
         InputStream is;
 
@@ -64,6 +64,7 @@ public class AdeleRT {
             new ParseTreeProperty<String>();
 
         TransPhase trans = new TransPhase (symtab.globals, def.scopes, def.values, codes);
+        trans.setOutputFilename (oName);
         // The codes below are marked for easier testing
         /*if (fname != null) {
             String filename = new File(fname).getName();
@@ -76,15 +77,19 @@ public class AdeleRT {
 
     public static void main (String[] args) {
 
-        String fname = null;
+        String fname = null, oname = null;
 
-        if (args.length == 1)
+        if (args.length == 1) {
             fname = args[0];
+        } else if (args.length == 2) {
+            fname = args[0];
+            oname = args[1];
+        }
 
         AdeleRT adele = new AdeleRT ();
 
         try {
-            adele.process (fname);
+            adele.process (fname, oname);
         } catch (Exception e) {
             System.err.println ("Exception: " + e);
             e.printStackTrace ();

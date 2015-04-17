@@ -29,7 +29,8 @@ public class TransPhase extends adeleBaseListener {
     }
 
     public void setOutputFilename(String name) {
-        outName = name;
+        if (name != null)
+            outName = name;
     }
 
     /* Start of overriding the methods in adeleBaseLisnter
