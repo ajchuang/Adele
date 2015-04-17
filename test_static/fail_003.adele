@@ -1,0 +1,8 @@
+# group - no duplicate field names
+
+group x
+  int a;
+  float a;  # err
+end
+
+

@@ -1,10 +1,9 @@
-# function － param type should be defined before func definition
+# function - param number not match
 
-int foo(group x a)  # err
-  group x a;
-  return a;
+int main()
+  foo(1);       # err
+  foo(1,2,3);   # err
 end
 
-group x
-  int a;
+void foo(int a, int b, int c)
 end

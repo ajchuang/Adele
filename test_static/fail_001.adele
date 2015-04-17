@@ -1,6 +1,11 @@
-# function － return type should be defined before func definition
+# function - return type should be defined before func definition
 
 group x foo()   # err
+  group x a;
+  return a;
+end
+
+int bar(group x a)  # err
   group x a;
   return a;
 end

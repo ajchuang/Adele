@@ -84,15 +84,16 @@ class ScanPhase extends adeleBaseListener {
     }
 
     public void exitPitem (adeleParser.PitemContext ctx) {
-        
+
         String p_name = ctx.ID ().getText ();
         Type p_type = types.get (ctx.type ());
         int ln = ctx.start.getLine ();
 
-        if (p_type == null) {
-            err (ln, "Type, " + ctx.type ().getText () + " is not valid.");
-            return;
-        }
+        // ZX: Type error is reported in exitType()
+        // if (p_type == null) {
+        //     err (ln, "Type, " + ctx.type ().getText () + " is not valid.");
+        //     return;
+        // }
 
         VariableSymbol vs = new VariableSymbol (p_name, p_type);
 

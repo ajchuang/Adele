@@ -1,0 +1,4 @@
+# function - no duplicate param name
+
+int foo(int a, float a)  # err
+end

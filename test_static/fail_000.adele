@@ -1,4 +1,4 @@
-# group － the type of a member should be defined before it
+# group - the type of a member should be defined before it
 
 group x
   group y a;    # err
