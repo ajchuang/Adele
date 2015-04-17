@@ -408,7 +408,6 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitNegNum (adeleParser.NegNumContext ctx) {
-        print ("enter here?");
         String numText = ctx.SUB() + ctx.NUM ().getText ();
         Type type;
 

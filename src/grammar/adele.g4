@@ -29,7 +29,9 @@ type_declaration:
         ;
 
 type_dec_item:
-            type ID;
+            type ID                                 /*#gVarDecl
+        |   type ID (array_dimen)+                  #gArrayDecl*/
+        ;
 
 /* function and its parameters */
 /******************************************************************************/

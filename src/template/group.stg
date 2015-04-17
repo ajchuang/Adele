@@ -1,4 +1,4 @@
-delimiters "$", "$"
+  delimiters "$", "$"
 // change delimiters to $
 typeInitMap ::= [
     "int":      "0",
@@ -24,7 +24,13 @@ funcexports(fname) ::= <<exports.$fname$ = $fname$;>>
 
 vardecl(vtype, vname, value) ::= "var $vname$$init(value)$"
 
-arraydecl(aname, len) ::= "var $aname$ = function(){ var ar = []; for (var i=0; i<$len$; i++) ar[i]=0;  return ar; }()"
+//arraydecl(aname, len, initV) ::= "var $aname$ = function(){ var ar = []; for (var i=0; i<$len$; i++) ar[i]=$initV$;  return ar; }()"
+
+arraydecl(aname, def, init) ::= "var $aname$ = function(){ var ar = $def$; $init$ return ar; }()"
+
+arrayinit(dimen, varName) ::= "for (var $varName$ = 0; $varName$ < $dimen$; $varName$++)"
+
+groupdef(gname, memberList) ::= "var $gname$ = new makeStruct($memberList$)"
 
 init(value) ::= "$if(value)$ = $value$$endif$"
 
@@ -58,6 +64,17 @@ var clone = function (a) {
 var Pixel = function() {
   this.chr = '';
 };
+
+var makeStruct = function(name) {
+  var names = name.split(' ');
+  var count = name.length;
+  function constructor() {
+    for (var i = 0; i < count; i++) {
+      this[names[i]] = null;
+    }
+  }
+  return constructor;
+}
 
 var Graph = function(cfg) {
   this.width = cfg.w;
