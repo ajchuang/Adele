@@ -144,13 +144,14 @@ class DefPhase extends adeleBaseListener {
     /************* declaration *************/
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
         String name = ctx.ID ().getText ();
-        Type type = getType (ctx.type());
+        Type type = getType (ctx.type ());
         VariableSymbol var = new VariableSymbol (name, type);
-        
-        if (!currentScope.define(var)) {
-            err(ctx.start.getLine(),
-                    "Variable "+name+" is already defined in "+
-                    currentScope.getScopeName());
+        print ("var " + name + ":" + type + " is declared");
+
+        if (!currentScope.define (var)) {
+            err(ctx.start.getLine (),
+                    "Variable " + name + " is already defined in "+
+                    currentScope.getScopeName ());
         }
     }
 
@@ -271,13 +272,14 @@ class DefPhase extends adeleBaseListener {
         String s = new String ();
         Symbol starting = currentScope.resolve (ctx.ID ().getText ());
 
-        if (starting instanceof GroupSymbol == false) {
+        if (starting instanceof VariableSymbol == false && 
+            starting.getType () instanceof GroupSymbol) {
             err (ln, starting + " is not a group symbol");
             setType (ctx, SymbolTable._int);
             return;
         }
 
-        GroupSymbol gs = (GroupSymbol) starting;
+        VariableSymbol gs = (VariableSymbol) starting;
         Type curType = gs.getType ();
 
         while (it.hasNext ()) {
@@ -286,7 +288,8 @@ class DefPhase extends adeleBaseListener {
             curr = it.next ();    
             
             if (gs != null) {
-                cs = gs.resolveMember (curr.ID ().getText ());
+                // TODO: how to resolve this ?
+                //cs = gs.resolveMember (curr.ID ().getText ());
                 curType = cs.getType ();
             } else {
                 curType = null;
@@ -299,7 +302,8 @@ class DefPhase extends adeleBaseListener {
             }
 
             if (cs instanceof GroupSymbol) {
-                gs = (GroupSymbol) cs;
+                //TODO: this is wrong.
+                //gs = (GroupSymbol) cs;
                 curType = gs.getType ();
             } else
                 gs = null;

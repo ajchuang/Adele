@@ -1,0 +1,18 @@
+# Adele v0.1
+# ---
+# a simple program doing some arithmatic
+# ---
+# keywords: begin, end, return, int.
+# comments: single line using '#'
+# main is the entry point.
+
+group x
+    int mem;
+end
+
+int main ()
+    int x;
+    int y;
+    group x xx;
+    return xx.mem;
+end
