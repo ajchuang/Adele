@@ -3,7 +3,7 @@ int A[30];
 void draw_str (string x) 
     graph g;
     g = str2graph(x);
-    g @ (5, 30);
+    g @ (2, 15);
     draw ();
 end
 
@@ -80,7 +80,7 @@ end
 
 int main ()
 
-  draw_str ("Go!");
+  draw_str ("Qsort demo!");
   sleep (1000);
 
   int t = 30;
