@@ -590,7 +590,7 @@ public class TransPhase extends adeleBaseListener {
     }
 
     public void exitMember_access(adeleParser.Member_accessContext ctx) { 
-        codes.put(ctx, '.' + ctx.ID().getText);
+        codes.put(ctx, '.' + ctx.ID().getText());
     }
 
     public void exitFpis(adeleParser.FpisContext ctx) {
