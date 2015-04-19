@@ -1,0 +1,6 @@
+# function - type cast fail
+
+void main()
+    int x = 0;
+    bool y = (bool) x;    #err
+end
