@@ -1,0 +1,7 @@
+# misc - symbol not defined
+
+int main()
+  foo();    # err
+  i;        # err
+  group y a;  # err
+end

@@ -1,0 +1,8 @@
+# function - param type not match
+
+void main()
+  foo(1);     # err
+end
+
+void foo(string a)
+end

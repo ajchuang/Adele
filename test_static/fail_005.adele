@@ -1,0 +1,11 @@
+# function - no duplicate var name (array and primitive type)
+
+int foo()
+  int a;
+  int a[3];   # err
+end
+
+int bar()
+  int a[3];
+  int a;      # err
+end
