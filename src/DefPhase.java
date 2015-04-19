@@ -232,6 +232,7 @@ class DefPhase extends adeleBaseListener {
     /* TODO: @lfred - not finished */
     public void exitCast (adeleParser.CastContext ctx) {
         
+        int ln = ctx.start.getLine ();
         Type sourceType = getType (ctx.expr ());
         Type targetType = null;
 
@@ -239,8 +240,59 @@ class DefPhase extends adeleBaseListener {
     
         if (ctx.type ().getText () != null) {
             /* Primitive type casting */
+            Symbol left = currentScope.resolve (ctx.type ().getText());
+
+            if (left == null) {
+                err (ln, "Cast can not be performed at type, " + left);
+                setType (ctx, sourceType);
+                return;
+            }
+
+            if (left instanceof BuiltInTypeSymbol == false) {
+                err (ln, "Type, " + left + ", is not a valid type.");
+                setType (ctx, sourceType);
+                return;
+            }
+
+            BuiltInTypeSymbol bts = (BuiltInTypeSymbol) left;
+            int idx_left = bts.getTypeIndex ();
+            int idx_right = sourceType.getTypeIndex ();
+
+            Type c = SymbolTable.assignOp[idx_left][idx_right];
+
+            if (c != null)
+                setType (ctx, c);
+            else {
+                err (ln, "Can not cast from " + sourceType + " to " + left);
+                setType (ctx, sourceType);
+                return;
+            }
         } else {
             /* Group type casting */
+            String type = "group " + ctx.ID ().getText ();
+            Symbol s = currentScope.resolve (type);
+
+            if (s != null) {
+
+                if (type == sourceType.getName ()) {
+                    setType (ctx, sourceType);
+                    return;
+                }
+
+                if (s instanceof GroupSymbol == false) {
+                    err (ln, ctx.ID().getText() + " is not a valid id.");
+                    setType (ctx, sourceType);
+                    return;
+                }
+
+                /* cast anyway */
+                setType (ctx, s.getType ()); 
+
+            } else {
+                err (ln, type + " is not defined");
+                setType (ctx, sourceType);
+                return;
+            }
         }
     
     }
