@@ -50,12 +50,14 @@ public class AdeleRT {
         /**********************************************************************/
         ScanPhase scan = new ScanPhase (symtab);
         walker.walk (scan, tree);
+        if (scan.getErrCount () != 0) { return; }
 
         /**********************************************************************/
         /* semantic check phase                                               */
         /**********************************************************************/
         DefPhase def = new DefPhase (symtab);
         walker.walk (def, tree);
+        if (def.getErrCount () != 0) { return; }
 
         /**********************************************************************/
         /* translation phase                                                  */

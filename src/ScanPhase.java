@@ -20,15 +20,19 @@ class ScanPhase extends adeleBaseListener {
         errcount = 0;
     }
 
+    public int getErrCount () { return errcount; }
+
     public void enterProg (adeleParser.ProgContext ctx) {
         print ("Phase Started.");
     }
 
     public void exitProg (adeleParser.ProgContext ctx) {
         if (errcount > 0) {
-            String msg = errcount == 1 ? "1 error" : errcount+" errors";
-            print (msg);
-            System.exit (1);
+            String msg = 
+                (errcount == 1) ? 
+                    "[ScanPhase] 1 error" : 
+                    "[ScanPhase] " + errcount + " errors";
+            System.err.println (msg);
         } else
             print ("Phase Completed. Continue.");
     }

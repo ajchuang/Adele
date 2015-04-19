@@ -24,6 +24,8 @@ class DefPhase extends adeleBaseListener {
     /*------------------------------------------------------------------------*/
     /* Utility functions                                                      */
     /*------------------------------------------------------------------------*/
+    public int getErrCount () { return errcount; }
+    
     public void setValue (ParseTree node, Object value) {
         values.put (node, value);
     }
@@ -63,9 +65,11 @@ class DefPhase extends adeleBaseListener {
 
     public void exitProg (adeleParser.ProgContext ctx) {
         if (errcount > 0) {
-            String msg = (errcount == 1) ? "1 error" : errcount + " errors";
-            print (msg);
-            System.exit(1);
+            String msg = 
+                (errcount == 1) ? 
+                    "[Def Phase] 1 error" : 
+                    "[Def Phase] " + errcount + " errors";
+            System.err.println (msg);
         } else
             print ("Phase Completed. Continue.");
     }
