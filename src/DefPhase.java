@@ -16,6 +16,9 @@ class DefPhase extends adeleBaseListener {
     Scope currentScope;
     int errcount;
 
+    /*------------------------------------------------------------------------*/
+    /* ctor                                                                   */
+    /*------------------------------------------------------------------------*/
     public DefPhase (SymbolTable symtab) {
         globals = symtab.globals;
         errcount = 0;

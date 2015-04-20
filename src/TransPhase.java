@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.stringtemplate.v4.*;
 
@@ -10,19 +11,35 @@ public class TransPhase extends adeleBaseListener {
     final static String M_DefOutName = "output";
     final static String M_GroupFile = "../src/template/group.stg";
 
-
+    /* SDD nodes */
     ParseTreeProperty<Scope>    scopes;
     ParseTreeProperty<Object>   values;
     ParseTreeProperty<String>   codes;
+    
+    /* common data members */
     GlobalScope globals;
     STGroupFile stg;
     String outName = M_DefOutName;
     Scope currentScope; // resolve symbols starting in this scope
 
-    private void print (String str) {
+    /*------------------------------------------------------------------------*/
+    /* Utility functions                                                      */
+    /*------------------------------------------------------------------------*/
+    void print (String str) {
         System.out.println ("    [TransPhase] " + str);
     }
 
+    void putCode (ParserRuleContext ctx, String snippet) {
+        putCode (ctx, snippet);
+    }
+
+    public void setOutputFilename(String name) {
+        if (name != null)
+            outName = name;
+    }
+    /*------------------------------------------------------------------------*/
+    /* ctor                                                                   */
+    /*------------------------------------------------------------------------*/
     public TransPhase(
             GlobalScope globals,
             ParseTreeProperty<Scope> scopes,
@@ -37,10 +54,6 @@ public class TransPhase extends adeleBaseListener {
         stg = new STGroupFile (M_GroupFile);
     }
 
-    public void setOutputFilename(String name) {
-        if (name != null)
-            outName = name;
-    }
 
     /* Start of overriding the methods in adeleBaseLisnter
      *
@@ -52,7 +65,6 @@ public class TransPhase extends adeleBaseListener {
      *     and this class are synced.
      *     If any auxiliary methods are added, please added above this comment.
      */
-
     public void enterProg(adeleParser.ProgContext ctx) {
         currentScope = globals;
     }
@@ -119,8 +131,6 @@ public class TransPhase extends adeleBaseListener {
 
     public void enterType_declaration(adeleParser.Type_declarationContext ctx) {
         print ("enter typr declaration:");
-
-        
     }
 
     public void exitType_declaration(adeleParser.Type_declarationContext ctx) { 
@@ -139,7 +149,7 @@ public class TransPhase extends adeleBaseListener {
         ST groupDef = stg.getInstanceOf("groupdef");
         groupDef.add("gname", ctx.ID());
         groupDef.add("memberList", memberList.toString());
-        codes.put(ctx, groupDef.render());
+        putCode (ctx, groupDef.render());
 
         print (codes.get(ctx));
     }
@@ -147,7 +157,7 @@ public class TransPhase extends adeleBaseListener {
     public void exitType_dec_item(adeleParser.Type_dec_itemContext ctx) { 
         print ("exitType_dec_iten:");
 
-        codes.put(ctx, ctx.ID().getText());
+        putCode (ctx, ctx.ID().getText());
 
         print (codes.get(ctx));
     }
@@ -173,7 +183,7 @@ public class TransPhase extends adeleBaseListener {
         func.add("fname", ctx.ID());
         func.add("params", codes.get(ctx.plist()));
         func.add("body", codes.get(ctx.stmts()));
-        codes.put(ctx, func.render());
+        putCode (ctx, func.render());
 
         print (codes.get(ctx));
     }
@@ -197,7 +207,7 @@ public class TransPhase extends adeleBaseListener {
                 plist.append(codes.get(ctx.getChild(i)));
             }
         }
-        codes.put(ctx, plist.toString());
+        putCode (ctx, plist.toString());
 
         print (codes.get(ctx));
     }
@@ -205,7 +215,7 @@ public class TransPhase extends adeleBaseListener {
     public void exitPitem(adeleParser.PitemContext ctx) {
         print ("exitPitem:");
 
-        codes.put(ctx, ctx.ID().getText());
+        putCode (ctx, ctx.ID().getText());
 
         print (codes.get(ctx));
     }
@@ -223,23 +233,23 @@ public class TransPhase extends adeleBaseListener {
                 stmts.append(codes.get(ctx.getChild(i)));
             }
         }
-        codes.put(ctx, stmts.toString());
+        putCode (ctx, stmts.toString());
 
         print (codes.get(ctx));
     }
 
     public void exitStm_if(adeleParser.Stm_ifContext ctx) {
-        codes.put(ctx, codes.get(ctx.if_stmt()));
+        putCode (ctx, codes.get(ctx.if_stmt()));
     }
 
     public void exitStm_while(adeleParser.Stm_whileContext ctx) {
-        codes.put(ctx, codes.get(ctx.while_stmt()));
+        putCode (ctx, codes.get(ctx.while_stmt()));
     }
 
     public void exitStm_expr(adeleParser.Stm_exprContext ctx) {
         print ("exitStm_expr:");
 
-        codes.put(ctx, codes.get(ctx.expr()) + ';');
+        putCode (ctx, codes.get(ctx.expr()) + ';');
 
         print (codes.get(ctx));
     }
@@ -247,7 +257,7 @@ public class TransPhase extends adeleBaseListener {
     public void exitStm_dec(adeleParser.Stm_decContext ctx) {
         print ("exitStm_dec:");
 
-        codes.put(ctx, codes.get(ctx.declaration()) + ';');
+        putCode (ctx, codes.get(ctx.declaration()) + ';');
 
         print (codes.get(ctx));
     }
@@ -255,7 +265,7 @@ public class TransPhase extends adeleBaseListener {
     public void exitStm_ret(adeleParser.Stm_retContext ctx){
         print ("exitStm_ret:");
 
-        codes.put(ctx, "return "+codes.get(ctx.expr())+';');
+        putCode (ctx, "return "+codes.get(ctx.expr())+';');
 
         print (codes.get(ctx));
     }
@@ -274,7 +284,7 @@ public class TransPhase extends adeleBaseListener {
         ST ifstmt = stg.getInstanceOf("ifstmt");
         ifstmt.add("expr", codes.get(ctx.expr()));
         ifstmt.add("body", codes.get(ctx.stmts()));
-        codes.put(ctx, ifstmt.render());
+        putCode (ctx, ifstmt.render());
 
         print (codes.get(ctx));
     }
@@ -292,7 +302,7 @@ public class TransPhase extends adeleBaseListener {
         ST whilestmt = stg.getInstanceOf("whilestmt");
         whilestmt.add("expr", codes.get(ctx.expr()));
         whilestmt.add("body", codes.get(ctx.stmts()));
-        codes.put(ctx, whilestmt.render());
+        putCode (ctx, whilestmt.render());
 
         print (codes.get(ctx));
     }
@@ -330,7 +340,7 @@ public class TransPhase extends adeleBaseListener {
             initValue.append(codes.get(ctx.expr()));
             decl.add("value", initValue.toString());
         }
-        codes.put(ctx, decl.render());
+        putCode (ctx, decl.render());
 
         print (codes.get(ctx));
     }
@@ -402,14 +412,14 @@ public class TransPhase extends adeleBaseListener {
 
         adecl.add("init", initBlock.toString());
 
-        codes.put(ctx, adecl.render());
+        putCode (ctx, adecl.render());
 
         print (codes.get(ctx));
     }
 
     public void enterArray_dimen(adeleParser.Array_dimenContext ctx) {
-        //codes.put(ctx, '[' + ctx.NUM().getText() + ']');
-        codes.put(ctx, ctx.NUM().getText());
+        //putCode (ctx, '[' + ctx.NUM().getText() + ']');
+        putCode (ctx, ctx.NUM().getText());
     }
 
     public void exitAdd(adeleParser.AddContext ctx) {
@@ -423,9 +433,9 @@ public class TransPhase extends adeleBaseListener {
         */
 
         /* set the code to the node */
-        //codes.put(ctx, add.render());
+        //putCode (ctx, add.render());
 
-        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.ADD() + codes.get(ctx.expr(1)));
+        putCode (ctx, codes.get(ctx.expr(0)) + ctx.ADD() + codes.get(ctx.expr(1)));
 
         print (codes.get(ctx));
     }
@@ -441,23 +451,23 @@ public class TransPhase extends adeleBaseListener {
         */
 
         /* set the code to the node */
-        //codes.put(ctx, add.render());
+        //putCode (ctx, add.render());
 
-        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.SUB() + codes.get(ctx.expr(1)));
+        putCode (ctx, codes.get(ctx.expr(0)) + ctx.SUB() + codes.get(ctx.expr(1)));
 
         print (codes.get(ctx));
     }
 
     public void exitNegNum(adeleParser.NegNumContext ctx) {
         print ("exitNegNum: " + ctx.SUB() + ctx.NUM());
-        codes.put(ctx, ctx.SUB() + ctx.NUM().getText());
+        putCode (ctx, ctx.SUB() + ctx.NUM().getText());
         print (codes.get(ctx));
     }
 
     public void exitCompare(adeleParser.CompareContext ctx) {
         print ("exitCompare: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
 
-        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.COMPARE_OP() + codes.get(ctx.expr(1)));
+        putCode (ctx, codes.get(ctx.expr(0)) + ctx.COMPARE_OP() + codes.get(ctx.expr(1)));
 
         print (codes.get(ctx));
     }
@@ -465,7 +475,7 @@ public class TransPhase extends adeleBaseListener {
     public void exitMult(adeleParser.MultContext ctx) {
         print ("exitMult: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
 
-        codes.put(ctx, codes.get(ctx.expr(0)) + ctx.MULTI_OP() + codes.get(ctx.expr(1)));
+        putCode (ctx, codes.get(ctx.expr(0)) + ctx.MULTI_OP() + codes.get(ctx.expr(1)));
 
         print (codes.get(ctx));
     }
@@ -478,13 +488,13 @@ public class TransPhase extends adeleBaseListener {
         overlay.add("r", ctx.expr(0).getText());
         overlay.add("c", ctx.expr(1).getText());
 
-        codes.put(ctx, overlay.render());
+        putCode (ctx, overlay.render());
         print (codes.get(ctx));
     }
 
     public void exitString(adeleParser.StringContext ctx) {
         print ("exitString: " + ctx.STR());
-        codes.put(ctx, ctx.STR().getText());
+        putCode (ctx, ctx.STR().getText());
         print (codes.get(ctx));
     }
 
@@ -496,18 +506,18 @@ public class TransPhase extends adeleBaseListener {
             else
                 sb.append(codes.get(ctx.array_access(i)));
 
-        codes.put(ctx, ctx.ID().getText() + sb.toString() + '=' + codes.get(ctx.expr()));
+        putCode (ctx, ctx.ID().getText() + sb.toString() + '=' + codes.get(ctx.expr()));
     }
 
     public void exitVar(adeleParser.VarContext ctx) {
         print ("exitVar: " + ctx.ID());
-        codes.put(ctx, ctx.ID().getText());
+        putCode (ctx, ctx.ID().getText());
         print (codes.get(ctx));
     }
 
     public void exitNum(adeleParser.NumContext ctx) {
         print ("exitNum: " + ctx.NUM());
-        codes.put(ctx, ctx.NUM().getText());
+        putCode (ctx, ctx.NUM().getText());
         print (codes.get(ctx));
     }
 
@@ -519,13 +529,13 @@ public class TransPhase extends adeleBaseListener {
             else
                 sb.append(codes.get(ctx.member_access(i)));
 
-        codes.put(ctx, ctx.ID().getText() + sb.toString());
+        putCode (ctx, ctx.ID().getText() + sb.toString());
     }
 
     public void exitParenExpr(adeleParser.ParenExprContext ctx) {
         print ("exitParenExpr: " + ctx.expr().getText());
 
-        codes.put(ctx, ctx.LPAREN() + codes.get(ctx.expr()) + ctx.RPAREN());
+        putCode (ctx, ctx.LPAREN() + codes.get(ctx.expr()) + ctx.RPAREN());
 
         print (codes.get(ctx));
     }
@@ -537,7 +547,7 @@ public class TransPhase extends adeleBaseListener {
         at.add("r", ctx.expr(0).getText());
         at.add("c", ctx.expr(1).getText());
 
-        codes.put(ctx, at.render());
+        putCode (ctx, at.render());
         print (codes.get(ctx));
     }
 
@@ -559,14 +569,14 @@ public class TransPhase extends adeleBaseListener {
                     }
                 }
                 graph.append("\")");
-                codes.put(ctx, graph.toString());
+                putCode (ctx, graph.toString());
             } catch (IOException ioe) {
                 print ("Exception in opening file of loading");
             }
         } else {
             funccall.add("fname", ctx.ID().getText());
             funccall.add("params", codes.get(ctx.func_plist()));
-            codes.put(ctx, funccall.render());
+            putCode (ctx, funccall.render());
         }
 
         print (codes.get(ctx));
@@ -580,7 +590,7 @@ public class TransPhase extends adeleBaseListener {
             else
                 sb.append(codes.get(ctx.array_access(i)));
 
-        codes.put(ctx, ctx.ID().getText() + sb.toString());
+        putCode (ctx, ctx.ID().getText() + sb.toString());
     }
 
     public void exitAssign(adeleParser.AssignContext ctx) {
@@ -589,17 +599,17 @@ public class TransPhase extends adeleBaseListener {
         ST assign = stg.getInstanceOf("assign");
         assign.add("lhs", ctx.ID());
         assign.add("rhs", codes.get(ctx.expr()));
-        codes.put(ctx, assign.render());
+        putCode (ctx, assign.render());
 
         print (codes.get(ctx));
     }
 
     public void exitArray_access(adeleParser.Array_accessContext ctx) {
-        codes.put(ctx, '[' + codes.get(ctx.expr()) + ']');
+        putCode (ctx, '[' + codes.get(ctx.expr()) + ']');
     }
 
     public void exitMember_access(adeleParser.Member_accessContext ctx) { 
-        codes.put(ctx, '.' + ctx.ID().getText());
+        putCode (ctx, '.' + ctx.ID().getText());
     }
 
     public void exitFpis(adeleParser.FpisContext ctx) {
@@ -621,7 +631,7 @@ public class TransPhase extends adeleBaseListener {
                 plist.append(codes.get(ctx.getChild(i)));
             }
         }
-        codes.put(ctx, plist.toString());
+        putCode (ctx, plist.toString());
 
         print (codes.get(ctx));
     }
@@ -629,7 +639,7 @@ public class TransPhase extends adeleBaseListener {
     public void exitFpitem(adeleParser.FpitemContext ctx) {
         print ("exitFpitem:");
 
-        codes.put(ctx, codes.get(ctx.expr()));
+        putCode (ctx, codes.get(ctx.expr()));
 
         print (codes.get(ctx));
     }
