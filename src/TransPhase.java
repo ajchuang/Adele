@@ -6,12 +6,17 @@ import org.stringtemplate.v4.*;
 
 public class TransPhase extends adeleBaseListener {
 
+    /* constants */
+    final static String M_DefOutName = "output";
+    final static String M_GroupFile = "../src/template/group.stg";
+
+
     ParseTreeProperty<Scope>    scopes;
     ParseTreeProperty<Object>   values;
     ParseTreeProperty<String>   codes;
     GlobalScope globals;
     STGroupFile stg;
-    String outName = "output";
+    String outName = M_DefOutName;
     Scope currentScope; // resolve symbols starting in this scope
 
     private void print (String str) {
@@ -29,7 +34,7 @@ public class TransPhase extends adeleBaseListener {
         this.values     = values;
         this.codes      = codes;
 
-        stg = new STGroupFile("../src/template/group.stg");
+        stg = new STGroupFile (M_GroupFile);
     }
 
     public void setOutputFilename(String name) {

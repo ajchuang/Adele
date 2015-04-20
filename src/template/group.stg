@@ -227,7 +227,11 @@ var random = function(max) {
 
 jQuery(document).ready(function(){
   canvas.init();
-  main();
+  try {
+    main();
+  } catch (e) {
+    console.log (e.stack);
+  }
   canvas.play(0);
 });
 
