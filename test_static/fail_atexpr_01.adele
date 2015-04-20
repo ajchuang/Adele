@@ -1,0 +1,11 @@
+
+int main ()
+
+    graph x;
+    graph y;
+    int a = 10;
+    char b = 10;
+
+    y @ (a, b);    #err
+
+end

@@ -95,8 +95,8 @@ expr:
         |   expr ADD expr           #add            /* addition */
         |   expr SUB expr           #sub            /* sub */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
-        |   ID OVERLAY ID AT LPAREN expr COMMA expr RPAREN #overlay   /* @lfred: to fix - lame overlay */
-        |   ID AT LPAREN expr COMMA expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
+        |   sid=ID OVERLAY tid=ID AT LPAREN xc=expr COMMA yc=expr RPAREN #overlay   /* @lfred: to fix - lame overlay */
+        |   sid=ID AT LPAREN xc=expr COMMA yc=expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
         |   ID EQUAL expr                   #assign         /* assignment */
         |   ID (array_access)+ EQUAL expr   #arrayAssign
         |   ID      #var

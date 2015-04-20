@@ -233,7 +233,6 @@ class DefPhase extends adeleBaseListener {
         setType (ctx, getType (ctx.expr ()));
     }
 
-    /* TODO: @lfred - not finished */
     public void exitCast (adeleParser.CastContext ctx) {
         
         int ln = ctx.start.getLine ();
@@ -530,12 +529,62 @@ class DefPhase extends adeleBaseListener {
         setType (ctx, SymbolTable._boolean);
     }
 
-    /* TODO: @lfred */
     public void exitOverlay (adeleParser.OverlayContext ctx) {
+   
+        int ln = ctx.start.getLine ();
+        setType (ctx, SymbolTable._void);
+
+        Symbol s = currentScope.resolve (ctx.sid.getText ());
+        Symbol t = currentScope.resolve (ctx.tid.getText ());
+
+        /* check source */
+        if (s == null) {
+            err (ln, "Symbol " + ctx.sid.getText () + " not defined.");
+            return;
+        } else if (s.getType () != SymbolTable._graph) {
+            err (ln, "Source in overlay operator is not a graph.");
+            return;
+        }
+
+        /* check target */
+        if (t == null) {
+            err (ln, "Symbol " + ctx.tid.getText () + " not defined.");
+            return;
+        } else if (t.getType () != SymbolTable._graph) {
+            err (ln, "Target in overlay operator is not a graph.");
+            return;
+        }
+
+        if (getType (ctx.xc) != SymbolTable._int || 
+            getType (ctx.yc) != SymbolTable._int) {
+        
+            err (ln, "Expression is not integer.");
+            return;
+        }
     }
 
-    /* TODO: @lfred */
-    public void exitAtexpr(adeleParser.AtexprContext ctx) {
+    public void exitAtexpr (adeleParser.AtexprContext ctx) {
+        
+        int ln = ctx.start.getLine ();
+        setType (ctx, SymbolTable._void);
+
+        Symbol s = currentScope.resolve (ctx.sid.getText ());
+        
+        /* check source */
+        if (s == null) {
+            err (ln, "Symbol " + ctx.sid.getText () + " not defined.");
+            return;
+        } else if (s.getType () != SymbolTable._graph) {
+            err (ln, "Source in overlay operator is not a graph.");
+            return;
+        }
+        
+        if (getType (ctx.xc) != SymbolTable._int || 
+            getType (ctx.yc) != SymbolTable._int) {
+        
+            err (ln, "Expression is not integer.");
+            return;
+        }
     }
 
     public void exitAssign (adeleParser.AssignContext ctx) {
