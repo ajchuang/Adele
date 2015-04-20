@@ -30,7 +30,7 @@ public class TransPhase extends adeleBaseListener {
     }
 
     void putCode (ParserRuleContext ctx, String snippet) {
-        putCode (ctx, snippet);
+         codes.put (ctx, snippet);
     }
 
     public void setOutputFilename(String name) {
