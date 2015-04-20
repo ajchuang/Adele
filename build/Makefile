@@ -23,11 +23,13 @@ compiler:
 	@echo '[Phase 3] Compiling compiler source codes' 
 	@make -C $(SRC)
 	
-	@echo '[Phase 4] Running static tests'
+	@echo '[Phase 4] Running static tests ...'
 	@echo '------------------------------------------------------------'
+	@echo 'static test results: '
 	@cd $(TEST_DIR) && ./run_fail.sh
 	@echo '------------------------------------------------------------'
-	@echo 'Compilation done'
+	@echo '|                 Compilation Completed                    |'
+	@echo '------------------------------------------------------------'
 
 grammar:
 	@make -C $(GRAMMAR)
