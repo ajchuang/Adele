@@ -226,7 +226,8 @@ public class TransPhase extends adeleBaseListener {
         StringBuilder stmts = new StringBuilder();
 
         if (ctx.getChild(0) != null)
-            stmts.append(codes.get(ctx.getChild(0)));
+            stmts.append (codes.get (ctx.getChild (0)));
+
         for (int i = 1; i < ctx.getChildCount(); ++i) {
             if (ctx.getChild(i) != null) {
                 stmts.append('\n');

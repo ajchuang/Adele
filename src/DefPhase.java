@@ -14,20 +14,22 @@ class DefPhase extends adeleBaseListener {
 
     GlobalScope globals;
     Scope currentScope;
-    int errcount;
+    int errCount;
+    int warnCount;
 
     /*------------------------------------------------------------------------*/
     /* ctor                                                                   */
     /*------------------------------------------------------------------------*/
     public DefPhase (SymbolTable symtab) {
         globals = symtab.globals;
-        errcount = 0;
+        errCount = 0;
+        warnCount = 0;
     }
 
     /*------------------------------------------------------------------------*/
     /* Utility functions                                                      */
     /*------------------------------------------------------------------------*/
-    public int getErrCount () { return errcount; }
+    public int getErrCount () { return errCount; }
     
     public void setValue (ParseTree node, Object value) {
         values.put (node, value);
@@ -49,9 +51,14 @@ class DefPhase extends adeleBaseListener {
         scopes.put (ctx, s);
     }
 
+    private void warning (int line, String msg) {
+        System.err.println ("[WARNING] line " + line + ": " + msg);
+        warnCount++;
+    }
+
     private void err (int line, String msg) {
         System.err.println ("[ERROR] line " + line + ": " + msg);
-        errcount++;
+        errCount++;
     }
 
     private void print (String msg) {
@@ -67,11 +74,11 @@ class DefPhase extends adeleBaseListener {
     }
 
     public void exitProg (adeleParser.ProgContext ctx) {
-        if (errcount > 0) {
+        if (errCount > 0) {
             String msg = 
-                (errcount == 1) ? 
+                (errCount == 1) ? 
                     "[Def Phase] 1 error" : 
-                    "[Def Phase] " + errcount + " errors";
+                    "[Def Phase] " + errCount + " errors";
             System.err.println (msg);
         } else
             print ("Phase Completed. Continue.");
@@ -202,8 +209,13 @@ class DefPhase extends adeleBaseListener {
         if (exprType != SymbolTable._boolean &&
             exprType != SymbolTable._int     &&
             exprType != SymbolTable._char) {
-
             err (ln, "The expression in if statement is not allowed.");
+            return;
+        }
+
+        if (exprType != SymbolTable._int &&
+            exprType != SymbolTable._char) {
+            warning (ln, "Using integer expression in if statement."); 
         }
 
         return;
@@ -225,6 +237,12 @@ class DefPhase extends adeleBaseListener {
             exprType != SymbolTable._int     &&
             exprType != SymbolTable._char) {
             err (ln, "The expression in while statement is not boolean.");
+            return;
+        }
+
+        if (exprType == SymbolTable._int || 
+            exprType != SymbolTable._char) {
+            warning (ln, "Using integer type in while statement. Auto casting");
         }
 
         return;
