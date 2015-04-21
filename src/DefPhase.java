@@ -406,7 +406,7 @@ class DefPhase extends adeleBaseListener {
         print ("Accessing array: " + name + ":" + as);
         setType (ctx, as.getElmType ()); 
     }
-
+    
     /* TODO: @lfred */
     public void exitMemberVar (adeleParser.MemberVarContext ctx) {
         
@@ -446,13 +446,13 @@ class DefPhase extends adeleBaseListener {
                 setType (ctx, SymbolTable._int);
                 return;
             }
-
-            if (cs instanceof GroupSymbol) {
+            else if (cs instanceof GroupSymbol) {
                 //TODO: this is wrong.
                 //gs = (GroupSymbol) cs;
                 curType = gs.getType ();
-            } else
+            } else {
                 gs = null;
+            }
         }
 
         if (curType != null)

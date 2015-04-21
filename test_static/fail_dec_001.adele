@@ -1,0 +1,8 @@
+group x
+    group y yy; #err
+end
+
+
+void main () 
+    
+end
