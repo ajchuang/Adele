@@ -1,6 +1,8 @@
 int A[30];
 
 void draw_str (string x) 
+
+    consoleLog ("draw_str: " + x);
     graph g;
     g = str2graph(x);
     g @ (2, 15);

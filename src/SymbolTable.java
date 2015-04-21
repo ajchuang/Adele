@@ -29,7 +29,6 @@ public class SymbolTable {
     public static final BuiltInTypeSymbol _graph =
         new BuiltInTypeSymbol("graph", M_TYPE_GRAPH);
 
-
     public static final Type[] indexToType = {
         null, _boolean, _char, _int, _float, _string, _void, _graph
     };
@@ -96,9 +95,11 @@ public class SymbolTable {
         new FunctionSymbol("function flush", _void, globals);
     public final FunctionSymbol _random =
         new FunctionSymbol("function random", _int, globals);
+    public final FunctionSymbol _consoleLog =
+        new FunctionSymbol("function consoleLog", _void, globals);
     
     public final FunctionSymbol[] builtInFunctions = {
-        _str2graph, _draw, _load, _sleep, _flush, _random
+        _str2graph, _draw, _load, _sleep, _flush, _random, _consoleLog
     };
 
     /* static initialization */
@@ -115,6 +116,9 @@ public class SymbolTable {
         
         VariableSymbol v4 = new VariableSymbol ("max", _int);
         _random.defineParam_def (v4);
+        
+        VariableSymbol v5 = new VariableSymbol ("str", _string);
+        _consoleLog.defineParam_def (v5);
     }
 
     public SymbolTable() {

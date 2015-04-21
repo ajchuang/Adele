@@ -167,6 +167,10 @@ var canvas = new Canvas({
   g: 20,
 });
 
+// a general log function
+var consoleLog = function (str) {
+    console.log (str);
+}
 
 //Convert string to graph
 var str2graph = function (str) {
