@@ -1,5 +1,6 @@
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class BaseScope implements Scope {
     Scope enclosingScope;
@@ -35,6 +36,11 @@ public abstract class BaseScope implements Scope {
             return true;
         }
     }
+
+    public String[] IDs() {
+        return symbols.keySet().toArray(new String[0]);
+    }
+
 
     public Scope getEnclosingScope() { return enclosingScope; }
 

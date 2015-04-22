@@ -243,12 +243,24 @@ jQuery(document).ready(function(){
 
 
 befprog_test() ::= <<
+
 var clone = function (a) {
    return JSON.parse(JSON.stringify(a));
 };
 
 var Pixel = function() {
   this.chr = '';
+};
+
+var makeStruct = function(name) {
+  var names = name.split(' ');
+  var count = name.length;
+  function constructor() {
+    for (var i = 0; i < count; i++) {
+      this[names[i]] = null;
+    }
+  }
+  return constructor;
 };
 
 var Graph = function(cfg) {
@@ -264,6 +276,7 @@ var Graph = function(cfg) {
   this.overlay = function(bg, r, c) {
     for (var i = 0; i <this.height; i++) {
       for (var j = 0; j < this.width; j++) {
+        if (i+r>=bg.height || j+c>=bg.width) continue;
         bg.buffer[i+r][j+c].chr = this.buffer[i][j].chr;
       }
     }
@@ -273,12 +286,17 @@ var Graph = function(cfg) {
   }
 };
 
+
 var Canvas = function(cfg) {
   this.width = cfg.w;
   this.height = cfg.h;
   this.grid = cfg.g;
   this.buffer = [];
   this.screen = [];
+  this.timeline = [];
+  this.interval = [];
+  this.sleeptime = 0;
+
   this.init = function () {
 
     for (var i = 0; i < this.height; i++) {
@@ -290,15 +308,32 @@ var Canvas = function(cfg) {
         this.screen[i][j] = clone(p);
       }
     }
-    this.draw();
+    this.timeline.push(this.buffer);
   };
   this.draw = function () {
+    this.timeline.push(clone(this.buffer));
+    this.interval.push(this.sleeptime);
+    this.sleeptime = 0;
+  };
+  this.flush = function () {
     for (var i = 0; i < this.height; i++) {
       for (var j = 0; j < this.width; j++) {
-        var p = this.buffer[i][j];
+        this.buffer[i][j] = new Pixel();
+      }
+    }
+  };
+  this.sleep = function(time) {
+    this.sleeptime = this.sleeptime + time;
+  };
+  this.play = function(fn) {
+    for (var i = 0; i < this.height; i++) {
+      for (var j = 0; j < this.width; j++) {
+        var p = this.timeline[fn][i][j];
         this.screen[i][j] = clone(p);
       }
     }
+    if (this.interval[fn]!=undefined) setTimeout(function(){
+    canvas.play(fn+1); }, this.interval[fn]);
   };
 };
 
@@ -308,8 +343,10 @@ var canvas = new Canvas({
   g: 20,
 });
 
-canvas.init();
-
+// a general log function
+var consoleLog = function (str) {
+    console.log (str);
+}
 
 //Convert string to graph
 var str2graph = function (str) {
@@ -342,8 +379,30 @@ var str2graph = function (str) {
   return g;
 };
 
+var sleep = function (milliseconds) {
+  canvas.sleep(milliseconds);
+};
+/*
+var print_str = function(r, c, str) {
+  if (r==undefined || c==undefined || str==undefined) {
+    r = 0; c = 0; str = "hello world";
+  }
+  var g = str2graph(str);
+  g.at(r, c);
+  canvas.draw();
+};
+*/
+
 var draw = function() {
   canvas.draw();
+};
+
+var flush = function() {
+  canvas.flush();
+};
+
+var random = function(max) {
+  return Math.floor(Math.random()*max);
 };
 
 exports.canvas = canvas;
@@ -351,4 +410,7 @@ exports.Graph = Graph;
 exports.str2graph = str2graph;
 exports.draw = draw;
 exports.clone = clone;
+
+canvas.init();
+
 >>

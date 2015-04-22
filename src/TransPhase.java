@@ -129,6 +129,27 @@ public class TransPhase extends adeleBaseListener {
             testprog.append(funcexports.render());
         }
 
+
+        List<adeleParser.DeclarationContext> decl_list = ctx.declaration();
+        for (int i = 0; i < decl_list.size(); ++i) {
+            ST funcexports = stg.getInstanceOf("funcexports");
+            adeleParser.DeclarationContext decl = decl_list.get(i);
+            TerminalNode idn=null;
+            if (decl instanceof adeleParser.ArrayDeclContext) {
+                idn = ((adeleParser.ArrayDeclContext)decl).ID();
+            }
+            if (decl instanceof adeleParser.VarDeclContext) {
+                idn = ((adeleParser.VarDeclContext)decl).ID();
+            }
+            if (idn!=null) {
+                funcexports.add("fname", idn);
+                testprog.append('\n');
+                testprog.append(funcexports.render());
+            }
+
+        }
+
+
         //print (prog.toString());
 
         // Output Javascript and HTML

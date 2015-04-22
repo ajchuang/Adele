@@ -1,7 +1,9 @@
 var f = require('./output_test.js');
 
 exports.testInit = function(test) {
-  test.ok(f.canvas.width == 40 && f.canvas.height == 30, "Test canvas init w & h");
+  test.ok(f.canvas.width == 40 && f.canvas.height == 30, "Test canvas init w & h error");
+  test.ok(f.canvas.buffer.length == 30 && f.canvas.buffer[0].length==40, "Test canvas init buffer error");
+
   test.done();
 };
 
@@ -29,5 +31,17 @@ exports.testGraph = function(test) {
 
 exports.testScope = function(test) {
   test.ok(f.scope()==2, "Test scope error");
+  test.done();
+}
+
+exports.testDraw = function(test) {
+  var dn = f.canvas.timeline.length;
+  f.draw();
+  var f1 = (++dn) == f.canvas.timeline.length;
+  var g = f.str2graph("HaHa\ng1");
+  g.at(3, 4);
+  f.draw();
+  var f2 = (++dn) == f.canvas.timeline.length;
+  test.ok(f1 && f2, "Test Draw Error, timeline work inproper");
   test.done();
 }

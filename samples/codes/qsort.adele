@@ -1,6 +1,7 @@
 int A[30];
+int kl = 30;
 
-void draw_str (string x) 
+void draw_str (string x)
 
     consoleLog ("draw_str: " + x);
     graph g;
