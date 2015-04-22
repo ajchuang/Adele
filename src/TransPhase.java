@@ -33,10 +33,24 @@ public class TransPhase extends adeleBaseListener {
          codes.put (ctx, snippet);
     }
 
-    public void setOutputFilename(String name) {
+    public void setOutputFilename (String name) {
         if (name != null)
             outName = name;
     }
+    
+    public String createFuncTable () {
+      
+        String x = new String ("var __funcTable__ = {}; \n");
+        Set<String> lnSet = FunctionSymbol.getFuncs ();
+
+        for (String s : lnSet) {
+            int n = FunctionSymbol.funcLine (s);
+            x += ("__funcTable__['" + s + "'] = " + n + ";\n");
+        }
+
+        return x;
+    }
+    
     /*------------------------------------------------------------------------*/
     /* ctor                                                                   */
     /*------------------------------------------------------------------------*/
@@ -67,6 +81,7 @@ public class TransPhase extends adeleBaseListener {
      */
     public void enterProg(adeleParser.ProgContext ctx) {
         currentScope = globals;
+
     }
 
     public void exitProg(adeleParser.ProgContext ctx) {
@@ -81,6 +96,11 @@ public class TransPhase extends adeleBaseListener {
 
         //prog.append(befprog.render());
         prog.append("\n/***** Start of source codes semantics *****/\n");
+        
+        /* create the function-src line table */
+        String fncTable = createFuncTable ();
+        prog.append (fncTable);
+
         for (int i = 0; i < ctx.getChildCount(); ++i) {
             if (ctx.getChild(i) != null) {
                 if (ctx.getChild(i) instanceof TerminalNode) {

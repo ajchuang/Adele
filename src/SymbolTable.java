@@ -84,19 +84,19 @@ public class SymbolTable {
     GlobalScope globals = new GlobalScope();
 
     public final FunctionSymbol _str2graph =
-        new FunctionSymbol("function str2graph", _graph, globals);
+        new FunctionSymbol("function str2graph", _graph, globals, 0);
     public final FunctionSymbol _draw =
-        new FunctionSymbol("function draw", _void, globals);
+        new FunctionSymbol("function draw", _void, globals, 0);
     public final FunctionSymbol _load =
-        new FunctionSymbol("function load", _graph, globals);
+        new FunctionSymbol("function load", _graph, globals, 0);
     public final FunctionSymbol _sleep =
-        new FunctionSymbol("function sleep", _void, globals);
+        new FunctionSymbol("function sleep", _void, globals, 0);
     public final FunctionSymbol _flush =
-        new FunctionSymbol("function flush", _void, globals);
+        new FunctionSymbol("function flush", _void, globals, 0);
     public final FunctionSymbol _random =
-        new FunctionSymbol("function random", _int, globals);
+        new FunctionSymbol("function random", _int, globals, 0);
     public final FunctionSymbol _consoleLog =
-        new FunctionSymbol("function consoleLog", _void, globals);
+        new FunctionSymbol("function consoleLog", _void, globals, 0);
     
     public final FunctionSymbol[] builtInFunctions = {
         _str2graph, _draw, _load, _sleep, _flush, _random, _consoleLog

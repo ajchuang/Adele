@@ -2,13 +2,34 @@ import java.util.*;
 
 public class FunctionSymbol extends ScopedSymbol {
 
+    static HashMap<String, Integer> m_funcTable = new HashMap<String, Integer>() ;
+
     ArrayList<Symbol> m_params;
     Map<String, Symbol> m_locals;
 
-    public FunctionSymbol (String name, Type retType, Scope enclosingScope) {
+    /*------------------------------------------------------------------------*/
+    /* Static utilities                                                       */
+    /*------------------------------------------------------------------------*/
+    static int funcLine (String fname) {
+        if (m_funcTable.containsKey (fname) == false)
+            return -1;
+
+        return m_funcTable.get (fname).intValue ();
+    }
+
+    static Set<String> getFuncs () {
+        return m_funcTable.keySet ();
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* Class members                                                          */
+    /*------------------------------------------------------------------------*/
+    public FunctionSymbol (String name, Type retType, Scope enclosingScope, int ln) {
         super (name, retType, enclosingScope);
         m_params = new ArrayList<Symbol> ();
         m_locals = new LinkedHashMap<String, Symbol>();
+
+        m_funcTable.put (name, ln);
     }
 
     public boolean defineParam (Scope curScope, Symbol param) {

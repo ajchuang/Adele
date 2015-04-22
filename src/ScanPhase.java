@@ -80,7 +80,9 @@ class ScanPhase extends adeleBaseListener {
     public void enterFunc (adeleParser.FuncContext ctx) {
         String name = ctx.ID().getText();
         Type type = (Type)globals.resolve(ctx.type().getText());
-        FunctionSymbol fs = new FunctionSymbol("function " + name, type, globals);
+        FunctionSymbol fs = 
+            new FunctionSymbol (
+                "function " + name, type, globals, ctx.start.getLine ());
         globals.define(fs);
         currentScope = fs;
         check_type = true;
