@@ -20,6 +20,8 @@ fragment LT:         '<'  ;
 fragment GET:        '>=' ;
 fragment LET:        '<=' ;
 fragment NE:         '!=' ;
+fragment EQ:         '==' ;
+
 
 LPAREN:     '('  ;
 RPAREN:     ')'  ;
@@ -38,7 +40,7 @@ ADD:        '+'  ;
 SUB:        '-'  ;
 
 MULTI_OP:       MULTI   | DIV ;
-COMPARE_OP:     NE | GT | LT | GET | LET ;
+COMPARE_OP:     NE | GT | LT | GET | LET | EQ ;
 
 /* types */
 /*
