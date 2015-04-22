@@ -121,14 +121,15 @@ public class SymbolTable {
         _consoleLog.defineParam_def (v5);
     }
 
-    public SymbolTable() {
+    public SymbolTable () {
+        
         for (Type t : indexToType) {
             if (t != null)
-                globals.define((BuiltInTypeSymbol)t);
+                globals.define ((BuiltInTypeSymbol)t);
         }
 
-        for (FunctionSymbol fs: builtInFunctions) {
-            globals.define(fs);
+        for (FunctionSymbol fs : builtInFunctions) {
+            globals.define (fs);
         }
     }
 

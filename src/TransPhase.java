@@ -40,13 +40,18 @@ public class TransPhase extends adeleBaseListener {
     
     public String createFuncTable () {
       
-        String x = new String ("var __funcTable__ = {}; \n");
+        String x = 
+            new String ( "function __exceptionHandler__ ()  { \n var __funcTable__ = {}; \n");
         Set<String> lnSet = FunctionSymbol.getFuncs ();
 
         for (String s : lnSet) {
             int n = FunctionSymbol.funcLine (s);
             x += ("__funcTable__['" + s + "'] = " + n + ";\n");
         }
+
+        /* TODO: insert handler code here */
+
+        x += "} \n";
 
         return x;
     }
