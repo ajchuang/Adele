@@ -2,7 +2,7 @@ var f = require('./output_test.js');
 
 exports.testInit = function(test) {
   test.ok(f.canvas.width == 40 && f.canvas.height == 30, "Test canvas init w & h error");
-  test.ok(f.canvas.buffer.length == 30 && f.canvas.buffer[0].length==40, "Test canvas init buffer error");
+  test.ok(f.canvas.pixel.length == 30 && f.canvas.pixel[0].length==40, "Test canvas init buffer error");
 
   test.done();
 };

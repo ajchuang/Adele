@@ -123,16 +123,16 @@ public class TransPhase extends adeleBaseListener {
 
         List<adeleParser.FuncContext> func_list = ctx.func();
         for (int i = 0; i < func_list.size(); ++i) {
-            ST funcexports = stg.getInstanceOf("funcexports");
-            funcexports.add("fname", func_list.get(i).ID());
+            ST exports = stg.getInstanceOf("exports");
+            exports.add("fname", func_list.get(i).ID());
             testprog.append('\n');
-            testprog.append(funcexports.render());
+            testprog.append(exports.render());
         }
 
 
         List<adeleParser.DeclarationContext> decl_list = ctx.declaration();
         for (int i = 0; i < decl_list.size(); ++i) {
-            ST funcexports = stg.getInstanceOf("funcexports");
+            ST exports = stg.getInstanceOf("exports");
             adeleParser.DeclarationContext decl = decl_list.get(i);
             TerminalNode idn=null;
             if (decl instanceof adeleParser.ArrayDeclContext) {
@@ -142,9 +142,9 @@ public class TransPhase extends adeleBaseListener {
                 idn = ((adeleParser.VarDeclContext)decl).ID();
             }
             if (idn!=null) {
-                funcexports.add("fname", idn);
+                exports.add("fname", idn);
                 testprog.append('\n');
-                testprog.append(funcexports.render());
+                testprog.append(exports.render());
             }
 
         }
