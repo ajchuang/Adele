@@ -1,0 +1,18 @@
+# varDecl - type check during assignment
+
+int main()
+  int a = 1;
+  string b = 1;   # err
+  bool c = a;     # err
+  group x u;
+  group y v = u;  # err
+  group x w = u;
+end
+
+group x
+  int a;
+end
+
+group y
+  bool b;
+end

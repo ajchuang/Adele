@@ -169,6 +169,33 @@ class DefPhase extends adeleBaseListener {
                     "Variable " + name + " is already defined in "+
                     currentScope.getScopeName ());
         }
+
+        // if assign, check type
+        if (ctx.expr() != null) {
+            Type type_r = getType(ctx.expr());
+            if (type_r == null) { // err already reported by exitSomeExpr()
+
+            } else {
+                print ("type_r: " + type_r.getName());
+                int type_li = type.getTypeIndex ();
+                int type_ri = type_r.getTypeIndex ();
+
+                Type ans = SymbolTable.assignOp[type_li][type_ri];
+                if (ans == null) {
+                    // both are of group type
+                    if (type_li == type_ri
+                            && type_li == SymbolTable.M_TYPE_USER
+                            && type.getName().equals(type_r.getName())) {
+                        setType (ctx, type_r);
+                    } else {
+                        err (ctx.start.getLine(),"Assignment with incompatible types: " + type + ":" + type_r);
+                        setType (ctx, SymbolTable._int);
+                    }
+                } else {
+                    setType (ctx, ans);
+                }
+            }
+        }
     }
 
     public void exitArrayDecl(adeleParser.ArrayDeclContext ctx) {
