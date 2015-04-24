@@ -1,3 +1,4 @@
+#!/bin/bash
 pass=0
 tot=0
 
