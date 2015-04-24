@@ -195,11 +195,39 @@ public class TransPhase extends adeleBaseListener {
         ST groupDef = stg.getInstanceOf("groupdef");
         groupDef.add("gname", ctx.ID());
         groupDef.add("memberList", memberList.toString());
-        putCode (ctx, groupDef.render());
+        putCode (ctx, groupDef.render() + ";");
 
         print (codes.get(ctx));
     }
 
+    public void exitGVarDecl(adeleParser.GVarDeclContext ctx) {
+
+        print ("exitgVarDecl:");
+
+        putCode (ctx, ctx.ID().getText());
+
+        print (codes.get(ctx));
+
+    }
+
+    public void exitGArrayDecl(adeleParser.GArrayDeclContext ctx) {
+
+        print ("exitgArrayDecl:");
+
+        StringBuilder dimen = new StringBuilder();
+
+        for (int i = 0; i < ctx.getChildCount(); ++i)
+            if (ctx.array_dimen(i) == null)
+                break;
+            else
+                dimen.append("[" + codes.get(ctx.array_dimen(i)) + "]");
+
+        putCode (ctx, ctx.ID().getText() + dimen);
+
+        print (codes.get(ctx));
+
+    }
+/*
     public void exitType_dec_item(adeleParser.Type_dec_itemContext ctx) { 
         print ("exitType_dec_iten:");
 
@@ -207,6 +235,7 @@ public class TransPhase extends adeleBaseListener {
 
         print (codes.get(ctx));
     }
+    */
 /*
     public void exitGVarDecl(adeleParser.GVarDeclContext ctx) { 
 
@@ -317,7 +346,6 @@ public class TransPhase extends adeleBaseListener {
         print (codes.get(ctx));
     }
 
-
     public void enterIf_stmt(adeleParser.If_stmtContext ctx) {
         //currentScope = scopes.get(ctx);
     }
@@ -364,6 +392,8 @@ public class TransPhase extends adeleBaseListener {
 
         StringBuilder initValue = new StringBuilder();
 
+        String definePart = "";
+
         if (typeText.indexOf("group") == 0)
         {
             String typeName = typeText.substring(5);
@@ -375,6 +405,8 @@ public class TransPhase extends adeleBaseListener {
 
             initValue.append("new " + typeName + "()");
             decl.add("value", initValue.toString());
+
+            //definePart = decl.render();
             /*
             for (String key : members.keySet())
                 initValue.append(members.get(key).getName() + " ");
@@ -386,7 +418,10 @@ public class TransPhase extends adeleBaseListener {
         {
             initValue.append(codes.get(ctx.expr()));
             decl.add("value", initValue.toString());
+
+            //definePart = decl.render();
         }
+
         putCode (ctx, decl.render());
 
         print (codes.get(ctx));
@@ -411,8 +446,20 @@ public class TransPhase extends adeleBaseListener {
         return res.toString();
     }
 
-    public void exitArrayDecl(adeleParser.ArrayDeclContext ctx) {
+    private String arrayDecl(adeleParser.ArrayDeclContext ctx) {
 
+        StringBuilder dimen = new StringBuilder();
+
+        for (int i = 0; i < ctx.getChildCount(); ++i)
+            if (ctx.array_dimen(i) == null)
+                break;
+            else
+                dimen.append(codes.get(ctx.array_dimen(i)) + ", ");
+
+        String res = ctx.ID().getText() + "=initArray([" + dimen.toString() + "]);";
+
+        return res;
+        /*
         List<Integer> d = new ArrayList<Integer>();
 
         for (int i = 0; i < ctx.getChildCount(); ++i)
@@ -421,9 +468,8 @@ public class TransPhase extends adeleBaseListener {
             else
                 d.add(Integer.parseInt(codes.get(ctx.array_dimen(i))));
 
+        
         Collections.reverse(d);
-
-        print (genSB(d));
 
         ST adecl = stg.getInstanceOf("arraydecl");
         adecl.add("aname", ctx.ID().getText());
@@ -458,9 +504,61 @@ public class TransPhase extends adeleBaseListener {
         initBlock.append(initExpr.toString());
 
         adecl.add("init", initBlock.toString());
+        
+        return adecl.render();
+        */
+    }
 
+    public void exitArrayDecl(adeleParser.ArrayDeclContext ctx) {
+        /*
+        List<Integer> d = new ArrayList<Integer>();
+
+        for (int i = 0; i < ctx.getChildCount(); ++i)
+            if (ctx.array_dimen(i) == null)
+                break;
+            else
+                d.add(Integer.parseInt(codes.get(ctx.array_dimen(i))));
+
+        Collections.reverse(d);
+
+        ST adecl = stg.getInstanceOf("arraydecl");
+        adecl.add("aname", ctx.ID().getText());
+        adecl.add("def", genSB(d));
+
+        String initValue = "";
+
+        String typeText = ctx.type().getText();
+        if (typeText.indexOf("group") == 0)
+        {
+            String typeName = typeText.substring(5);
+            initValue = "new " + typeName + "()";
+        }
+        else
+            initValue = "0";
+
+        StringBuilder initBlock = new StringBuilder();
+        for (int i = d.size() - 1; i >= 0; i--)
+        {
+            ST forloop = stg.getInstanceOf("arrayinit");
+            forloop.add("dimen", Integer.toString(d.get(i)));
+            forloop.add("varName", "i" + Integer.toString(d.size() - 1 - i));
+            initBlock.append(forloop.render() + " ");
+        }
+
+        StringBuilder initExpr = new StringBuilder();
+        initExpr.append("ar");
+        for (int i = 0; i < d.size(); i++)
+            initExpr.append("[i" + Integer.toString(i) + "]");
+        initExpr.append(" = " + initValue + ";");
+
+        initBlock.append(initExpr.toString());
+
+        adecl.add("init", initBlock.toString());
+        
         putCode (ctx, adecl.render());
+        */
 
+        putCode (ctx, arrayDecl(ctx));
         print (codes.get(ctx));
     }
 
@@ -575,7 +673,16 @@ public class TransPhase extends adeleBaseListener {
                 break;
             else
                 sb.append(codes.get(ctx.member_access(i)));
-
+        /*
+        StringBuilder dimen = new StringBuilder();
+        for (int i = 0; i < ctx.getChildCount(); ++i)
+            if (ctx.array_access(i) == null)
+                break;
+            else
+                dimen.append("[" + codes.get(ctx.array_access(i)) + "]");
+        
+        putCode (ctx, ctx.ID().getText() + sb.toString() + dimen.toString());
+        */
         putCode (ctx, ctx.ID().getText() + sb.toString());
     }
 

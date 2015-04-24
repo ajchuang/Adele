@@ -45,7 +45,7 @@ class ScanPhase extends adeleBaseListener {
         check_type = true;
     }
 
-    public void exitType_dec_item(adeleParser.Type_dec_itemContext ctx) {
+    public void exitGVarDecl(adeleParser.GVarDeclContext ctx) {
         String f_name = ctx.ID().getText();
         /* if type hasn't been defined, error is handled by exitType() */
         Type f_type = types.get(ctx.type());
@@ -57,6 +57,34 @@ class ScanPhase extends adeleBaseListener {
         }
     }
 
+    public void exitGArrayDecl(adeleParser.GArrayDeclContext ctx) {
+        String f_name = ctx.ID().getText();
+        /* if type hasn't been defined, error is handled by exitType() */
+        Type f_type = types.get(ctx.type());
+
+        List<adeleParser.Array_dimenContext> dimensions = ctx.array_dimen();
+        int dimen = dimensions.size();
+
+        ArrayType symbolType = new ArrayType(f_type, dimen);
+
+        VariableSymbol vs = new VariableSymbol(f_name, symbolType);
+        if (!currentScope.define (vs)) {
+            err(ctx.start.getLine(),
+                "Field named '"+f_name+"' already exists");
+        }
+    }
+/*
+    public void exitType_dec_item(adeleParser.Type_dec_itemContext ctx) {
+        String f_name = ctx.ID().getText();
+        Type f_type = types.get(ctx.type());
+
+        VariableSymbol vs = new VariableSymbol(f_name, f_type);
+        if (!currentScope.define (vs)) {
+            err(ctx.start.getLine(),
+                "Field named '"+f_name+"' already exists");
+        }
+    }
+*/
     /* members' types should already be defined */
     public void exitType_declaration (adeleParser.Type_declarationContext ctx) {
 
