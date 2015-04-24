@@ -689,7 +689,7 @@ public class TransPhase extends adeleBaseListener {
             if (ctx.array_access(i) == null)
                 break;
             else
-                sb.append(codes.get(ctx.member_access(i)));
+                sb.append(codes.get(ctx.array_access(i)));
         /*
         StringBuilder dimen = new StringBuilder();
         for (int i = 0; i < ctx.getChildCount(); ++i)
