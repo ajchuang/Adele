@@ -30,6 +30,12 @@ do
         echo ">>" $FILE: java runtime exception
     fi
 
+    if [[ -n $(grep "Syntax errors" tmp.txt) ]]
+    then
+        syn_err_info=$(grep line tmp.txt| cut -d" " -f 1,2)
+        echo ">>" $FILE: syntax error: $syn_err_info
+    fi
+
     cat tmp.txt >> fail_output.txt
     tot=$((tot+1))
 done

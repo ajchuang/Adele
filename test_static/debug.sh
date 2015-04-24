@@ -1,3 +1,4 @@
+#!/bin/bash
 java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:../build/ AdeleRT $1 2>tmp.txt 1>trans_phase_output.txt
 
 err_line=$(grep -n err $1 | cut -f1 -d:)  # err line number in test file
@@ -18,9 +19,16 @@ fi
 
 if [[ -n $(grep Exception tmp.txt) ]]
 then
-    echo "\t" java runtime exception
+    echo ">>" java runtime exception
     pass=0
 fi
+
+if [[ -n $(grep "Syntax errors" tmp.txt) ]]
+then
+    syn_err_info=$(grep line tmp.txt| cut -d" " -f 1,2)
+    echo ">>" syntax error: $syn_err_info
+fi
+
 
 if [[ $pass -eq 1 ]]
 then
