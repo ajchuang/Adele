@@ -7,7 +7,7 @@ for FILE in fail_*.adele
 do
     echo "===========" >> fail_output.txt
     echo $FILE >> fail_output.txt
-    java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:../build/ AdeleRT $FILE 2> tmp.txt
+    java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:../build/ AdeleRT $FILE 2> tmp.txt 1>> trans_phase_output.txt
 
     err_line=$(grep -n err $FILE | cut -f1 -d:)  # err line number in test file
     line_detected=$(grep line tmp.txt| cut -d: -f1 | cut -d" " -f3)  # err line number reported
