@@ -21,7 +21,12 @@ do
             echo $FILE: error detected: $line_detected, expected: $err_line
         fi
     else
-        echo $FILE: failed to detect error
+        echo $FILE: failed to detect error on line $err_line
+    fi
+
+    if [[ -n $(grep Exception tmp.txt) ]]
+    then
+        echo "\t" $FILE: java runtime exception
     fi
 
     cat tmp.txt >> fail_output.txt
