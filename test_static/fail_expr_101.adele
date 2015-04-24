@@ -1,0 +1,15 @@
+# assign - different group type
+
+int main()
+  group x u;
+  group y v;
+  u = v;  # err
+end
+
+group x
+  int a;
+end
+
+group y
+  bool b;
+end

@@ -1,3 +1,4 @@
+#!/bin/bash
 pass=0
 tot=0
 
@@ -7,7 +8,7 @@ for FILE in fail_*.adele
 do
     echo "===========" >> fail_output.txt
     echo $FILE >> fail_output.txt
-    java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:../build/ AdeleRT $FILE 2> tmp.txt
+    java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:../build/ AdeleRT $FILE 2> tmp.txt 1>> trans_phase_output.txt
 
     err_line=$(grep -n err $FILE | cut -f1 -d:)  # err line number in test file
     line_detected=$(grep line tmp.txt| cut -d: -f1 | cut -d" " -f3)  # err line number reported
@@ -21,7 +22,18 @@ do
             echo $FILE: error detected: $line_detected, expected: $err_line
         fi
     else
-        echo $FILE: failed to detect error
+        echo $FILE: failed to detect error on line $err_line
+    fi
+
+    if [[ -n $(grep Exception tmp.txt) ]]
+    then
+        echo ">>" $FILE: java runtime exception
+    fi
+
+    if [[ -n $(grep "Syntax errors" tmp.txt) ]]
+    then
+        syn_err_info=$(grep line tmp.txt| cut -d" " -f 1,2)
+        echo ">>" $FILE: syntax error: $syn_err_info
     fi
 
     cat tmp.txt >> fail_output.txt

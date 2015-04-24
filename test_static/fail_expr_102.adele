@@ -1,0 +1,16 @@
+# expr - funcCall type check
+
+int main()
+  int a = foo();
+  float b  = 0;
+  b = foo();
+
+  string c = foo(); # err
+  string d = "";
+  d = foo();        # err
+end
+
+int foo()
+  return 1;
+end
+

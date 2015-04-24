@@ -1,0 +1,8 @@
+# parenExpr type check
+int main()
+  int a = (1);
+  int b = (a) + 1;
+  int c = (a + 1);
+  string d;
+  d = (a); # err
+end
