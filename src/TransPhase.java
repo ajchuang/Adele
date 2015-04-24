@@ -217,13 +217,13 @@ public class TransPhase extends adeleBaseListener {
     }
 */
     public void enterFunc(adeleParser.FuncContext ctx) {
-        currentScope = scopes.get(ctx);
+        //currentScope = scopes.get(ctx);
     }
 
     public void exitFunc(adeleParser.FuncContext ctx) {
         print ("exitFunc:");
 
-        currentScope = currentScope.getEnclosingScope();
+        //currentScope = currentScope.getEnclosingScope();
 
         ST func = stg.getInstanceOf("funcdef");
         func.add("fname", ctx.ID());
@@ -319,13 +319,13 @@ public class TransPhase extends adeleBaseListener {
 
 
     public void enterIf_stmt(adeleParser.If_stmtContext ctx) {
-        currentScope = scopes.get(ctx);
+        //currentScope = scopes.get(ctx);
     }
 
     public void exitIf_stmt(adeleParser.If_stmtContext ctx) {
         print ("exitIf_stmt:");
 
-        currentScope = currentScope.getEnclosingScope();
+        //currentScope = currentScope.getEnclosingScope();
 
         ST ifstmt = stg.getInstanceOf("ifstmt");
         ifstmt.add("expr", codes.get(ctx.expr()));
@@ -336,13 +336,13 @@ public class TransPhase extends adeleBaseListener {
     }
 
     public void enterWhile_stmt(adeleParser.While_stmtContext ctx) {
-        currentScope = scopes.get(ctx);
+        //currentScope = scopes.get(ctx);
     }
 
     public void exitWhile_stmt(adeleParser.While_stmtContext ctx) {
         print ("exitWhile_stmt:");
 
-        currentScope = currentScope.getEnclosingScope();
+        //currentScope = currentScope.getEnclosingScope();
 
         ST whilestmt = stg.getInstanceOf("whilestmt");
         whilestmt.add("expr", codes.get(ctx.expr()));
