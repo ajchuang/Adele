@@ -581,6 +581,10 @@ public class TransPhase extends adeleBaseListener {
         print (codes.get(ctx));
     }
 
+    public void exitCast(adeleParser.CastContext ctx) {
+        print("exitCast:");
+    }
+
     public void exitArrayAssign(adeleParser.ArrayAssignContext ctx) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < ctx.getChildCount(); ++i)
