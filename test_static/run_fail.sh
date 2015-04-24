@@ -27,7 +27,7 @@ do
 
     if [[ -n $(grep Exception tmp.txt) ]]
     then
-        echo "\t" $FILE: java runtime exception
+        echo ">>" $FILE: java runtime exception
     fi
 
     cat tmp.txt >> fail_output.txt
