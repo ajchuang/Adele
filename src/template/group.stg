@@ -282,16 +282,42 @@ var Pixel = function() {
   this.chr = '';
 };
 
-var makeStruct = function(name) {
-  var names = name.split(' ');
-  var count = name.length;
+function initArray(dimens) {
+    nextDimen = [];
+
+    for (var j = dimens.length - 2; j >= 0; j--) {
+        curDimen = [];
+        var n = parseInt(dimens[j]);
+        for (var k = 0; k < n; k++) {
+            curDimen.push(jQuery.extend(true, [], nextDimen));
+        }
+        nextDimen = curDimen;
+    }
+
+    return nextDimen;
+}
+
+function makeStruct(names) {
+  var names = names.split(' ');
+  var count = names.length;
   function constructor() {
     for (var i = 0; i < count; i++) {
-      this[names[i]] = null;
+      if (names[i].indexOf("[") != -1)
+      {
+          varName = names[i].substring(0, names[i].indexOf("["));
+          tmp = names[i].substring(names[i].indexOf("[") + 1, names[i].length - 1);
+          dimens = tmp.split("][");
+          
+          this[varName] = initArray(dimens);
+      }
+      else {
+          this[names[i]] = null;
+      }
     }
   }
   return constructor;
-};
+}
+
 
 var Graph = function(cfg) {
   this.width = cfg.w;
