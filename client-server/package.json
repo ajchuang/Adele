@@ -1,0 +1,15 @@
+{ "description": "client & server struture for Adele",
+  "repository" :   {
+    "type" : "git"
+  , "url" : "https://github.com/ajchuang/Adele/tree/master/client-server"
+  }
+,
+  "dependencies":
+  { 
+      "websocket":">0.0.1"
+    , "socket.io":">1.0.0"
+    , "express":">0.0.1"
+    , "suspend":">0.0.1"
+    , "fibers":">0.0.1"
+  }
+}
