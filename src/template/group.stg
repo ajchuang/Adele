@@ -30,7 +30,7 @@ arraydecl(aname, def, init) ::= "var $aname$ = function(){ var ar = $def$; $init
 
 arrayinit(dimen, varName) ::= "for (var $varName$ = 0; $varName$ < $dimen$; $varName$++)"
 
-groupdef(gname, memberList) ::= "var $gname$ = new makeStruct($memberList$)"
+groupdef(gname, memberList) ::= "var $gname$ = new makeStruct(\"$memberList$\")"
 
 init(value) ::= "$if(value)$ = $value$$endif$"
 
@@ -201,6 +201,12 @@ var canvas = new Canvas({
 var consoleLog = function (str) {
     console.log (str);
 }
+
+//Convert anything to string
+
+var int2str = function(anything) {
+  return String(anything);
+};
 
 //Convert string to graph
 var str2graph = function (str) {
@@ -403,6 +409,12 @@ var canvas = new Canvas({
 var consoleLog = function (str) {
     console.log (str);
 }
+
+//Convert anything to string
+
+var int2str = function(anything) {
+  return String(anything);
+};
 
 //Convert string to graph
 var str2graph = function (str) {
