@@ -2,6 +2,10 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var Fiber = require('fibers');
+var extend = require('extend');
+
+var canvas;
+
 
 server.listen(8888);
 
@@ -18,18 +22,7 @@ io.on('connection', function (socket) {
   });
   canvas.init();
   socket.on('keypress', function(data){
-    if (data.key==97) {
-      person.x = person.x > 0 ? person.x-1:0;
-    }
-    if (data.key==100) {
-      person.x = person.x < canvas.width-1 ? person.x+1:canvas.width-1;
-    }
-    if (data.key==119) {
-      person.y = person.y >0 ? person.y-1:0;
-    }
-    if (data.key==115) {
-      person.y = person.y < canvas.height-1 ? person.y+1:canvas.height-1;
-    }
+    Fiber(keypress).run(data.key);
   });
   Canvas.prototype.draw = function(){
     socket.emit('draw', this.pixel);
@@ -56,7 +49,7 @@ function initArray(dimens) {
         curDimen = [];
         var n = parseInt(dimens[j]);
         for (var k = 0; k < n; k++) {
-            curDimen.push(jQuery.extend(true, [], nextDimen));
+            curDimen.push(extend(true, [], nextDimen));
         }
         nextDimen = curDimen;
     }
@@ -133,22 +126,18 @@ var Canvas = function(cfg) {
       }
     }
   };
-  this.sleep = function(time) {
-    var stop = new Date().getTime();
-    while(new Date().getTime() < stop + time) {
-        ;
-    }
-  };
-
 };
 
-var canvas;
 
 // a general log function
 var consoleLog = function (str) {
     console.log (str);
-}
+};
+//Convert anything to string
 
+var int2str = function(anything) {
+  return String(anything);
+};
 //Convert string to graph
 var str2graph = function (str) {
   str = String(str);
@@ -187,16 +176,7 @@ var sleep = function (ms) {
   }, ms);
   Fiber.yield();
 };
-/*
-var print_str = function(r, c, str) {
-  if (r==undefined || c==undefined || str==undefined) {
-    r = 0; c = 0; str = "hello world";
-  }
-  var g = str2graph(str);
-  g.at(r, c);
-  canvas.draw();
-};
-*/
+
 
 var draw = function() {
   canvas.draw();
@@ -211,42 +191,80 @@ var random = function(max) {
 };
 
 
-var x = 1;
-var flag;
-var gengraph = function(fg,bg) {
-    fg.overlay(bg,0,0);
-    return 0;
+//target program
+
+
+map=initArray([25, 40, ]);;
+var h = 25;
+var w = 40;
+var px = 0;
+var py = 0;
+var count = 0;
+var gen_map = function() {
+    var i = 1;
+    while (i<h) {
+        var j = 1;
+        while (j<w) {
+            map[i][j]=random(2)==1;
+            j = j+1;
+        }
+        i = i+1;
+    }
 };
-var scope = function() {
-    var x = 2;
-    return x;
-};
-var print_str = function(r,c,s) {
-    var g = str2graph(s);
-    g.at(r,c);
+var draw_map = function() {
+    var ob = str2graph("*");
+    var person = str2graph("@");
+    var i = 0;
+    while (i<h) {
+        var j = 0;
+        while (j<w) {
+            if (map[i][j]) {
+                ob.at(i,j);
+            }
+            j = j+1;
+        }
+        i = i+1;
+    }
+    person.at(py,px);
+    var c = str2graph(int2str(count));
+    c.at(27,10);
     draw();
 };
-
-
-
-A=initArray([30, ]);;
-var kl = 30;
-var draw_str = function(x) {
-    consoleLog("draw_str: "+x);
-    var g;
-    g = str2graph(x);
-    g.at(2,15);
-    draw();
-};
-
-var person = {x: 0, y: 0, g:str2graph('@')};
-
 var main = function() {
-  while(true) {
-    flush();
-    person.g.at(person.y, person.x);
-    draw();
-    sleep(100);
-  }
+    gen_map();
+    draw_map();
 };
+var keypress = function(key) {
+    if (key==97) {
+        px = px-1;
+    }
+    if (key==100) {
+        px = px+1;
+    }
+    if (key==115) {
+        py = py+1;
+    }
+    if (key==119) {
+        py = py-1;
+    }
+    if (px>=w) {
+        px = w-1;
+    }
+    if (px<0) {
+        px = 0;
+    }
+    if (py>=h) {
+        py = h-1;
+    }
+    if (py<0) {
+        py = 0;
+    }
+    if (map[py][px]) {
+        map[py][px]=0;
+        count = count+1;
+    }
+    flush();
+    draw_map();
+};
+/***** End of source codes semantics *****/
 

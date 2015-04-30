@@ -85,6 +85,8 @@ public class SymbolTable {
 
     public final FunctionSymbol _str2graph =
         new FunctionSymbol("function str2graph", _graph, globals, 0);
+    public final FunctionSymbol _int2str =
+        new FunctionSymbol("function int2str", _string, globals, 0);
     public final FunctionSymbol _draw =
         new FunctionSymbol("function draw", _void, globals, 0);
     public final FunctionSymbol _load =
@@ -99,7 +101,7 @@ public class SymbolTable {
         new FunctionSymbol("function consoleLog", _void, globals, 0);
     
     public final FunctionSymbol[] builtInFunctions = {
-        _str2graph, _draw, _load, _sleep, _flush, _random, _consoleLog
+        _str2graph, _draw, _load, _sleep, _flush, _random, _consoleLog, _int2str
     };
 
     /* static initialization */
@@ -119,6 +121,10 @@ public class SymbolTable {
         
         VariableSymbol v5 = new VariableSymbol ("str", _string);
         _consoleLog.defineParam_def (v5);
+
+        VariableSymbol v6 = new VariableSymbol ("int", _int);
+        _int2str.defineParam_def (v6);
+
     }
 
     public SymbolTable () {
