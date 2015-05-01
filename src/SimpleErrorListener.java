@@ -16,8 +16,8 @@ public class SimpleErrorListener extends BaseErrorListener {
         int charPositionInLine,
         String msg,
         RecognitionException e) {
-    
-        super.syntaxError (recognizer, offendingSymbol, line, charPositionInLine, msg, e);
+
+        System.err.println("[ERROR] line "+line+":"+charPositionInLine+": "+msg);
         m_errCount++;
     }
 
