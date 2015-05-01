@@ -429,6 +429,14 @@ class DefPhase extends adeleBaseListener {
             return;
         }
 
+        int dimen = ((ArrayType)t).getDimension();
+        print("dimen: " + dimen + " #brackets: " + ctx.array_access().size());
+        if (ctx.array_access().size() != dimen) {
+            err(ln, "The array dimension should be " + dimen);
+            setType (ctx, SymbolTable._int);
+            return;
+        }
+
         ArrayType as = (ArrayType) t;
         print ("Accessing array: " + name + ":" + as);
         setType (ctx, as.getElmType ()); 
