@@ -1,33 +1,51 @@
-bool map[25][40];
+int map[25][40];
 int h = 25;
 int w = 40;
 int px = 0;
 int py = 0;
 int count = 0;
 
+void init ()
+    int i = 1;
+    while (i < h)
+        int j = 1;
+        while (j < w)
+            map[i][j] = 0;
+            j = j + 1;
+        end
+        i = i + 1;
+    end
+end
 
 void gen_map()
-  int i = 1;
-  while (i<h)
-    int j = 1;
-    while (j<w)
-      map[i][j] = random(2) == 1;
-      j = j + 1;
+    int i = 1;
+    while (i<h)
+        int j = 1;
+        while (j<w)
+            # 0: wall, 1: candy, 2: nothing 
+            map[i][j] = random(3);
+            j = j + 1;
+        end
+        i = i + 1;
     end
-    i = i + 1;
-  end
 end
 
 void draw_map()
   graph ob = str2graph("*");
+  graph wall = str2graph("█");
   graph person = str2graph("@");
   int i = 0;
   while (i<h)
     int j = 0;
     while (j<w)
-      if (map[i][j])
+      if (map[i][j] == 1)
         ob @ (i, j);
       end
+
+      if (map[i][j] == 0)
+        wall @ (i, j);
+      end
+      
       j = j + 1;
     end
     i = i + 1;
@@ -40,37 +58,50 @@ end
 
 
 int main()
+  init ();
   gen_map();
   draw_map();
 end
 
-int keypress(int key)
+int keypress (int key)
+  int cx;
+  int cy;
+  
   if (key==97)
-    px = px - 1;
+    cx = px - 1;
   end
   if (key==100)
-    px = px + 1;
+    cx = px + 1;
   end
   if (key==115)
-    py = py + 1;
+    cy = py + 1;
   end
   if (key==119)
-    py = py - 1;
+    cy = py - 1;
   end
   if (px>=w)
-    px = w - 1;
+    cx = w - 1;
   end
   if (px<0)
-    px = 0;
+    cx = 0;
   end
   if (py>=h)
-    py = h - 1;
+    cy = h - 1;
   end
   if (py<0)
-    py = 0;
+    cy = 0;
   end
-  if (map[py][px])
-    map[py][px] = 0;
+
+  # it's wall
+  if (map[cx][cy] == 0)
+      return 0;
+  end
+
+  px = cx;
+  py = cy;
+
+  if (map[py][px] == 1)
+    map[py][px] = 2;
     count = count + 1;
   end
   flush();
