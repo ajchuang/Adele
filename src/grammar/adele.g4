@@ -97,7 +97,7 @@ expr:
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
         |   sid=ID OVERLAY tid=ID AT LPAREN xc=expr COMMA yc=expr RPAREN #overlay   /* @lfred: to fix - lame overlay */
         |   sid=ID AT LPAREN xc=expr COMMA yc=expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
-        |   gid1=ID VATT gid2=ID    #vatt           /* vertically attach */
+        |   expr VATT expr          #vatt           /* vertically attach */
         |   ID EQUAL expr                   #assign         /* assignment */
         |   ID (array_access)+ EQUAL expr   #arrayAssign
         |   ID      #var
