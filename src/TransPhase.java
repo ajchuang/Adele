@@ -679,6 +679,9 @@ public class TransPhase extends adeleBaseListener {
         print (codes.get(ctx));
     }
 
+    public void exitVatt(adeleParser.VattContext ctx) {
+    }
+
     public void exitCast(adeleParser.CastContext ctx) {
         print("exitCast:");
     }

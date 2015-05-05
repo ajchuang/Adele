@@ -30,14 +30,15 @@ SEMICOLON:  ';'  ;
 EQUAL:      '='  ;
 OVERLAY:    '//' ;
 AT:         '@'  ;
-LSB:		    '['  ;
-RSB:		    ']'  ;
-LBRACE:		  '{'  ;
-RBRACE:		  '}'  ;
-DOT:			    '.'  ;
+LSB:        '['  ;
+RSB:        ']'  ;
+LBRACE:     '{'  ;
+RBRACE:     '}'  ;
+DOT:        '.'  ;
 
 ADD:        '+'  ;
 SUB:        '-'  ;
+VATT:       '|'  ;
 
 MULTI_OP:       MULTI   | DIV ;
 COMPARE_OP:     NE | GT | LT | GET | LET | EQ ;
