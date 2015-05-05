@@ -12,6 +12,7 @@ public class Symbol { // A generic programming language symbol
     /* TODO: to fix. buggy */
     // static public Type getType (String vname) { return null; }
     public Type getType () { return type; }
+    public void setType (Type type) { this.type = type; }
 
     public String toString () {
         String s = "";

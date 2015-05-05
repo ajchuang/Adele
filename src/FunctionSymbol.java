@@ -62,13 +62,7 @@ public class FunctionSymbol extends ScopedSymbol {
 
     @Override
     public Map<String, Symbol> getMembers () {
-        return m_locals; 
-    }
-    
-    @Override
-    public String toString () {
-        /* name contains 'function ' */
-        return name;
+        return m_locals;
     }
 }
 

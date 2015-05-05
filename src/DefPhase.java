@@ -221,6 +221,31 @@ class DefPhase extends adeleBaseListener {
     /*-----------------------------------------------------------------------*/
     /* statements (in the order in the grammar)                              */
     /*-----------------------------------------------------------------------*/
+    public void exitStm_ret(adeleParser.Stm_retContext ctx) {
+        int ln = ctx.start.getLine();
+
+        Symbol fs = (Symbol)currentScope;
+        assert (fs instanceof FunctionSymbol);
+        Type ret_type = fs.getType();
+        Type expr_type = getType(ctx.expr());
+
+        if (ret_type != null && expr_type != null) {
+            int type_li = ret_type.getTypeIndex ();
+            int type_ri = expr_type.getTypeIndex ();
+
+            Type ans = SymbolTable.assignOp[type_li][type_ri];
+
+            print ("exitStm_ret: " + ret_type.getName() + " " + expr_type.getName());
+
+            if (ans == null &&
+                ret_type.getName() != expr_type.getName()) {
+                err (ln, "incompatible type: return type should be " + ret_type.getName());
+            }
+        }
+
+        print ("exitStm_ret: " + ret_type + expr_type);
+    }
+
     public void enterStm_if (adeleParser.Stm_ifContext ctx) {
         InnerScope is = new InnerScope (currentScope);
         saveScope (ctx, is);

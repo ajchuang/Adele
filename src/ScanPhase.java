@@ -107,10 +107,10 @@ class ScanPhase extends adeleBaseListener {
      */
     public void enterFunc (adeleParser.FuncContext ctx) {
         String name = ctx.ID().getText();
-        Type type = (Type)globals.resolve(ctx.type().getText());
-        FunctionSymbol fs = 
+        /* ret type is handled by exitFunc */
+        FunctionSymbol fs =
             new FunctionSymbol (
-                "function " + name, type, globals, ctx.start.getLine ());
+                "function " + name, null, globals, ctx.start.getLine ());
         globals.define(fs);
         currentScope = fs;
         check_type = true;
@@ -141,7 +141,12 @@ class ScanPhase extends adeleBaseListener {
     }
 
     public void exitFunc (adeleParser.FuncContext ctx) {
-        print ("Leaving  " + currentScope.toString());
+        Type type = types.get(ctx.type());
+        // print ("exitFunc: type: " + type);
+        FunctionSymbol fs = (FunctionSymbol) currentScope;
+        fs.setType(type);
+        // print("exitFunc: fs:" + fs.toString());
+
         currentScope = globals;
         curFunc = null;
     }

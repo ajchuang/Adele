@@ -12,5 +12,24 @@ int bar()
   return "s";   # err
 end
 
+###############
+
+group x
+  int a;
+end
+
+group x group_foo()
+  group y ret;
+  return ret;   # err
+end
+
+group x group_bar()
+  return 1;   # err
+end
+
+group y
+  int b;
+end
+
 
 
