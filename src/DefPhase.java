@@ -526,7 +526,7 @@ class DefPhase extends adeleBaseListener {
         adeleParser.ExprContext expr_l = ctx.expr (0);
         adeleParser.ExprContext expr_r = ctx.expr (1);
 
-        if (expr_l != null && expr_r != null) {
+        if (getType (expr_l) != null && getType (expr_r) != null) {
             int type_l = getType (expr_l).getTypeIndex ();
             int type_r = getType (expr_r).getTypeIndex ();
             Type op = SymbolTable.arithAddOp[type_l][type_r];
@@ -538,7 +538,8 @@ class DefPhase extends adeleBaseListener {
                 setType (ctx, op);
             }
         } else {
-            err (ctx.start.getLine(), "Type (unknown) does not support arithmatic operation.");
+            /* err should already be reported */
+            // err (ctx.start.getLine(), "Type (unknown) does not support arithmatic operation.");
             setType (ctx, SymbolTable._int);
         }
     }
@@ -669,7 +670,8 @@ class DefPhase extends adeleBaseListener {
             Type ans = SymbolTable.assignOp[type_li][type_ri];
 
             if (ans == null) {
-                if (type_li == type_ri && type_li == SymbolTable.M_TYPE_USER) {
+                if (type_li == type_ri && type_li == SymbolTable.M_TYPE_USER
+                    && type_l.getName() == type_r.getName()) {
                     setType (ctx, type_r);
                 } else {
                     err (ctx.start.getLine(),"Assignment with incompatible types: " + type_l + ":" + type_r);
