@@ -1,0 +1,20 @@
+# expr - add operator, type check
+
+int main()
+    int a;
+    bool b = false;
+    string s = "lalala";
+    a = 1 + 4;
+    a = 1.5 + 1;
+    a = 1 + true;       # err
+    a = 2.5 + b;        # err
+    a = 1 + s;          # err
+    a = 2 + "blabla";    # err
+
+    b = true + false;   # err
+    b = true + 3;       # err
+end
+
+group x
+    int t;
+end

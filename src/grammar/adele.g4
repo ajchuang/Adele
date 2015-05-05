@@ -104,6 +104,7 @@ expr:
         |   SUB NUM #negNum
         |   NUM     #num
         |   STR     #string
+        |   BOOL_LITERAL    #bool_val
         ;
 
 array_access:
@@ -118,7 +119,7 @@ func_plist:
         ;
 
 fpitem:
-            expr                            
+            expr
         ;
 
 type:       'int' | 'float' | 'char' | 'bool' | 'void' | 'string' | 'graph'

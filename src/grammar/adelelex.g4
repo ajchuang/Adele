@@ -53,16 +53,16 @@ fragment BOOL:      'bool'  ;
 fragment STRING:    'string';
 */
 
-/* identifiers */
-ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;                   // match lower-case identifiers
-
 /* primitive types */
 fragment INT_NUM:    [1-9]+[0-9]* | [0] ;       // integers
 fragment FLOAT_NUM: INT_NUM '.' [0-9]+;             // is it better?
 fragment CHR:        [A-Za-z0-9_] ;
 NUM:    FLOAT_NUM | INT_NUM ;
+BOOL_LITERAL: 'true' | 'false';
 STR:    '"' .*? '"' ;
 
+/* identifiers */
+ID:     [_a-zA-Z]+[_0-9a-zA-Z]* ;                   // match lower-case identifiers
 
 /* spaces, tabs.. */
 WS:     [ \t\r\n]+ -> skip ;        // skip spaces, tabs, newlines

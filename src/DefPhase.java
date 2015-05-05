@@ -584,6 +584,11 @@ class DefPhase extends adeleBaseListener {
         setType (ctx, SymbolTable._boolean);
     }
 
+    public void exitBool_val(adeleParser.Bool_valContext ctx) {
+        print ("Processing bool literal: " + ctx.BOOL_LITERAL ().getText ());
+        setType (ctx, SymbolTable._boolean);
+    }
+
     public void exitOverlay (adeleParser.OverlayContext ctx) {
 
         int ln = ctx.start.getLine ();
