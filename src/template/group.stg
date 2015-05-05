@@ -11,6 +11,8 @@ assign(lhs, rhs) ::= "$lhs$ = $rhs$"
 add(lhs, rhs) ::= "$lhs$ + $rhs$"
 overlay(fg, bg, r, c) ::= "$fg$.overlay($bg$,$r$,$c$)"
 at(fg, r, c) ::= "$fg$.at($r$,$c$)"
+vatt(gu, gd) ::= "graph_vattach($gu$,$gd$)"
+hatt(gl, gr) ::= "graph_hattach($gl$,$gr$)"
 
 funcdef(fname, params, body) ::= <<
 var $fname$ = function($params; separator=", "$) {
@@ -236,6 +238,50 @@ var str2graph = function (str) {
       cc++;
     }
   }
+  return g;
+};
+
+//Horizontally attach graphs
+var graph_hattach = function(gl, gr) {
+  var width = gl.width + gr.width;
+  var height = Math.max(gl.height, gr.height);
+
+  var g = new Graph({w: width, h: height});
+
+  for (var i = 0; i < gl.height; i++) {
+    for (var j = 0; j < gl.width; j++) {
+      g.pixel[i][j].chr = gl.pixel[i][j].chr;
+    }
+  }
+
+  for (var i = 0; i < gr.height; i++) {
+    for (var j = 0; j < gr.width; j++) {
+      g.pixel[i][j+gr.width].chr = gr.pixel[i][j].chr;
+    }
+  }
+
+  return g;
+};
+
+//Vertically attach graphs
+var graph_vattach = function(gu, gd) {
+  var width = Math.max(gu.width, gd.width);
+  var height = gu.height + gd.height;
+
+  var g = new Graph({w: width, h: height});
+
+  for (var i = 0; i < gu.height; i++) {
+    for (var j = 0; j < gu.width; j++) {
+      g.pixel[i][j].chr = gu.pixel[i][j].chr;
+    }
+  }
+
+  for (var i = 0; i < gd.height; i++) {
+    for (var j = 0; j < gd.width; j++) {
+      g.pixel[i+gu.height][j].chr = gd.pixel[i][j].chr;
+    }
+  }
+
   return g;
 };
 
