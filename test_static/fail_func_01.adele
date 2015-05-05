@@ -1,0 +1,16 @@
+# function - check if type signature(type of param, return val) is violated
+
+void main()
+  foo(1);       # err
+end
+
+int foo(string a)
+  return 1;
+end
+
+int bar()
+  return "s";   # err
+end
+
+
+
