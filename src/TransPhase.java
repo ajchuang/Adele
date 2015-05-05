@@ -18,6 +18,7 @@ public class TransPhase extends adeleBaseListener {
     
     /* common data members */
     GlobalScope globals;
+    DefPhase def;
     STGroupFile stg;
     String outName = M_DefOutName;
     Scope currentScope; // resolve symbols starting in this scope
@@ -61,12 +62,14 @@ public class TransPhase extends adeleBaseListener {
     /*------------------------------------------------------------------------*/
     public TransPhase(
             GlobalScope globals,
+            DefPhase def,
             ParseTreeProperty<Scope> scopes,
             ParseTreeProperty<Object> values,
             ParseTreeProperty<String> codes) {
 
-        this.scopes     = scopes;
         this.globals    = globals;
+        this.def        = def;
+        this.scopes     = scopes;
         this.values     = values;
         this.codes      = codes;
 
@@ -566,19 +569,33 @@ public class TransPhase extends adeleBaseListener {
     }
 
     public void exitSub(adeleParser.SubContext ctx) {
-        print ("exitSub: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
+        Type typeExprL = this.def.getType(ctx.expr(0));
+        Type typeExprR = this.def.getType(ctx.expr(1));
 
-        /* output a: this is the last expression */
-        /*
-        ST add = stg.getInstanceOf("add");
-        add.add("lhs", codes.get(ctx.expr(0)));
-        add.add("rhs", codes.get(ctx.expr(1)));
-        */
+        print("exitSub: " + ctx.expr(0).getText() + "(" + typeExprL.getName() + ") - " + ctx.expr(1).getText() + "(" + typeExprR.getName() + ")");
 
-        /* set the code to the node */
-        //putCode (ctx, add.render());
+        if (typeExprL.getName().equals("graph") && typeExprR.getName().equals("graph")) {
+            print("Horizontally attach graphs");
+            ST hatt = stg.getInstanceOf("hatt");
 
-        putCode (ctx, codes.get(ctx.expr(0)) + ctx.SUB() + codes.get(ctx.expr(1)));
+            hatt.add("gl", codes.get(ctx.expr(0)));
+            hatt.add("gr", codes.get(ctx.expr(1)));
+
+            putCode(ctx, hatt.render());
+        } else {
+            print("Default subtraction");
+            /* output a: this is the last expression */
+            /*
+            ST add = stg.getInstanceOf("add");
+            add.add("lhs", codes.get(ctx.expr(0)));
+            add.add("rhs", codes.get(ctx.expr(1)));
+            */
+
+            /* set the code to the node */
+            //putCode (ctx, add.render());
+
+            putCode (ctx, codes.get(ctx.expr(0)) + ctx.SUB() + codes.get(ctx.expr(1)));
+        }
 
         print (codes.get(ctx));
     }

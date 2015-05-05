@@ -66,7 +66,7 @@ public class AdeleRT {
         ParseTreeProperty<String> codes =
             new ParseTreeProperty<String>();
 
-        TransPhase trans = new TransPhase (symtab.globals, def.scopes, def.values, codes);
+        TransPhase trans = new TransPhase (symtab.globals, def, def.scopes, def.values, codes);
         trans.setOutputFilename (oName);
         // The codes below are marked for easier testing
         /*if (fname != null) {
