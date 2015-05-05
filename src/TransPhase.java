@@ -680,6 +680,13 @@ public class TransPhase extends adeleBaseListener {
     }
 
     public void exitVatt(adeleParser.VattContext ctx) {
+        print("exitVatt: " + codes.get(ctx.expr(0)) + " | " + codes.get(ctx.expr(1)));
+
+        ST vatt = stg.getInstanceOf("vatt");
+        vatt.add("gu", codes.get(ctx.expr(0)));
+        vatt.add("gd", codes.get(ctx.expr(1)));
+
+        putCode(ctx, vatt.render());
     }
 
     public void exitCast(adeleParser.CastContext ctx) {
