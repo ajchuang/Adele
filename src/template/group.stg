@@ -256,7 +256,7 @@ var graph_hattach = function(gl, gr) {
 
   for (var i = 0; i < gr.height; i++) {
     for (var j = 0; j < gr.width; j++) {
-      g.pixel[i][j+gr.width].chr = gr.pixel[i][j].chr;
+      g.pixel[i][j+gl.width].chr = gr.pixel[i][j].chr;
     }
   }
 
