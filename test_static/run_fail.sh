@@ -33,10 +33,10 @@ do
     cat tmp.txt >> fail_output.txt
     tot=$((tot+1))
 
-    echo -ne '\rProcessing test No.' $tot
+    echo -ne 'Processing test No.' $tot\\r
 done
 
-echo -e "\r >>tests passed: "$pass'/'$tot
+echo -e ">>>tests passed: "$pass'/'$tot
 
 #if [[ $pass -ne $tot ]]
 #then

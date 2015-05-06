@@ -1,0 +1,7 @@
+# function - func already defined
+
+float bar(float a, float b)
+end
+
+int bar(int a, int b)   # err
+end

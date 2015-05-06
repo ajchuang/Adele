@@ -107,6 +107,12 @@ class ScanPhase extends adeleBaseListener {
      */
     public void enterFunc (adeleParser.FuncContext ctx) {
         String name = ctx.ID().getText();
+
+        if (currentScope.resolve("function " + name) != null) {
+            err (ctx.start.getLine(), "Function " + name + " is already defined");
+            System.exit(0);
+        }
+
         /* ret type is handled by exitFunc */
         FunctionSymbol fs =
             new FunctionSymbol (

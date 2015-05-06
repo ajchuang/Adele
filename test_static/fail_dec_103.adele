@@ -1,8 +1,9 @@
-# function - no duplicate var name (array and primitive type)
+# varDecl - var already defined (array, func, primitive type)
 
 int foo()
   int a;
   int a[3];   # err
+  int bar;
 end
 
 int bar()
