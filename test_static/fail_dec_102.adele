@@ -1,0 +1,13 @@
+# varDecl - rhs might not have been initialized
+
+int main()
+  int x;
+  int y = x;  #err
+
+  group x c;
+  group x d = c;
+end
+
+group x
+  int a;
+end

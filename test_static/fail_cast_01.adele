@@ -2,5 +2,12 @@
 
 void main()
     int x = 0;
-    bool y = (bool) x;    #err
+    string s = "a";
+    bool y;
+    y = (bool) x;   #err
+    y = (bool) s;   #err
+
+    x = (int) s;    #err
+
+
 end

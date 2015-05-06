@@ -32,10 +32,11 @@ do
 
     cat tmp.txt >> fail_output.txt
     tot=$((tot+1))
+
+    echo -ne '\rProcessing test No.' $tot
 done
 
-echo "==========="
-echo "tests passed:" $pass"/"$tot
+echo -e "\r >>tests passed: "$pass'/'$tot
 
 #if [[ $pass -ne $tot ]]
 #then

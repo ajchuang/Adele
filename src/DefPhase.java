@@ -159,6 +159,8 @@ class DefPhase extends adeleBaseListener {
     /* declaration                                                            */
     /*------------------------------------------------------------------------*/
     public void exitVarDecl (adeleParser.VarDeclContext ctx) {
+        int ln = ctx.start.getLine();
+
         String name = ctx.ID ().getText ();
         Type type = getType (ctx.type ());
         VariableSymbol var = new VariableSymbol (name, type);
@@ -170,8 +172,24 @@ class DefPhase extends adeleBaseListener {
                     currentScope.getScopeName ());
         }
 
+        if (type instanceof GroupSymbol) {
+            var.setInitialized();
+        }
+
         // if assign, check type
         if (ctx.expr() != null) {
+
+            /* check expr is initialized */
+            var.setInitialized();
+            print ("exitAssign: typeof expr: " + ctx.expr().getClass().getName());
+            if (ctx.expr() instanceof adeleParser.VarContext) {
+                VariableSymbol vs = (VariableSymbol)currentScope.resolve (ctx.expr().getText());
+                assert (vs != null);
+                if (!vs.isInitialized()) {
+                    err (ln, "Variable " + vs.getName() + "might not have been initialized");
+                }
+            }
+
             Type type_r = getType(ctx.expr());
             if (type_r == null) { // err already reported by exitSomeExpr()
 
@@ -188,7 +206,7 @@ class DefPhase extends adeleBaseListener {
                             && type.getName().equals(type_r.getName())) {
                         setType (ctx, type_r);
                     } else {
-                        err (ctx.start.getLine(),"Assignment with incompatible types: " + type + ":" + type_r);
+                        err (ln,"Assignment with incompatible types: " + type + ":" + type_r);
                         setType (ctx, SymbolTable._int);
                     }
                 } else {
@@ -675,8 +693,10 @@ class DefPhase extends adeleBaseListener {
 
     public void exitAssign (adeleParser.AssignContext ctx) {
 
+        int ln = ctx.start.getLine();
+
         String name = ctx.ID().getText();
-        Symbol var = currentScope.resolve (name);
+        VariableSymbol var = (VariableSymbol)currentScope.resolve (name);
 
         if (var == null) {
             err (ctx.start.getLine(), "no such variable: "+name);
@@ -684,10 +704,21 @@ class DefPhase extends adeleBaseListener {
             return;
         }
 
+        print ("exitAssign: typeof expr: " + ctx.expr().getClass().getName());
+        if (ctx.expr() instanceof adeleParser.VarContext) {
+            VariableSymbol vs = (VariableSymbol)currentScope.resolve (ctx.expr().getText());
+            assert (vs != null);
+            if (!vs.isInitialized()) {
+                err (ln, "Variable " + vs.getName() + "might not have been initialized");
+            }
+        }
+
         Type type_r = getType (ctx.expr ());
         Type type_l = var.getType ();
 
         if (type_r != null && type_l != null) {
+
+            var.setInitialized();
 
             int type_li = type_l.getTypeIndex ();
             int type_ri = type_r.getTypeIndex ();
@@ -707,10 +738,10 @@ class DefPhase extends adeleBaseListener {
             }
         } else {
             if (type_l == null)
-                err (ctx.start.getLine(), "Assignment (left) with incompatible types (unknown)");
+                err (ln, "Assignment (left) with incompatible types (unknown)");
 
             if (type_r == null)
-                err (ctx.start.getLine(), "Assignment (right) with incompatible types (unknown)");
+                err (ln, "Assignment (right) with incompatible types (unknown)");
 
             setType (ctx, SymbolTable._int);
         }

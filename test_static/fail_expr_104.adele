@@ -1,0 +1,15 @@
+# assign - var might not have been initialized
+
+int main()
+  int x;
+  int y;
+  y = x;  # err
+
+  group x c;
+  group x d;
+  c = d;
+end
+
+group x
+  int a;
+end
