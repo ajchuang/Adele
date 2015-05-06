@@ -5,16 +5,11 @@ err_line=$(grep -n err $1 | cut -d: -f1 | sort -n -u)  # err line number in test
 line_detected=$(grep line tmp.txt| cut -d: -f1 | cut -d" " -f3 | sort -n -u)  # err line number reported
 pass=0
 
-if [[ -n $line_detected ]]      # if some error is detected
+if [[ $err_line == $line_detected ]]
 then
-    if [[ $err_line == $line_detected ]]
-    then
-        pass=1
-    else
-        echo error detected: $line_detected, expected: $err_line
-    fi
+    pass=1
 else
-    echo failed to detect error on line $err_line
+    echo error detected: $line_detected, expected: $err_line
 fi
 
 if [[ -n $(grep Exception tmp.txt) ]]
@@ -25,7 +20,7 @@ fi
 
 if [[ $pass -eq 1 ]]
 then
-    echo pass
+    echo pass static test
 else
     open tmp.txt
 fi

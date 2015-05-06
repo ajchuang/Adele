@@ -253,7 +253,7 @@ class DefPhase extends adeleBaseListener {
 
             Type ans = SymbolTable.assignOp[type_li][type_ri];
 
-            print ("exitStm_ret: " + ret_type.getName() + " " + expr_type.getName());
+            // print ("exitStm_ret: " + ret_type.getName() + " " + expr_type.getName());
 
             if (ans == null &&
                 ret_type.getName() != expr_type.getName()) {
@@ -261,7 +261,7 @@ class DefPhase extends adeleBaseListener {
             }
         }
 
-        print ("exitStm_ret: " + ret_type + expr_type);
+        // print ("exitStm_ret: " + ret_type + expr_type);
     }
 
     public void enterStm_if (adeleParser.Stm_ifContext ctx) {

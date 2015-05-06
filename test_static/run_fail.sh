@@ -13,16 +13,11 @@ do
     err_line=$(grep -n err $file | cut -d: -f1 | sort -n -u)  # err line number in test file
     line_detected=$(grep line tmp.txt| cut -d: -f1 | cut -d" " -f3 | sort -n -u)  # err line number reported
 
-    if [[ -n $line_detected ]]      # if some error is detected
+    if [[ $err_line == $line_detected ]]
     then
-        if [[ $err_line == $line_detected ]]
-        then
-            pass=$((pass+1))
-        else
-            echo $file: error detected: $line_detected, expected: $err_line
-        fi
+        pass=$((pass+1))
     else
-        echo $file: failed to detect error on line $err_line
+        echo $file: error detected: $line_detected, expected: $err_line
     fi
 
     if [[ -n $(grep Exception tmp.txt) ]]

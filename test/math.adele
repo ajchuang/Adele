@@ -1,0 +1,17 @@
+int add(int a, int b)
+  return a+b;
+end
+
+int sub(int a, int b)
+  return a-b;
+end
+
+int mul(int a, int b)
+  return a*b;
+end
+
+int div(int a, int b)
+  return a/b;
+end
+
+
