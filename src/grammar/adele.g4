@@ -89,18 +89,16 @@ expr:
             LPAREN expr RPAREN              #parenExpr      /* parenthesis */
         |   LPAREN (type | GROUP ID) RPAREN expr #cast      /* cast */
         |   ID LPAREN func_plist RPAREN     #funcCall       /* function call */
-        |   ID (array_access)+              #arrayAccess
-        |   ID (member_access)+             #memberVar
-        |   expr MULTI_OP    expr           #mult           /* multiplication & division */
+        |   expr MULTI_OP expr              #mult           /* multiplication & division */
         |   expr ADD expr                   #add            /* addition */
         |   expr SUB expr                   #sub            /* sub */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
-        |   sid=ID OVERLAY tid=ID AT LPAREN xc=expr COMMA yc=expr RPAREN #overlay   /* @lfred: to fix - lame overlay */
-        |   sid=ID AT LPAREN xc=expr COMMA yc=expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
+        |   sid=var_tok OVERLAY tid=var_tok AT LPAREN xc=expr COMMA yc=expr RPAREN #overlay /* lame */
+        |   sid=var_tok AT LPAREN xc=expr COMMA yc=expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
         |   lexp=expr VATT rexp=expr        #vatt           /* vertically attach */
-        |   ID EQUAL expr                   #assign         /* assignment */
+        |   var_tok EQUAL expr              #assign         /* assignment */
         |   ID (array_access)+ EQUAL expr   #arrayAssign
-        |   ID                              #var
+        |   var_tok                         #var
         |   SUB NUM                         #negNum
         |   NUM                             #num
         |   STR                             #string
