@@ -11,7 +11,7 @@ class DefPhase extends adeleBaseListener {
     ParseTreeProperty<Object> values    = new ParseTreeProperty<Object>();
     ParseTreeProperty<Object> usrType   = new ParseTreeProperty<Object>();
     ParseTreeProperty<Type>   types     = new ParseTreeProperty<Type>();
-
+  
     GlobalScope globals;
     Scope currentScope;
     int errCount;

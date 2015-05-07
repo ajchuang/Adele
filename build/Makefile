@@ -24,7 +24,7 @@ compiler:
 	@make -C $(SRC)
 
 	@echo '[Phase 4] Checking coding style'    
-	@java -jar checkstyle-6.6-all.jar -c /google_checks.xml ../src/*.java > style.log
+	@java -jar checkstyle-6.6-all.jar -c adele_checks.xml ../src/*.java > style.log
 	
 	@echo '[Phase 5] Running static tests ...'
 	@echo '------------------------------------------------------------'
