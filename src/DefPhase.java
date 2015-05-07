@@ -239,12 +239,21 @@ class DefPhase extends adeleBaseListener {
     /*-----------------------------------------------------------------------*/
     /* statements (in the order in the grammar)                              */
     /*-----------------------------------------------------------------------*/
-    public void exitStm_ret(adeleParser.Stm_retContext ctx) {
-        int ln = ctx.start.getLine();
-
-        Symbol fs = (Symbol)currentScope;
-        assert (fs instanceof FunctionSymbol);
-        Type ret_type = fs.getType();
+    public void exitStm_ret (adeleParser.Stm_retContext ctx) {
+        
+        int ln = ctx.start.getLine ();
+        Scope fs = currentScope;
+        
+        while (fs instanceof FunctionSymbol == false) {
+            fs = currentScope.getEnclosingScope ();
+            if (fs == null) {
+                err (ln, "Using return in the context other than function call");
+                return;
+            }
+        }
+       
+        Symbol sb = (Symbol) fs;
+        Type ret_type = sb.getType();
         Type expr_type = getType(ctx.expr());
 
         if (ret_type != null && expr_type != null) {
@@ -317,6 +326,7 @@ class DefPhase extends adeleBaseListener {
 
         return;
     }
+    
     /*-----------------------------------------------------------------------*/
     /* expressions (in the order in the grammar)                             */
     /*-----------------------------------------------------------------------*/
