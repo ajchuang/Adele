@@ -10,7 +10,7 @@ class DefPhase extends adeleBaseListener {
     ParseTreeProperty<Scope>  scopes    = new ParseTreeProperty<Scope>();
     ParseTreeProperty<Object> values    = new ParseTreeProperty<Object>();
     ParseTreeProperty<Object> usrType   = new ParseTreeProperty<Object>();
-    ParseTreeProperty<Type> types       = new ParseTreeProperty<Type>();
+    ParseTreeProperty<Type>   types     = new ParseTreeProperty<Type>();
 
     GlobalScope globals;
     Scope currentScope;
@@ -689,6 +689,26 @@ class DefPhase extends adeleBaseListener {
             err (ln, "Expression is not integer.");
             return;
         }
+    }
+
+    public void exitVatt (adeleParser.VattContext ctx) {
+    
+        int ln = ctx.start.getLine ();
+        print ("exitVatt");
+   
+        Type l = getType (ctx.lexp);
+        Type r = getType (ctx.rexp);
+        setType (ctx, SymbolTable._graph);
+
+        if (l != r) {
+            err (ln, "Type inconsistency for | operator");
+            return;
+        }
+
+        if (l != SymbolTable._graph)
+            err (ln, "| operator needs graph type");
+
+        return;
     }
 
     public void exitAssign (adeleParser.AssignContext ctx) {

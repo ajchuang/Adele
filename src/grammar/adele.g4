@@ -92,12 +92,12 @@ expr:
         |   ID (array_access)+              #arrayAccess
         |   ID (member_access)+             #memberVar
         |   expr MULTI_OP    expr           #mult           /* multiplication & division */
-        |   expr ADD expr           #add            /* addition */
-        |   expr SUB expr           #sub            /* sub */
+        |   expr ADD expr                   #add            /* addition */
+        |   expr SUB expr                   #sub            /* sub */
         |   expr COMPARE_OP  expr           #compare        /* compare equal */
         |   sid=ID OVERLAY tid=ID AT LPAREN xc=expr COMMA yc=expr RPAREN #overlay   /* @lfred: to fix - lame overlay */
         |   sid=ID AT LPAREN xc=expr COMMA yc=expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
-        |   expr VATT expr          #vatt           /* vertically attach */
+        |   lexp=expr VATT rexp=expr        #vatt           /* vertically attach */
         |   ID EQUAL expr                   #assign         /* assignment */
         |   ID (array_access)+ EQUAL expr   #arrayAssign
         |   ID      #var
