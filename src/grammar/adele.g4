@@ -100,11 +100,11 @@ expr:
         |   lexp=expr VATT rexp=expr        #vatt           /* vertically attach */
         |   ID EQUAL expr                   #assign         /* assignment */
         |   ID (array_access)+ EQUAL expr   #arrayAssign
-        |   ID      #var
-        |   SUB NUM #negNum
-        |   NUM     #num
-        |   STR     #string
-        |   BOOL_LITERAL    #bool_val
+        |   ID                              #var
+        |   SUB NUM                         #negNum
+        |   NUM                             #num
+        |   STR                             #string
+        |   BOOL_LITERAL                    #bool_val
         ;
 
 array_access:
