@@ -107,6 +107,10 @@ expr:
         |   BOOL_LITERAL                    #bool_val
         ;
 
+var_tok:
+            ID ((array_access) | (member_access))* #vtok
+        ;
+
 array_access:
             LSB expr RSB;
 
