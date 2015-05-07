@@ -601,9 +601,22 @@ public class TransPhase extends adeleBaseListener {
     }
 
     public void exitMult(adeleParser.MultContext ctx) {
+        Type typeExprL = this.def.getType(ctx.expr(0));
+        Type typeExprR = this.def.getType(ctx.expr(1));
+
         print ("exitMult: " + ctx.expr(0).getText() + ":" + ctx.expr(1).getText());
 
-        putCode (ctx, codes.get(ctx.expr(0)) + ctx.MULTI_OP() + codes.get(ctx.expr(1)));
+        String expr = codes.get(ctx.expr(0)) + ctx.MULTI_OP() + codes.get(ctx.expr(1));
+
+        if (typeExprL.getName().equals("int") && typeExprR.getName().equals("int")) {
+            ST f2i = stg.getInstanceOf("f2i");
+
+            f2i.add("f", expr);
+
+            putCode(ctx, f2i.render());
+        } else {
+            putCode (ctx, codes.get(ctx.expr(0)) + ctx.MULTI_OP() + codes.get(ctx.expr(1)));
+        }
 
         print (codes.get(ctx));
     }
