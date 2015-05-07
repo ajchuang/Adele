@@ -82,15 +82,16 @@ class DefPhase extends adeleBaseListener {
                ? "[Def Phase] 1 error" :
                  "[Def Phase] " + errCount + " errors";
             System.err.println(msg);
-        } else
+        } else {
             print("Phase Completed. Continue.");
+        }
     }
 
     /* when entering group definition */
     public void enterType_declaration(adeleParser.Type_declarationContext ctx) {
         print("enterType_declaration:" + ctx.ID().getText());
         String symbolName = "group " + ctx.ID().getText();
-        GroupSymbol gs =(GroupSymbol)currentScope.resolve(symbolName);
+        GroupSymbol gs = (GroupSymbol)currentScope.resolve(symbolName);
         saveScope(ctx, gs);
         currentScope = gs;
     }
@@ -114,11 +115,11 @@ class DefPhase extends adeleBaseListener {
                 String mType = null, mName = null;
 
                 if (node instanceof adeleParser.Dec_item_primContext) {
-                    adeleParser.Dec_item_primContext x =(adeleParser.Dec_item_primContext) node;
+                    adeleParser.Dec_item_primContext x = (adeleParser.Dec_item_primContext) node;
                     mType = x.type().getText();
                     mName = x.vid.getText();
                 } else if (node instanceof adeleParser.Dec_item_groupContext) {
-                    adeleParser.Dec_item_groupContext x =(adeleParser.Dec_item_groupContext) node;
+                    adeleParser.Dec_item_groupContext x = (adeleParser.Dec_item_groupContext) node;
                     mType = x.gid.getText();
                     mName = x.vid.getText();
                 } else
@@ -139,7 +140,7 @@ class DefPhase extends adeleBaseListener {
 
     public void enterFunc(adeleParser.FuncContext ctx) {
         String symbolName = "function " + ctx.ID().getText();
-        //Type type =(Type)getValue(ctx.type());
+        //Type type = (Type)getValue(ctx.type());
 
         FunctionSymbol function =
                (FunctionSymbol)currentScope.resolve(symbolName);
@@ -170,8 +171,8 @@ class DefPhase extends adeleBaseListener {
 
         if (!currentScope.define(var)) {
             err(ctx.start.getLine(),
-                    "Variable " + name + " is already defined in "+
-                    currentScope.getScopeName());
+                    "Variable " + name + " is already defined in " 
+                    + currentScope.getScopeName());
         }
 
         if (type instanceof GroupSymbol) {
@@ -185,30 +186,30 @@ class DefPhase extends adeleBaseListener {
             var.setInitialized();
             print("exitAssign: typeof expr: " + ctx.expr().getClass().getName());
             if (ctx.expr() instanceof adeleParser.VarContext) {
-                VariableSymbol vs =(VariableSymbol)currentScope.resolve(ctx.expr().getText());
+                VariableSymbol vs = (VariableSymbol)currentScope.resolve(ctx.expr().getText());
                 assert(vs != null);
                 if (!vs.isInitialized()) {
                     err(ln, "Variable, " + vs.getName() + ", might not have been initialized");
                 }
             }
 
-            Type type_r = getType(ctx.expr());
-            if (type_r == null) { // err already reported by exitSomeExpr()
+            Type typer = getType(ctx.expr());
+            if (typer == null) { // err already reported by exitSomeExpr()
 
             } else {
-                print("type_r: " + type_r.getName());
-                int type_li = type.getTypeIndex();
-                int type_ri = type_r.getTypeIndex();
+                print("typer: " + typer.getName());
+                int typeli = type.getTypeIndex();
+                int typeri = typer.getTypeIndex();
 
-                Type ans = SymbolTable.assignOp[type_li][type_ri];
+                Type ans = SymbolTable.assignOp[typeli][typeri];
                 if (ans == null) {
                     // both are of group type
-                    if (type_li == type_ri
-                            && type_li == SymbolTable.M_TYPE_USER
-                            && type.getName().equals(type_r.getName())) {
-                        setType(ctx, type_r);
+                    if (typeli == typeri
+                            && typeli == SymbolTable.M_TYPE_USER
+                            && type.getName().equals(typer.getName())) {
+                        setType(ctx, typer);
                     } else {
-                        err(ln,"Assignment with incompatible types: " + type + ":" + type_r);
+                        err(ln,"Assignment with incompatible types: " + type + ":" + typer);
                         setType(ctx, SymbolTable._int);
                     }
                 } else {
@@ -254,7 +255,7 @@ class DefPhase extends adeleBaseListener {
             }
         }
        
-        Symbol sb =(Symbol) fs;
+        Symbol sb = (Symbol) fs;
         Type ret_type = sb.getType();
         Type expr_type = getType(ctx.expr());
 
@@ -360,7 +361,7 @@ class DefPhase extends adeleBaseListener {
                 return;
             }
 
-            BuiltInTypeSymbol bts =(BuiltInTypeSymbol) left;
+            BuiltInTypeSymbol bts = (BuiltInTypeSymbol) left;
             int idx_left = bts.getTypeIndex();
             int idx_right = sourceType.getTypeIndex();
 
@@ -419,7 +420,7 @@ class DefPhase extends adeleBaseListener {
 
         /* check if  the symbol is a function */
         if (func instanceof FunctionSymbol)
-            fs =(FunctionSymbol)func;
+            fs = (FunctionSymbol)func;
         else {
             err(ln, "Symbol " + fname + " is not a function");
             setType(ctx, SymbolTable._int);
@@ -442,7 +443,7 @@ class DefPhase extends adeleBaseListener {
             return;
         }
 
-        adeleParser.FpisContext fpc =(adeleParser.FpisContext) ctx.func_plist();
+        adeleParser.FpisContext fpc = (adeleParser.FpisContext) ctx.func_plist();
         List<adeleParser.FpitemContext> items = fpc.fpitem();
 
         if (plist.size() != items.size()) {
@@ -484,14 +485,14 @@ class DefPhase extends adeleBaseListener {
             return;
         }
 
-        int dimen =((ArrayType)t).getDimension();
+        int dimen = ((ArrayType)t).getDimension();
         if (ctx.array_access().size() != dimen) {
             err(ln, "The array dimension should be " + dimen);
             setType(ctx, SymbolTable._int);
             return;
         }
 
-        ArrayType as =(ArrayType) t;
+        ArrayType as = (ArrayType) t;
         print("Accessing array: " + name + ":" + as);
         setType(ctx, as.getElmType());
     }
@@ -514,7 +515,7 @@ class DefPhase extends adeleBaseListener {
             return;
         }
 
-        VariableSymbol gs =(VariableSymbol) starting;
+        VariableSymbol gs = (VariableSymbol) starting;
         Type curType = gs.getType();
 
         while(it.hasNext()) {
@@ -537,7 +538,7 @@ class DefPhase extends adeleBaseListener {
             }
             else if (cs instanceof GroupSymbol) {
                 //TODO: this is wrong.
-                //gs =(GroupSymbol) cs;
+                //gs = (GroupSymbol) cs;
                 curType = gs.getType();
             } else {
                 gs = null;
@@ -728,7 +729,7 @@ class DefPhase extends adeleBaseListener {
         int ln = ctx.start.getLine();
 
         String name = ctx.ID().getText();
-        VariableSymbol var =(VariableSymbol)currentScope.resolve(name);
+        VariableSymbol var = (VariableSymbol)currentScope.resolve(name);
 
         if (var == null) {
             err(ctx.start.getLine(), "no such variable: "+name);
@@ -738,7 +739,7 @@ class DefPhase extends adeleBaseListener {
 
         print("exitAssign: typeof expr: " + ctx.expr().getClass().getName());
         if (ctx.expr() instanceof adeleParser.VarContext) {
-            VariableSymbol vs =(VariableSymbol)currentScope.resolve(ctx.expr().getText());
+            VariableSymbol vs = (VariableSymbol)currentScope.resolve(ctx.expr().getText());
             assert(vs != null);
             if (!vs.isInitialized()) {
                 err(ln, "Variable, " + vs.getName() + ", might not have been initialized");
@@ -799,14 +800,14 @@ class DefPhase extends adeleBaseListener {
             return;
         }
 
-        int dimen =((ArrayType)t).getDimension();
+        int dimen = ((ArrayType)t).getDimension();
         if (ctx.array_access().size() != dimen) {
             err(ln, "The array dimension should be " + dimen);
             setType(ctx, SymbolTable._int);
             return;
         }
 
-        ArrayType as =(ArrayType) t;
+        ArrayType as = (ArrayType) t;
         print("Accessing array: " + name + ":" + as);
 
         Type type_r = getType(ctx.expr());
@@ -882,9 +883,9 @@ class DefPhase extends adeleBaseListener {
         String typeStr = ctx.start.getText();
 
         if (typeStr.equals("group"))
-            typeStr +=(" " + ctx.ID().getText());
+            typeStr += (" " + ctx.ID().getText());
 
-        Type type =(Type)currentScope.resolve(typeStr);
+        Type type = (Type)currentScope.resolve(typeStr);
 
         if (type == null) {
             err(ctx.start.getLine(),"Type '" + typeStr + "' is not defined");
