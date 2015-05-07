@@ -13,6 +13,7 @@ overlay(fg, bg, r, c) ::= "$fg$.overlay($bg$,$r$,$c$)"
 at(fg, r, c) ::= "$fg$.at($r$,$c$)"
 vatt(gu, gd) ::= "graph_vattach($gu$,$gd$)"
 hatt(gl, gr) ::= "graph_hattach($gl$,$gr$)"
+f2i(f) ::= "Math.floor($f$)"
 
 funcdef(fname, params, body) ::= <<
 var $fname$ = function($params; separator=", "$) {
