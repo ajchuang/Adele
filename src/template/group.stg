@@ -8,12 +8,12 @@ typeInitMap ::= [
 ]
 
 assign(lhs, rhs) ::= "$lhs$ = $rhs$"
-add(lhs, rhs) ::= "$lhs$ + $rhs$"
-overlay(fg, bg, r, c) ::= "$fg$.overlay($bg$,$r$,$c$)"
-at(fg, r, c) ::= "$fg$.at($r$,$c$)"
+add(lhs, rhs) ::= "($lhs$) + ($rhs$)"
+overlay(fg, bg, r, c) ::= "($fg$).overlay($bg$,$r$,$c$)"
+at(fg, r, c) ::= "($fg$).at($r$,$c$)"
 vatt(gu, gd) ::= "graph_vattach($gu$,$gd$)"
 hatt(gl, gr) ::= "graph_hattach($gl$,$gr$)"
-f2i(f) ::= "Math.floor($f$)"
+f2i(f) ::= "(($f$)<0?Math.ceil($f$):Math.floor($f$))"
 
 funcdef(fname, params, body) ::= <<
 var $fname$ = function($params; separator=", "$) {
