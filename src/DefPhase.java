@@ -186,7 +186,7 @@ class DefPhase extends adeleBaseListener {
                 VariableSymbol vs = (VariableSymbol)currentScope.resolve (ctx.expr().getText());
                 assert (vs != null);
                 if (!vs.isInitialized()) {
-                    err (ln, "Variable " + vs.getName() + "might not have been initialized");
+                    err (ln, "Variable, " + vs.getName() + ", might not have been initialized");
                 }
             }
 
@@ -739,7 +739,7 @@ class DefPhase extends adeleBaseListener {
             VariableSymbol vs = (VariableSymbol)currentScope.resolve (ctx.expr().getText());
             assert (vs != null);
             if (!vs.isInitialized()) {
-                err (ln, "Variable " + vs.getName() + "might not have been initialized");
+                err (ln, "Variable, " + vs.getName() + ", might not have been initialized");
             }
         }
 
