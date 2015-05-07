@@ -42,7 +42,7 @@ public class SymbolTable {
         /* FLT  */  {   null,   null,   _float, _float, _float, _string,null,   null    },
         /* STR  */  {   null,   null,   _string,_string,_string,_string,null,   null    },
         /* VOID */  {   null,   null,   null,   null,   null,   null,   null,   null    },
-        /* GRP  */  {   null,   null,   null,   null,   null,   null,   null,   _graph  }
+        /* GRP  */  {   null,   null,   null,   null,   null,   null,   null,   null    }
     };
 
     public static final Type arithMultiOp[][] = {
@@ -54,7 +54,7 @@ public class SymbolTable {
         /* FLT  */  {   null,   null,   _float, _float, _float, null,   null,   null    },
         /* STR  */  {   null,   null,   null,   null,   null,   null,   null,   null    },
         /* VOID */  {   null,   null,   null,   null,   null,   null,   null,   null    },
-        /* GRP  */  {   null,   null,   null,   null,   null,   null,   null,   _graph  }
+        /* GRP  */  {   null,   null,   null,   null,   null,   null,   null,   null    }
     };
 
     public static final Type assignOp[][] = {
