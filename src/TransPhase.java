@@ -694,13 +694,30 @@ public class TransPhase extends adeleBaseListener {
 
     public void exitMemberVar(adeleParser.MemberVarContext ctx) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < ctx.getChildCount(); ++i)
-            if (ctx.member_access(i) == null)
-                break;
-            else
-                sb.append(codes.get(ctx.member_access(i)));
 
+        for (int i = 0; i < ctx.getChildCount(); ++i)
+        {
+            if (ctx.getChild(i) instanceof adeleParser.Member_accessContext)
+                sb.append(codes.get(ctx.getChild(i)));
+            else if (ctx.getChild(i) instanceof adeleParser.Array_accessContext)
+                sb.append(codes.get(ctx.getChild(i)));
+        }
         putCode (ctx, ctx.ID().getText() + sb.toString());
+    }
+
+    public void exitMemberVarAssign(adeleParser.MemberVarAssignContext ctx) { 
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < ctx.getChildCount(); ++i)
+        {
+            print (codes.get(ctx.getChild(i)));
+            if (ctx.getChild(i) instanceof adeleParser.Member_accessContext)
+                sb.append(codes.get(ctx.getChild(i)));
+            else if (ctx.getChild(i) instanceof adeleParser.Array_accessContext)
+                sb.append(codes.get(ctx.getChild(i)));
+        }
+        putCode (ctx, ctx.ID().getText() + sb.toString() + "=" + codes.get(ctx.expr()));
     }
 
     public void exitNum(adeleParser.NumContext ctx) {
