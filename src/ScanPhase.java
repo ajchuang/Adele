@@ -136,6 +136,7 @@ class ScanPhase extends adeleBaseListener {
         // }
 
         VariableSymbol vs = new VariableSymbol (p_name, p_type);
+        vs.setInitialized();
 
         if (curFunc.defineParam (currentScope, vs) == false) {
             err (ln, "Param, " + p_name + ", is not valid");
