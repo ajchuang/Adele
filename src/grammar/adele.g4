@@ -90,7 +90,7 @@ expr:
         |   LPAREN (type | GROUP ID) RPAREN expr #cast      /* cast */
         |   ID LPAREN func_plist RPAREN     #funcCall       /* function call */
         |   ID (array_access)+              #arrayAccess
-        |   ID (member_access)+             #memberVar
+        |   ID member_access (member_access | array_access)+            #memberVar
         |   expr MULTI_OP    expr           #mult           /* multiplication & division */
         |   expr ADD expr                   #add            /* addition */
         |   expr SUB expr                   #sub            /* sub */
@@ -100,6 +100,7 @@ expr:
         |   lexp=expr VATT rexp=expr        #vatt           /* vertically attach */
         |   ID EQUAL expr                   #assign         /* assignment */
         |   ID (array_access)+ EQUAL expr   #arrayAssign
+        |   ID member_access (member_access | array_access)+ EQUAL expr #memberVarAssign
         |   ID                              #var
         |   SUB NUM                         #negNum
         |   NUM                             #num
