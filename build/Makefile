@@ -23,7 +23,7 @@ compiler:
 	
 	@echo '[Phase 3] Compiling compiler source codes' 
 	@make -C $(SRC)
-
+	
 	@echo '[Phase 4] Checking coding style'    
 	@java -jar checkstyle-6.6-all.jar -c adele_checks.xml ../src/*.java > style.log
 	
