@@ -13,8 +13,14 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/client.html');
 });
 
+var visited = false;
 
 io.on('connection', function (socket) {
+  if (visited) {
+    return;
+  } else {
+    visited = true;
+  }
   canvas = new Canvas({
     w: 40,
     h: 30,
@@ -235,17 +241,17 @@ var main = function() {
     draw_map();
 };
 var keypress = function(key) {
-    if (key==97) {
+    if (key==65 || key==37) {
         px = px-1;
     }
-    if (key==100) {
+    if (key==68 || key==39) {
         px = px+1;
     }
-    if (key==115) {
-        py = py+1;
-    }
-    if (key==119) {
+    if (key==87 || key==38) {
         py = py-1;
+    }
+    if (key==83 || key==40) {
+        py = py+1;
     }
     if (px>=w) {
         px = w-1;

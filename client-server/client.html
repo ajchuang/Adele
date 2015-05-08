@@ -61,8 +61,9 @@ jQuery(document).ready(function(){
     canvas.draw();
     //console.log('draw!',new Date().getTime());
   });
-  jQuery(document).keypress(function(e){
-    socket.emit('keypress', {key: e.charCode});
+  jQuery(document).on("keydown", function(e){
+    console.log('keypress', e.which);
+    socket.emit('keypress', {key: e.which});
   });
 
 });

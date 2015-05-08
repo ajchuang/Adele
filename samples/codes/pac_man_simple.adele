@@ -33,6 +33,7 @@ end
 void draw_map()
   graph ob = str2graph("*");
   graph wall = str2graph("█");
+  wall.pixel[0][0].backgroundColor = "#F00";
   graph person = str2graph("@");
   int i = 0;
   while (i<h)
@@ -45,7 +46,6 @@ void draw_map()
       if (map[i][j] == 0)
         wall @ (i, j);
       end
-      
       j = j + 1;
     end
     i = i + 1;
@@ -64,36 +64,36 @@ int main()
 end
 
 int keypress (int key)
-  int cx;
-  int cy;
-  
-  if (key==97)
+  int cx = px;
+  int cy = py;
+
+  if (key==37)
     cx = px - 1;
   end
-  if (key==100)
+  if (key==39)
     cx = px + 1;
   end
-  if (key==115)
-    cy = py + 1;
-  end
-  if (key==119)
+  if (key==38)
     cy = py - 1;
   end
-  if (px>=w)
+  if (key==40)
+    cy = py + 1;
+  end
+  if (cx>=w)
     cx = w - 1;
   end
-  if (px<0)
+  if (cx<0)
     cx = 0;
   end
-  if (py>=h)
+  if (cy>=h)
     cy = h - 1;
   end
-  if (py<0)
+  if (cy<0)
     cy = 0;
   end
 
   # it's wall
-  if (map[cx][cy] == 0)
+  if (map[cy][cx] == 0)
       return 0;
   end
 

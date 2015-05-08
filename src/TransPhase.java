@@ -107,6 +107,8 @@ public class TransPhase extends adeleBaseListener {
 
         StringBuilder prog = new StringBuilder();
 
+        ST befprog = stg.getInstanceOf("befprog_server");
+        befprog.add("client_name", outName);
         //ST aftprog = stg.getInstanceOf("aftprog");
 
         //prog.append(befprog.render());
@@ -126,24 +128,21 @@ public class TransPhase extends adeleBaseListener {
                 }
             }
         }
-
         prog.append("\n/***** End of source codes semantics *****/\n");
 
-        StringBuilder testprog = new StringBuilder();
-        testprog.append(prog.toString());
-
-        ST befprog = stg.getInstanceOf("befprog");
+        StringBuilder oldprog = new StringBuilder();
+        oldprog.append(prog.toString());
         prog.insert(0, befprog.render());
 
-        ST befprogTest = stg.getInstanceOf("befprog_test");
-        testprog.insert(0, befprogTest.render());
+        ST befprogOld = stg.getInstanceOf("befprog");
+        oldprog.insert(0, befprogOld.render());
 
         List<adeleParser.FuncContext> funcList = ctx.func();
         for (int i = 0; i < funcList.size(); ++i) {
             ST exports = stg.getInstanceOf("exports");
             exports.add("fname", funcList.get(i).ID());
-            testprog.append('\n');
-            testprog.append(exports.render());
+            prog.append('\n');
+            prog.append(exports.render());
         }
 
 
@@ -160,33 +159,33 @@ public class TransPhase extends adeleBaseListener {
             }
             if (idn != null) {
                 exports.add("fname", idn);
-                testprog.append('\n');
-                testprog.append(exports.render());
+                prog.append('\n');
+                prog.append(exports.render());
             }
 
         }
 
 
-        //print(prog.toString());
+        //print (prog.toString());
 
         // Output Javascript and HTML
         try {
-            PrintWriter jsOut = new PrintWriter(outName + ".js", "utf-8");
-            jsOut.println(prog.toString());
-            jsOut.flush();
-            jsOut.close();
+            PrintWriter serverOut = new PrintWriter(outName + ".js", "utf-8");
+            serverOut.println(prog.toString());
+            serverOut.flush();
+            serverOut.close();
 
             ST html = stg.getInstanceOf("html");
-            html.add("jssource", outName + ".js");
-            PrintWriter htmlOut = new PrintWriter(outName + ".html", "utf-8");
-            htmlOut.println(html.render());
-            htmlOut.flush();
-            htmlOut.close();
+            //html.add("jssource", outName + ".js");
+            PrintWriter clientOut = new PrintWriter(outName + ".html", "utf-8");
+            clientOut.println(html.render());
+            clientOut.flush();
+            clientOut.close();
 
-            PrintWriter jsTestOut = new PrintWriter("../test/" + outName + "_test.js", "utf-8");
-            jsTestOut.println(testprog.toString());
-            jsTestOut.flush();
-            jsTestOut.close();
+            // PrintWriter jsTestOut = new PrintWriter("../test/"+outName + "_test.js", "utf-8");
+            // jsTestOut.println(testprog.toString());
+            // jsTestOut.flush();
+            // jsTestOut.close();
         } catch (IOException ioe) {
             System.out.println("Failed in outputing files");
         }

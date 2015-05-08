@@ -29,5 +29,6 @@ java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:. AdeleRunTime $src $
 
 # open the output file
 if [ -f "$dst$suf" ]; then
-    open $dst$suf
+    node output.js &
+    open http://127.0.0.1:8888
 fi

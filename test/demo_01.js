@@ -1,4 +1,4 @@
-var f = require('./output_test.js');
+var f = require('../build/output.js');
 
 exports.testInit = function(test) {
   test.ok(f.canvas.width == 40 && f.canvas.height == 30, "Test canvas init w & h error");
