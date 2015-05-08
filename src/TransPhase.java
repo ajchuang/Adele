@@ -746,6 +746,7 @@ public class TransPhase extends adeleBaseListener {
         print(codes.get(ctx));
     }
 
+
     public void exitVatt(adeleParser.VattContext ctx) {
         print("exitVatt: " + codes.get(ctx.expr(0)) + " | " + codes.get(ctx.expr(1)));
 
@@ -780,6 +781,12 @@ public class TransPhase extends adeleBaseListener {
         putCode(ctx, ctx.ID().getText() + sb.toString() + dimen.toString());
         */
         putCode(ctx, ctx.ID().getText() + sb.toString() + '=' + codes.get(ctx.expr()));
+    }
+
+    public void exitBool_val(adeleParser.Bool_valContext ctx) {
+        print("exitBool_val: " + ctx.BOOL_LITERAL());
+        putCode(ctx, ctx.BOOL_LITERAL().getText());
+        print(codes.get(ctx));
     }
 
     public void exitOverlay(adeleParser.OverlayContext ctx) {

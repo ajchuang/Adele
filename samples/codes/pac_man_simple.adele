@@ -36,7 +36,7 @@ void draw_map()
   graph wall = str2graph(" ");
   wall.pixel[0][0].backgroundColor = "#000";
   graph person = str2graph("@");
-  person.pixel[0][0].blink = 1;
+  person.pixel[0][0].blink = true;
 
   int i = 0;
   while (i<h)
