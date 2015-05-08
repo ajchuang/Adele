@@ -50,13 +50,84 @@ while ($expr$) {
 >>
 
 
-html(jssource) ::= <<
+html() ::= <<
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="$jssource$"></script>
+<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+<script>
+
+
+var Canvas = function(cfg) {
+  this.width = cfg.w;
+  this.height = cfg.h;
+  this.grid = cfg.g;
+  this.screen = [];
+  this.pixel = [];
+
+  this.init = function () {
+    jQuery(document.body).css('width', this.width*this.grid +'px').css('height', this.heigth*this.grid +'px');
+
+    var pixeldiv = jQuery('<div>').addClass('pixel').css({
+      "width": this.grid+'px',
+      "height": this.grid+'px',
+      "font-size": this.grid*.9+'px',
+      "float": "left",
+      "text-align": "center"
+    });
+
+    for (var i = 0; i < this.height; i++) {
+      this.pixel[i] = [];
+      this.screen[i] = [];
+      for (var j = 0; j < this.width; j++) {
+        this.screen[i][j] = pixeldiv.clone().addClass('row-'+i).addClass('col-'+j).appendTo(document.body);
+      }
+    }
+  };
+  this.draw = function () {
+    for (var i = 0; i < this.height; i++) {
+      for (var j = 0; j < this.width; j++) {
+        var p = this.pixel[i][j];
+        this.screen[i][j].html(p.chr);
+        this.screen[i][j].css('color', p.color);
+        this.screen[i][j].css('background-color', p.backgroundColor);
+        this.screen[i][j].css('font-family', p.font);
+      }
+    }
+  };
+
+};
+
+var canvas = new Canvas({
+  w: 40,
+  h: 30,
+  g: 20,
+});
+
+var WebSocket = window.WebSocket || window.MozWebSocket;
+
+
+jQuery(document).ready(function(){
+  canvas.init();
+  var socket = io('http://127.0.0.1:8888');
+  socket.on('draw', function(data) {
+    canvas.pixel = data;
+    canvas.draw();
+    console.log('draw!',new Date().getTime());
+  });
+  jQuery(document).on("keydown", function(e){
+    console.log('keypress', e.which);
+    socket.emit('keypress', {key: e.which});
+  });
+
+});
+
+</script>
+
+
 <body>
 </body>
 </html>
+
 >>
 
 befprog() ::= <<
@@ -121,7 +192,7 @@ var Graph = function(cfg) {
     for (var i = 0; i <this.height; i++) {
       for (var j = 0; j < this.width; j++) {
         if (i+r>=bg.height || j+c>=bg.width) continue;
-        bg.pixel[i+r][j+c].chr = this.pixel[i][j].chr;
+        bg.pixel[i+r][j+c] = clone(this.pixel[i][j]);
       }
     }
   }
@@ -251,13 +322,13 @@ var graph_hattach = function(gl, gr) {
 
   for (var i = 0; i < gl.height; i++) {
     for (var j = 0; j < gl.width; j++) {
-      g.pixel[i][j].chr = gl.pixel[i][j].chr;
+      g.pixel[i][j] = clone(gl.pixel[i][j]);
     }
   }
 
   for (var i = 0; i < gr.height; i++) {
     for (var j = 0; j < gr.width; j++) {
-      g.pixel[i][j+gl.width].chr = gr.pixel[i][j].chr;
+      g.pixel[i][j+gl.width] = clone(gr.pixel[i][j]);
     }
   }
 
@@ -273,13 +344,13 @@ var graph_vattach = function(gu, gd) {
 
   for (var i = 0; i < gu.height; i++) {
     for (var j = 0; j < gu.width; j++) {
-      g.pixel[i][j].chr = gu.pixel[i][j].chr;
+      g.pixel[i][j] = clone(gu.pixel[i][j]);
     }
   }
 
   for (var i = 0; i < gd.height; i++) {
     for (var j = 0; j < gd.width; j++) {
-      g.pixel[i+gu.height][j].chr = gd.pixel[i][j].chr;
+      g.pixel[i+gu.height][j] = clone(gd.pixel[i][j]);
     }
   }
 
@@ -324,8 +395,57 @@ jQuery(document).ready(function(){
 
 >>
 
+//---------------------server template----------------------
 
-befprog_test() ::= <<
+befprog_server(client_name) ::= <<
+
+
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var Fiber = require('fibers');
+var extend = require('extend');
+
+var canvas;
+
+
+server.listen(8888);
+
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/$client_name$.html');
+});
+
+
+var visited = false;
+io.on('connection', function (socket) {
+  if (!visited) {
+    visited = true;
+  } else {
+    console.log('Multiple connection => server closing');
+    process.exit();
+  }
+  socket.on('disconnect', function(){
+    console.log('Client closed => server closing');
+    process.exit();
+  });
+  canvas = new Canvas({
+    w: 40,
+    h: 30,
+    g: 20,
+  });
+  canvas.init();
+  socket.on('keypress', function(data){
+    if (typeof keypress != "undefined")
+    Fiber(keypress).run(data.key);
+  });
+  Canvas.prototype.draw = function(){
+    socket.emit('draw', this.pixel);
+    //console.log('draw!',new Date().getTime());
+  };
+  Fiber(main).run();
+});
+
+
 
 var clone = function (a) {
    return JSON.parse(JSON.stringify(a));
@@ -333,16 +453,19 @@ var clone = function (a) {
 
 var Pixel = function() {
   this.chr = '';
+  this.color = 'red';
+  this.backgroundColor = '#FFC';
+  this.font = 'Monaco';
 };
 
-function initArray(dimens) {
+var initArray = function(dimens) {
     nextDimen = [];
 
     for (var j = dimens.length - 2; j >= 0; j--) {
         curDimen = [];
         var n = parseInt(dimens[j]);
         for (var k = 0; k < n; k++) {
-            curDimen.push(jQuery.extend(true, [], nextDimen));
+            curDimen.push(extend(true, [], nextDimen));
         }
         nextDimen = curDimen;
     }
@@ -350,7 +473,7 @@ function initArray(dimens) {
     return nextDimen;
 }
 
-function makeStruct(names) {
+var makeStruct = function(names) {
   var names = names.split(' ');
   var count = names.length;
   function constructor() {
@@ -360,7 +483,7 @@ function makeStruct(names) {
           varName = names[i].substring(0, names[i].indexOf("["));
           tmp = names[i].substring(names[i].indexOf("[") + 1, names[i].length - 1);
           dimens = tmp.split("][");
-          
+
           this[varName] = initArray(dimens);
       }
       else {
@@ -370,7 +493,6 @@ function makeStruct(names) {
   }
   return constructor;
 }
-
 
 var Graph = function(cfg) {
   this.width = cfg.w;
@@ -386,7 +508,7 @@ var Graph = function(cfg) {
     for (var i = 0; i <this.height; i++) {
       for (var j = 0; j < this.width; j++) {
         if (i+r>=bg.height || j+c>=bg.width) continue;
-        bg.pixel[i+r][j+c].chr = this.pixel[i][j].chr;
+        bg.pixel[i+r][j+c] = clone(this.pixel[i][j]);
       }
     }
   }
@@ -401,29 +523,18 @@ var Canvas = function(cfg) {
   this.height = cfg.h;
   this.grid = cfg.g;
   this.pixel = [];
-  this.screen = [];
-  this.timeline = [];
-  this.interval = [];
-  this.sleeptime = 0;
 
   this.init = function () {
 
     for (var i = 0; i < this.height; i++) {
       this.pixel[i] = [];
-      this.screen[i] = [];
       for (var j = 0; j < this.width; j++) {
         var p = new Pixel();
         this.pixel[i][j] = p;
-        this.screen[i][j] = clone(p);
       }
     }
-    this.timeline.push(this.pixel);
   };
-  this.draw = function () {
-    this.timeline.push(clone(this.pixel));
-    this.interval.push(this.sleeptime);
-    this.sleeptime = 0;
-  };
+
   this.flush = function () {
     for (var i = 0; i < this.height; i++) {
       for (var j = 0; j < this.width; j++) {
@@ -431,26 +542,7 @@ var Canvas = function(cfg) {
       }
     }
   };
-  this.sleep = function(time) {
-    this.sleeptime = this.sleeptime + time;
-  };
-  this.play = function(fn) {
-    for (var i = 0; i < this.height; i++) {
-      for (var j = 0; j < this.width; j++) {
-        var p = this.timeline[fn][i][j];
-        this.screen[i][j] = clone(p);
-      }
-    }
-    if (this.interval[fn]!=undefined) setTimeout(function(){
-    canvas.play(fn+1); }, this.interval[fn]);
-  };
 };
-
-var canvas = new Canvas({
-  w: 40,
-  h: 30,
-  g: 20,
-});
 
 // a general log function
 var consoleLog = function (str) {
@@ -494,9 +586,59 @@ var str2graph = function (str) {
   return g;
 };
 
-var sleep = function (milliseconds) {
-  canvas.sleep(milliseconds);
+//Horizontally attach graphs
+var graph_hattach = function(gl, gr) {
+  var width = gl.width + gr.width;
+  var height = Math.max(gl.height, gr.height);
+
+  var g = new Graph({w: width, h: height});
+
+  for (var i = 0; i < gl.height; i++) {
+    for (var j = 0; j < gl.width; j++) {
+      g.pixel[i][j] = clone(gl.pixel[i][j]);
+    }
+  }
+
+  for (var i = 0; i < gr.height; i++) {
+    for (var j = 0; j < gr.width; j++) {
+      g.pixel[i][j+gl.width] = clone(gr.pixel[i][j]);
+    }
+  }
+
+  return g;
 };
+
+//Vertically attach graphs
+var graph_vattach = function(gu, gd) {
+  var width = Math.max(gu.width, gd.width);
+  var height = gu.height + gd.height;
+
+  var g = new Graph({w: width, h: height});
+
+  for (var i = 0; i < gu.height; i++) {
+    for (var j = 0; j < gu.width; j++) {
+      g.pixel[i][j] = clone(gu.pixel[i][j]);
+    }
+  }
+
+  for (var i = 0; i < gd.height; i++) {
+    for (var j = 0; j < gd.width; j++) {
+      g.pixel[i+gu.height][j] = clone(gd.pixel[i][j]);
+    }
+  }
+
+  return g;
+};
+
+var sleep = function (ms) {
+  var fiber = Fiber.current;
+  setTimeout(function() {
+    fiber.run();
+  }, ms);
+  Fiber.yield();
+};
+
+
 /*
 var print_str = function(r, c, str) {
   if (r==undefined || c==undefined || str==undefined) {
@@ -519,13 +661,5 @@ var flush = function() {
 var random = function(max) {
   return Math.floor(Math.random()*max);
 };
-
-exports.canvas = canvas;
-exports.Graph = Graph;
-exports.str2graph = str2graph;
-exports.draw = draw;
-exports.clone = clone;
-
-canvas.init();
 
 >>

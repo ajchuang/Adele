@@ -1,16 +1,15 @@
-{ "description": "test module for Adele",
+{ "description": "client & server struture for Adele",
   "repository" :   {
     "type" : "git"
-  , "url" : "https://github.com/ajchuang/Adele/tree/master/test"
+  , "url" : "https://github.com/ajchuang/Adele/tree/master/client-server"
   }
 ,
   "dependencies":
-  { "nodeunit" : ">0.9.0",
-    "jquery" : ">=2.1",
-    "jsdom" : "3.1.2",
+  { 
       "websocket":">0.0.1"
     , "socket.io":">1.0.0"
     , "express":">0.0.1"
+    , "suspend":">0.0.1"
     , "fibers":">0.0.1"
     , "extend":">0.0.1"
   }

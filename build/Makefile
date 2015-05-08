@@ -3,12 +3,13 @@ BUILD=$(BASE)/build
 SRC=$(BASE)/src
 LIB=$(BASE)/lib
 TEST_DIR=$(BASE)/test_static
+STEST_DIR=$(BASE)/test
 GRAMMAR=$(SRC)/grammar
 
 ANTLR=$(LIB)/antlr-4.5-complete.jar
 ST=$(LIB)/ST-4.0.8.jar
 
-.PHONY: clean grammar compiler
+.PHONY: clean grammar compiler node_deps
 
 compiler:
 	@echo '------------------------------------------------------------'
@@ -31,8 +32,15 @@ compiler:
 	@echo 'static test results: '
 	@cd $(TEST_DIR) && ./run_fail.sh
 	@echo '------------------------------------------------------------'
+	
+	@echo '[Phase 6] Install Node.js dependencies'
+	@cd $(BUILD) && npm install
+	@cd $(STEST_DIR) && npm install
+	@echo '------------------------------------------------------------'
 	@echo '|                 Compilation Completed                    |'
 	@echo '------------------------------------------------------------'
+
+
 
 grammar:
 	@make -C $(GRAMMAR)

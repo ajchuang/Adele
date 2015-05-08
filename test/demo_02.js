@@ -1,4 +1,4 @@
-var f = require('./output_test.js');
+var f = require('../build/output.js');
 
 
 var cmparr = function(a1, a2) {
