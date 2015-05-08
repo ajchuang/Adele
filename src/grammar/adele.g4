@@ -97,8 +97,6 @@ expr:
         |   sid=var_tok AT LPAREN xc=expr COMMA yc=expr RPAREN #atexpr   /* @xiuhan: shortcut overlay at canvas */
         |   lexp=expr VATT rexp=expr        #vatt           /* vertically attach */
         |   var_tok EQUAL expr              #assign         /* assignment */
-        |   ID (array_access)+ EQUAL expr   #arrayAssign
-        |   var_tok                         #var
         |   SUB NUM                         #negNum
         |   NUM                             #num
         |   STR                             #string
@@ -106,7 +104,9 @@ expr:
         ;
 
 var_tok:
-            ID ((array_access) | (member_access))* #vtok
+            ID                              #vtok_id
+        |   var_tok array_access            #vtok_array
+        |   var_tok member_access           #vtok_mem
         ;
 
 array_access:
