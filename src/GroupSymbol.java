@@ -1,12 +1,13 @@
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 class GroupSymbol extends ScopedSymbol implements Type, Scope {
 
     /* field name, type id */
-    Map<String, Symbol> m_fields = new LinkedHashMap<String, Symbol>();
+    Map<String, Symbol> fields = new LinkedHashMap<String, Symbol>();
 
-    public GroupSymbol (String name, Scope parent) {
-        super (name, parent);
+    public GroupSymbol(String name, Scope parent) {
+        super(name, parent);
     }
 
     // public boolean addField (String type, String name) {
@@ -18,27 +19,34 @@ class GroupSymbol extends ScopedSymbol implements Type, Scope {
             return false;
 
         // if duplicated field name exists
-        if (m_fields.containsKey (name))
+        if (fields.containsKey (name))
             return false;
 
         // add to the field
-        m_fields.put (name, getTypeId (type));
+        fields.put (name, getTypeId (type));
         */
 
     //     return true;
     // }
     /******************/
 
-    public int getTypeIndex() { return 0; } //return SymbolTable.tUSER; }
-    public Symbol resolveMember(String name) { return m_fields.get(name); }
-    public Map<String, Symbol> getMembers() { return m_fields; }
+    public int getTypeIndex() {
+        return 0;
+    } //return SymbolTable.tUSER; }
 
+    public Symbol resolveMember(String name) {
+        return fields.get(name);
+    }
+
+    public Map<String, Symbol> getMembers() {
+        return fields;
+    }
 
     @Override
-    public String toString () {
+    public String toString() {
         // name is inherited from Symbol
-        String s = new String (this.name +
-            "(" + m_fields.values().toString()+")");
-        return s;
+        String str = new String(this.name
+            + "(" + fields.values().toString() + ")");
+        return str;
     }
 }
