@@ -1,27 +1,27 @@
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.BaseErrorListener;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
 
 public class SimpleErrorListener extends BaseErrorListener {
 
-    public static SimpleErrorListener _INST = new SimpleErrorListener ();
-    int m_errCount = 0;
-
-    public SimpleErrorListener () {
-    }
+    public static SimpleErrorListener _INST = new SimpleErrorListener();
+    int errCount = 0;
 
     @Override
-    public void syntaxError (
+    public void syntaxError(
         Recognizer<?, ?> recognizer,
         Object offendingSymbol,
         int line,
         int charPositionInLine,
         String msg,
-        RecognitionException e) {
+        RecognitionException exception) {
 
-        System.err.println("[ERROR] line "+line+":"+charPositionInLine+": "+msg);
-        m_errCount++;
+        System.err.println("[ERROR] line " + line + ":"
+            + charPositionInLine + ": " + msg);
+        errCount++;
     }
 
-    public int getErrCount () {
-        return m_errCount;
+    public int getErrCount() {
+        return errCount;
     }
 }

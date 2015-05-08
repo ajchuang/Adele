@@ -1,4 +1,3 @@
-/* code from impl book */
 import java.util.Map;
 
 public abstract class ScopedSymbol extends Symbol implements Scope {
@@ -8,22 +7,27 @@ public abstract class ScopedSymbol extends Symbol implements Scope {
         super(name, type);
         this.enclosingScope = enclosingScope;
     }
+
     public ScopedSymbol(String name, Scope enclosingScope) {
         super(name);
         this.enclosingScope = enclosingScope;
     }
 
     public Symbol resolve(String name) {
-    Symbol s = getMembers().get(name);
-        if ( s!=null ) return s;
-    // if not here, check any enclosing scope
-    if ( getEnclosingScope() != null ) {
-      return getEnclosingScope().resolve(name);
+        Symbol sym = getMembers().get(name);
+        if ( sym != null ) {
+            return sym;
+        }
+        // if not here, check any enclosing scope
+        if ( getEnclosingScope() != null ) {
+            return getEnclosingScope().resolve(name);
+        }
+        return null; // not found
     }
-    return null; // not found
-  }
 
-    public Symbol resolveType(String name) { return resolve(name); }
+    public Symbol resolveType(String name) {
+        return resolve(name);
+    }
 
     public boolean define(Symbol sym) {
         if (getMembers().containsKey(sym.name)) {
@@ -35,9 +39,13 @@ public abstract class ScopedSymbol extends Symbol implements Scope {
         }
     }
 
-    public Scope getEnclosingScope() { return enclosingScope; }
+    public Scope getEnclosingScope() {
+        return enclosingScope;
+    }
 
-    public String getScopeName() { return name; }
+    public String getScopeName() {
+        return name;
+    }
 
     /** Indicate how subclasses store scope members. Allows us to
      *  factor out common code in this class.
