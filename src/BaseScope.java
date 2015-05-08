@@ -7,13 +7,19 @@ public abstract class BaseScope implements Scope {
     // null if global (outermost) scope
     Map<String, Symbol> symbols = new LinkedHashMap<String, Symbol>();
 
-    public BaseScope(Scope enclosingScope) { this.enclosingScope = enclosingScope;  }
+    public BaseScope(Scope enclosingScope) {
+        this.enclosingScope = enclosingScope;
+    }
 
     public Symbol resolve(String name) {
-        Symbol s = symbols.get(name);
-        if ( s!=null ) return s;
+        Symbol sym = symbols.get(name);
+        if ( sym != null ) {
+            return sym;
+        }
         // if not here, check any enclosing scope
-        if ( enclosingScope != null ) return enclosingScope.resolve(name);
+        if ( enclosingScope != null ) {
+            return enclosingScope.resolve(name);
+        }
         return null; // not found
     }
 
@@ -37,12 +43,11 @@ public abstract class BaseScope implements Scope {
         }
     }
 
-    public String[] IDs() {
-        return symbols.keySet().toArray(new String[0]);
+    public Scope getEnclosingScope() {
+        return enclosingScope;
     }
 
-
-    public Scope getEnclosingScope() { return enclosingScope; }
-
-    public String toString() { return getScopeName()+":"+symbols.keySet().toString(); }
+    public String toString() {
+        return getScopeName() + ":" + symbols.keySet().toString();
+    }
 }

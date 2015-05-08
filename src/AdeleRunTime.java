@@ -1,16 +1,13 @@
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
-import org.stringtemplate.v4.*;
-import org.stringtemplate.v4.misc.*;
-
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeProperty;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class AdeleRunTime {
 
@@ -52,8 +49,8 @@ public class AdeleRunTime {
         /*--------------------------------------------------------------------*/
         ScanPhase scan = new ScanPhase(symtab);
         walker.walk(scan, tree);
-        if (scan.getErrCount() != 0) { 
-            return; 
+        if (scan.getErrCount() != 0) {
+            return;
         }
 
         /*--------------------------------------------------------------------*/
@@ -61,8 +58,8 @@ public class AdeleRunTime {
         /*--------------------------------------------------------------------*/
         DefPhase def = new DefPhase(symtab);
         walker.walk(def, tree);
-        if (def.getErrCount() != 0) { 
-            return; 
+        if (def.getErrCount() != 0) {
+            return;
         }
 
         /*--------------------------------------------------------------------*/

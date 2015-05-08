@@ -1,68 +1,75 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class FunctionSymbol extends ScopedSymbol {
 
-    static HashMap<String, Integer> m_funcTable = new HashMap<String, Integer>() ;
+    static HashMap<String, Integer> funcTable = new HashMap<String, Integer>() ;
 
-    ArrayList<Symbol> m_params;
-    Map<String, Symbol> m_locals;
+    ArrayList<Symbol> params;
+    Map<String, Symbol> locals;
 
     /*------------------------------------------------------------------------*/
     /* Static utilities                                                       */
     /*------------------------------------------------------------------------*/
-    static int funcLine (String fname) {
-        if (m_funcTable.containsKey (fname) == false)
+    static int funcLine(String fname) {
+        if (funcTable.containsKey(fname) == false) {
             return -1;
+        }
 
-        return m_funcTable.get (fname).intValue ();
+        return funcTable.get(fname).intValue();
     }
 
-    static Set<String> getFuncs () {
-        return m_funcTable.keySet ();
+    static Set<String> getFuncs() {
+        return funcTable.keySet();
     }
 
     /*------------------------------------------------------------------------*/
     /* Class members                                                          */
     /*------------------------------------------------------------------------*/
-    public FunctionSymbol (String name, Type retType, Scope enclosingScope, int ln) {
-        super (name, retType, enclosingScope);
-        m_params = new ArrayList<Symbol> ();
-        m_locals = new LinkedHashMap<String, Symbol>();
+    public FunctionSymbol(String name, Type retType, Scope enclosingScope, int ln) {
+        super(name, retType, enclosingScope);
+        params = new ArrayList<Symbol>();
+        locals = new LinkedHashMap<String, Symbol>();
 
-        m_funcTable.put (name, ln);
+        funcTable.put(name, ln);
     }
 
-    public boolean defineParam (Scope curScope, Symbol param) {
-        
-        Iterator<Symbol> it = m_params.iterator ();
-        String p_name = param.getName ();
-        
-        while (it.hasNext ()) {
-            Symbol s = it.next ();
+    public boolean defineParam(Scope curScope, Symbol param) {
 
-            if (s.getName ().equals (p_name))
+        Iterator<Symbol> it = params.iterator();
+        String name = param.getName();
+
+        while (it.hasNext()) {
+            Symbol sym = it.next();
+
+            if (sym.getName().equals(name)) {
                 return false;
+            }
         }
 
-        if (curScope.define (param)) {
-            m_params.add (param);
+        if (curScope.define(param)) {
+            params.add(param);
             return true;
-        } 
-        
+        }
+
         return false;
     }
 
-    public void defineParam_def (Symbol param) {
-        m_params.add (param);
+    public void defineParam_def(Symbol param) {
+        params.add(param);
     }
 
-    public ArrayList<Symbol> getParams () {
-        return m_params;
+    public ArrayList<Symbol> getParams() {
+        return params;
     }
 
     @Override
-    public Map<String, Symbol> getMembers () {
-        return m_locals;
+    public Map<String, Symbol> getMembers() {
+        return locals;
     }
 }
 
