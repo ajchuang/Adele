@@ -100,7 +100,7 @@ expr:
         |   lexp=expr VATT rexp=expr        #vatt           /* vertically attach */
         |   ID EQUAL expr                   #assign         /* assignment */
         |   ID (array_access)+ EQUAL expr   #arrayAssign
-        |   ID member_access (member_access | array_access)+ EQUAL expr #memberVarAssign
+        |   ID member_access (member_access | array_access)* EQUAL expr #memberVarAssign
         |   ID                              #var
         |   SUB NUM                         #negNum
         |   NUM                             #num
