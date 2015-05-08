@@ -1,0 +1,10 @@
+# lexical - string literal
+
+int main()
+    string s = "";
+    s = "\\";
+    s = "\"Hello\" world";
+    s = "'";
+    s = "\'";
+    s = "\";    # err
+end             # err (line 9 will cause err at EOF)

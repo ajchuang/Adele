@@ -1,0 +1,17 @@
+# lexical - keywords can't be used as id's
+int main()
+    int if;     # err
+    int while;      # err
+    int return;     # err
+    int group;      # err
+    int int;        # err
+    int float;      # err
+    int void;       # err
+    int false;      # err
+    int true;       # err
+    int draw;       # err
+    int print_str;      # err
+    int load;       # err
+    int sleep;      # err
+    int null;       # err
+end

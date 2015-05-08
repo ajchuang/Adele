@@ -1,0 +1,9 @@
+# identifier format
+
+int main()
+    int 1ab;    # err
+
+    # case sensitive
+    int ab;
+    int Ab;
+end
