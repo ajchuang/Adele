@@ -25,11 +25,14 @@ if [ -f "$dst$jvs" ]; then
 fi
 
 # do compile
-java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:. AdeleRunTime $src $dst
+java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:. AdeleRunTime $src $dst 1>adelecc.log
 
 # open the output file
 if [ -f "$dst$suf" ]; then
+    echo 'Starting server'
     node output.js &
-    sleep 0.5 
-    open http://127.0.0.1:8888
+
+    echo 'Launching the client'
+    sleep 1 
+    open http://127.0.0.1:8888 &
 fi
