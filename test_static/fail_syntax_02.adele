@@ -9,9 +9,9 @@ int main()
     int void;       # err
     int false;      # err
     int true;       # err
-    int draw;       # err
-    int print_str;      # err
-    int load;       # err
-    int sleep;      # err
-    int null;       # err
+    int draw;
+    int print_str;
+    int load;
+    int sleep;
+    int null;
 end

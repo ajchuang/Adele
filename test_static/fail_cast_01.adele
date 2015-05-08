@@ -1,4 +1,4 @@
-# function - type cast fail
+# type cast
 
 void main()
     int x = 0;
@@ -8,6 +8,5 @@ void main()
     y = (bool) s;   #err
 
     x = (int) s;    #err
-
 
 end

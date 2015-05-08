@@ -3,5 +3,6 @@
 int main()
     int a = 012;     # err
     int b = -012;    # err
-    float c = 01.234;    # err
+    int c = -0;      # err
+    float d = 01.234;    # err
 end
