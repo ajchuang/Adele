@@ -1,6 +1,6 @@
 # type - integer range
-
 int main()
     int a = 9007199254740991;
     int b = 9007199254740993;
+    float d = 01.234;    # err
 end
