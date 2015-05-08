@@ -1,5 +1,6 @@
 var f = require('../build/output.js');
 
+
 exports.testInit = function(test) {
   test.ok(f.canvas.width == 40 && f.canvas.height == 30, "Test canvas init w & h error");
   test.ok(f.canvas.pixel.length == 30 && f.canvas.pixel[0].length==40, "Test canvas init buffer error");
@@ -34,14 +35,3 @@ exports.testScope = function(test) {
   test.done();
 }
 
-exports.testDraw = function(test) {
-  var dn = f.canvas.timeline.length;
-  f.draw();
-  var f1 = (++dn) == f.canvas.timeline.length;
-  var g = f.str2graph("HaHa\ng1");
-  g.at(3, 4);
-  f.draw();
-  var f2 = (++dn) == f.canvas.timeline.length;
-  test.ok(f1 && f2, "Test Draw Error, timeline work inproper");
-  test.done();
-}

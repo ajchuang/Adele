@@ -32,9 +32,12 @@ end
 
 void draw_map()
   graph ob = str2graph("*");
-  graph wall = str2graph("█");
-  wall.pixel[0][0].backgroundColor = "#F00";
+  ob.pixel[0][0].color = "#0A3";
+  graph wall = str2graph(" ");
+  wall.pixel[0][0].backgroundColor = "#000";
   graph person = str2graph("@");
+  person.pixel[0][0].blink = 1;
+
   int i = 0;
   while (i<h)
     int j = 0;

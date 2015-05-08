@@ -52,11 +52,26 @@ while ($expr$) {
 
 html() ::= <<
 <html>
+<head>
+<style>
+@-webkit-keyframes blink {
+  80% {
+    color: transparent;
+  }
+}
+.blink {
+    -webkit-animation-name: blink;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: cubic-bezier(1.0, 0, 0, 1.0);
+    -webkit-animation-duration: 1s;
+}
+</style>
+</head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+
+
 <script>
-
-
 var Canvas = function(cfg) {
   this.width = cfg.w;
   this.height = cfg.h;
@@ -91,6 +106,13 @@ var Canvas = function(cfg) {
         this.screen[i][j].css('color', p.color);
         this.screen[i][j].css('background-color', p.backgroundColor);
         this.screen[i][j].css('font-family', p.font);
+        this.screen[i][j].css('opacity', p.opacity);
+
+        if (p.blink) {
+          this.screen[i][j].addClass('blink');
+        } else {
+          this.screen[i][j].removeClass('blink');
+        }
       }
     }
   };
@@ -408,43 +430,37 @@ var extend = require('extend');
 
 var canvas;
 
+if (require.main === module) {
+  server.listen(8888);
 
-server.listen(8888);
-
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/$client_name$.html');
-});
-
-
-var visited = false;
-io.on('connection', function (socket) {
-  if (!visited) {
-    visited = true;
-  } else {
-    console.log('Multiple connection => server closing');
-    process.exit();
-  }
-  socket.on('disconnect', function(){
-    console.log('Client closed => server closing');
-    process.exit();
+  app.get('/', function(req, res){
+    res.sendFile(__dirname + '/$client_name$.html');
   });
-  canvas = new Canvas({
-    w: 40,
-    h: 30,
-    g: 20,
-  });
-  canvas.init();
-  socket.on('keypress', function(data){
-    if (typeof keypress != "undefined")
-    Fiber(keypress).run(data.key);
-  });
-  Canvas.prototype.draw = function(){
-    socket.emit('draw', this.pixel);
-    //console.log('draw!',new Date().getTime());
-  };
-  Fiber(main).run();
-});
 
+
+  var visited = false;
+  io.on('connection', function (socket) {
+    if (!visited) {
+      visited = true;
+    } else {
+      console.log('Multiple connection => server closing');
+      process.exit();
+    }
+    socket.on('disconnect', function(){
+      console.log('Client closed => server closing');
+      process.exit();
+    });
+    socket.on('keypress', function(data){
+      if (typeof keypress != "undefined")
+      Fiber(keypress).run(data.key);
+    });
+    Canvas.prototype.draw = function(){
+      socket.emit('draw', this.pixel);
+      //console.log('draw!',new Date().getTime());
+    };
+    Fiber(main).run();
+  });
+}
 
 
 var clone = function (a) {
@@ -543,6 +559,13 @@ var Canvas = function(cfg) {
     }
   };
 };
+
+canvas = new Canvas({
+  w: 40,
+  h: 30,
+  g: 20,
+});
+canvas.init();
 
 // a general log function
 var consoleLog = function (str) {
@@ -661,5 +684,11 @@ var flush = function() {
 var random = function(max) {
   return Math.floor(Math.random()*max);
 };
+
+exports.canvas = canvas;
+exports.Graph = Graph;
+exports.str2graph = str2graph;
+exports.draw = draw;
+exports.clone = clone;
 
 >>
