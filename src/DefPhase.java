@@ -853,8 +853,13 @@ class DefPhase extends adeleBaseListener {
 
     public void exitNegNum(adeleParser.NegNumContext ctx) {
 
+        int ln = ctx.start.getLine();
         String numText = ctx.SUB() + ctx.NUM().getText();
         Type type;
+    
+        if (ctx.NUM().equals ("0")) {
+            err(ln, "-0 is not allowed.");
+        }
 
         if (numText.indexOf('.') == -1) {
             type = SymbolTable._int;
