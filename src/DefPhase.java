@@ -66,7 +66,7 @@ class DefPhase extends adeleBaseListener {
     }
 
     private void print(String msg) {
-        System.err.println("    [DefPhase] " +  msg);
+        System.out.println("    [DefPhase] " +  msg);
     }
 
     /*------------------------------------------------------------------------*/
@@ -293,13 +293,13 @@ class DefPhase extends adeleBaseListener {
         if (    exprType != SymbolTable._boolean 
             &&  exprType != SymbolTable._int
             &&  exprType != SymbolTable._char) {
-            err(ln, "The expression in if  statement is not allowed.");
+            err(ln, "The expression in if statement is not allowed.");
             return;
         }
 
         if (    exprType != SymbolTable._int 
             &&  exprType != SymbolTable._char) {
-            warning(ln, "Using integer expression in if  statement.");
+            warning(ln, "Using integer expression in if statement.");
         }
 
         return;

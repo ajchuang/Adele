@@ -187,7 +187,7 @@ public class TransPhase extends adeleBaseListener {
             // jsTestOut.flush();
             // jsTestOut.close();
         } catch (IOException ioe) {
-            System.out.println("Failed in outputing files");
+            System.err.println("Failed in outputing files");
         }
     }
 
