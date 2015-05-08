@@ -31,8 +31,21 @@ java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:. AdeleRunTime $src $
 if [ -f "$dst$suf" ]; then
     echo 'Starting server'
     node output.js &
+    PS_NODE=$! 
 
     echo 'Launching the client'
     sleep 1 
-    open http://127.0.0.1:8888 &
+    open http://127.0.0.1:8888
+    PS_CLNT=$!
+ 
+    while :
+    do
+        if ! ps -p $PS_CLNT 1>/dev/null 2>/dev/null
+        then
+            kill -9 $PS_NODE 1>/dev/null 2>/dev/null
+            exit
+        fi
+
+        sleep 1
+    done
 fi

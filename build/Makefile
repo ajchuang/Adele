@@ -13,6 +13,13 @@ ST=$(LIB)/ST-4.0.8.jar
 
 compiler:
 	@echo '------------------------------------------------------------'
+	@echo '|            Preparing ADELECC Environment                 |'
+	@echo '------------------------------------------------------------'
+	@echo '[Phase 0] Install Node.js dependencies'
+	@cd $(BUILD) && npm install
+	@cd $(STEST_DIR) && npm install
+	
+	@echo '------------------------------------------------------------'
 	@echo '|             ADELECC Compilation Starts                   |'
 	@echo '------------------------------------------------------------'
 	@echo '[Phase 1] Compiling grammar'
@@ -32,15 +39,9 @@ compiler:
 	@echo 'static test results: '
 	@cd $(TEST_DIR) && ./run_fail.sh
 	@echo '------------------------------------------------------------'
-	
-	@echo '[Phase 6] Install Node.js dependencies'
-	@cd $(BUILD) && npm install
-	@cd $(STEST_DIR) && npm install
 	@echo '------------------------------------------------------------'
 	@echo '|                 Compilation Completed                    |'
 	@echo '------------------------------------------------------------'
-
-
 
 grammar:
 	@make -C $(GRAMMAR)
