@@ -11,12 +11,40 @@ import java.io.InputStream;
 
 public class AdeleRunTime {
 
+    static final String M_EXT_LONG  = "adele";
+    static final String M_EXT_SHORT = "adl";
+
+    boolean checkExtension(String fname) {
+        
+        int idx = fname.lastIndexOf('.');
+
+        /* no extension */
+        if (idx <= 0) {
+            return false;
+        }
+
+        String ext = fname.substring(idx + 1);
+
+        if (ext.equals(M_EXT_LONG) || ext.equals(M_EXT_SHORT)) {
+            return true;
+        }
+
+        System.err.println(
+            "[Error] The extension of the input file name, " + ext + ", is incorrect.");
+        return false;
+    }
+
     public boolean process(String fname, String oname) throws Exception {
 
         InputStream is;
 
         if (fname != null) {
             is = new FileInputStream(fname);
+            
+            /* check extension name */
+            if (checkExtension(fname) == false) {
+                return false;
+            }
         } else {
             is = System.in;
         }

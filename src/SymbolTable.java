@@ -1,8 +1,8 @@
-/* Symbol table stores symbols declared/builtin that can be
-** used as type
-*/
+/* 
+ *  Symbol table stores symbols declared/builtin that can be
+ *  used as type
+ */
 import java.util.List;
-
 
 public class SymbolTable {
 
