@@ -857,7 +857,7 @@ class DefPhase extends adeleBaseListener {
         String numText = ctx.SUB() + ctx.NUM().getText();
         Type type;
     
-        if (Integer.parseInt (ctx.NUM().getText()) == 0) {
+        if (Integer.parseInt(ctx.NUM().getText()) == 0) {
             err(ln, "-0 is not allowed.");
         }
 

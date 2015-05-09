@@ -182,7 +182,7 @@ public class TransPhase extends adeleBaseListener {
             clientOut.flush();
             clientOut.close();
 
-            PrintWriter jsTestOut = new PrintWriter("../test/"+outName + "_test.js", "utf-8");
+            PrintWriter jsTestOut = new PrintWriter("../test/" + outName + "_test.js", "utf-8");
             jsTestOut.println(prog.toString());
             jsTestOut.flush();
             jsTestOut.close();
