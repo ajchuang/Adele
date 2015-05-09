@@ -442,7 +442,7 @@ public class TransPhase extends adeleBaseListener {
         print(codes.get(ctx));
     }
 
-    private String genSB(List<Integer> dimenList) {
+    private String genSBrk(List<Integer> dimenList) {
         int size = dimenList.size();
 
         if (size == 1) {
@@ -451,7 +451,7 @@ public class TransPhase extends adeleBaseListener {
 
         StringBuilder res = new StringBuilder();
 
-        String substr = genSB(dimenList.subList(0, size - 1));
+        String substr = genSBrk(dimenList.subList(0, size - 1));
 
         res.append("[" + substr);
         for (int i = 1; i < dimenList.get(size - 1); i++) {
@@ -491,7 +491,7 @@ public class TransPhase extends adeleBaseListener {
 
         ST adecl = stg.getInstanceOf("arraydecl");
         adecl.add("aname", ctx.ID().getText());
-        adecl.add("def", genSB(d));
+        adecl.add("def", genSBrk(d));
 
         String initValue = "";
 
@@ -541,7 +541,7 @@ public class TransPhase extends adeleBaseListener {
 
         ST adecl = stg.getInstanceOf("arraydecl");
         adecl.add("aname", ctx.ID().getText());
-        adecl.add("def", genSB(d));
+        adecl.add("def", genSBrk(d));
 
         String initValue = "";
 

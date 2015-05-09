@@ -11,7 +11,7 @@ import java.io.InputStream;
 
 public class AdeleRunTime {
 
-    public void process(String fname, String oname) throws Exception {
+    public boolean process(String fname, String oname) throws Exception {
 
         InputStream is;
 
@@ -37,7 +37,7 @@ public class AdeleRunTime {
 
         if (SimpleErrorListener._INST.getErrCount() > 0) {
             System.err.println("[ERROR] Syntax errors. Stop");
-            return;
+            return false;
         }
 
         /* create the symbol table instance */
@@ -50,7 +50,7 @@ public class AdeleRunTime {
         ScanPhase scan = new ScanPhase(symtab);
         walker.walk(scan, tree);
         if (scan.getErrCount() != 0) {
-            return;
+            return false;
         }
 
         /*--------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ public class AdeleRunTime {
         DefPhase def = new DefPhase(symtab);
         walker.walk(def, tree);
         if (def.getErrCount() != 0) {
-            return;
+            return false;
         }
 
         /*--------------------------------------------------------------------*/
@@ -78,6 +78,7 @@ public class AdeleRunTime {
                 trans.setOutputFilename(filename.substring(0, pos));
         }*/
         walker.walk(trans, tree);
+        return true;
     }
 
     /* main function */
@@ -96,7 +97,9 @@ public class AdeleRunTime {
         AdeleRunTime adele = new AdeleRunTime();
 
         try {
-            adele.process(fname, oname);
+            if (adele.process(fname, oname)) {
+                System.err.println("Compilation Completed.");
+            }
         } catch (Exception e) {
             System.err.println("Exception: " + e);
             e.printStackTrace();
