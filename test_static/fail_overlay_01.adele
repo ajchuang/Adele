@@ -1,4 +1,4 @@
-
+# type checking of position param
 int main ()
 
     graph x;

@@ -1,0 +1,20 @@
+# type conversion - float to int
+void main()
+
+    int i = 10;
+    float f = 1.23;
+
+    i + f;
+    f + f;
+    f + int_foo(i);
+    int_foo(f);     # err (float can't be converted to int)
+    int a = float_foo(i);
+end
+
+int int_foo(int i)
+    return i+1;
+end
+
+float float_foo(float f)
+    return f+1;
+end

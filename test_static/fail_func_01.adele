@@ -1,8 +1,8 @@
-# function - check if type signature(type of param, return val) is violated
+# function - check if type signature is violated
 
 void main()
-  foo_1("s");       # err
-  foo_2(1);         # err
+  foo_int("s");       # err
+  foo_str(1);         # err
 
   group_foo(1);     # err
   group x a;
@@ -10,11 +10,11 @@ void main()
 
 end
 
-int foo_1(int a)
+int foo_int(int a)
   return 1;
 end
 
-string foo_2(string s)
+string foo_str(string s)
   return s;
 end
 

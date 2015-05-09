@@ -1,0 +1,14 @@
+# position param should be integers
+int main ()
+
+    graph x;
+    graph y;
+    int z;
+    int a = 10;
+    int b = 10;
+    float f = 1.23;
+
+    x // y @ (a, f);    # err
+    x // y @ (f, b);    # err
+
+end

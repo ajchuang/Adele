@@ -1,4 +1,4 @@
-
+# type checking on graph param
 int main ()
 
     graph x;

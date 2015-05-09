@@ -1,4 +1,4 @@
-
+# argument2 passed is undefined
 int main ()
     graph x;
     graph y;

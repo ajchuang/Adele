@@ -22,5 +22,6 @@ if [[ $pass -eq 1 ]]
 then
     echo pass static test
 else
-    open tmp.txt
+    echo "--------------------"
+    cat tmp.txt
 fi
