@@ -59,14 +59,48 @@ void draw_map()
   draw();
 end
 
+bool starting = false;
+
+void start_menu()
+    graph pac = load("../samples/codes/pac.txt");
+    pac @ (3, 3);
+
+    graph man = load("../samples/codes/man.txt");
+    man @ (9, 9);
+
+    graph start0 = str2graph("***************************");
+    graph start1 = str2graph("** Press UP key to start **");
+    graph start2 = str2graph("***************************");
+    start1.pixel[0][9].blink = true;
+    start1.pixel[0][10].blink = true;
+
+    start0 @ (19, 5);
+    start1 @ (20, 5);
+    start2 @ (21, 5);
+
+    draw();
+
+    while (starting == false)
+        sleep(100);
+    end
+
+    flush();
+end
 
 int main()
-  init ();
+  init();
+  start_menu();
   gen_map();
   draw_map();
 end
 
 int keypress (int key)
+
+  if (starting == false)
+    starting = true;
+    return 0;
+  end
+
   int cx = px;
   int cy = py;
 
