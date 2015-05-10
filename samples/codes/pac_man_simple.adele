@@ -1,10 +1,13 @@
+# global variables
 int map[25][40];
 int h = 25;
 int w = 40;
 int px = 0;
 int py = 0;
 int count = 0;
+bool starting = false;
 
+# functions
 void init ()
     int i = 1;
     while (i < h)
@@ -31,35 +34,38 @@ void gen_map()
 end
 
 void draw_map()
-  graph ob = str2graph("*");
-  ob.pixel[0][0].color = "#0A3";
-  graph wall = str2graph(" ");
-  wall.pixel[0][0].backgroundColor = "#000";
-  graph person = str2graph("@");
-  person.pixel[0][0].blink = true;
+    graph ob = str2graph("*");
+    ob.pixel[0][0].color = "#0A3";
+  
+    graph wall = str2graph(" ");
+    wall.pixel[0][0].backgroundColor = "#000";
+  
+    graph person = str2graph("@");
+    person.pixel[0][0].blink = true;
 
-  int i = 0;
-  while (i<h)
-    int j = 0;
-    while (j<w)
-      if (map[i][j] == 1)
-        ob @ (i, j);
-      end
+    int i = 0;
+    while (i<h)
+        int j = 0;
+        while (j<w)
+            if (map[i][j] == 1)
+                ob @ (i, j);
+            end
 
-      if (map[i][j] == 0)
-        wall @ (i, j);
-      end
-      j = j + 1;
+            if (map[i][j] == 0)
+                wall @ (i, j);
+            end
+      
+            j = j + 1;
+        end
+        i = i + 1;
     end
-    i = i + 1;
-  end
-  person @ (py, px);
-  graph c = str2graph(int2str(count));
-  c @ (27, 10);
-  draw();
+  
+    person @ (py, px);
+    graph c = str2graph(int2str(count));
+    c @ (27, 10);
+    draw();
 end
 
-bool starting = false;
 
 void start_menu()
     graph pac = load("../samples/codes/pac.txt");
@@ -87,64 +93,73 @@ void start_menu()
     flush();
 end
 
+# main function
 int main()
-  init();
-  start_menu();
-  gen_map();
-  draw_map();
+    init();
+    start_menu();
+    gen_map();
+    draw_map();
 end
 
 int keypress (int key)
 
-  if (starting == false)
-    if (key == 38)
-        starting = true;
+    if (starting == false)
+        if (key == 38)
+            starting = true;
+        end
+
+        return 0;
     end
 
-    return 0;
-  end
+    int cx = px;
+    int cy = py;
 
-  int cx = px;
-  int cy = py;
+    if (key==37)
+        cx = px - 1;
+    end
 
-  if (key==37)
-    cx = px - 1;
-  end
-  if (key==39)
-    cx = px + 1;
-  end
-  if (key==38)
-    cy = py - 1;
-  end
-  if (key==40)
-    cy = py + 1;
-  end
-  if (cx>=w)
-    cx = w - 1;
-  end
-  if (cx<0)
-    cx = 0;
-  end
-  if (cy>=h)
-    cy = h - 1;
-  end
-  if (cy<0)
-    cy = 0;
-  end
+    if (key==39)
+        cx = px + 1;
+    end
+    
+    if (key==38)
+        cy = py - 1;
+    end
 
-  # it's wall
-  if (map[cy][cx] == 0)
-      return 0;
-  end
+    if (key==40)
+        cy = py + 1;
+    end
 
-  px = cx;
-  py = cy;
+    if (cx>=w)
+        cx = w - 1;
+    end
 
-  if (map[py][px] == 1)
-    map[py][px] = 2;
-    count = count + 1;
-  end
-  flush();
-  draw_map();
+    if (cx<0)
+        cx = 0;
+    end
 
+    if (cy>=h)
+        cy = h - 1;
+    end
+
+    if (cy<0)
+        cy = 0;
+    end
+
+    # it's wall
+    if (map[cy][cx] == 0)
+        return 0;
+    end
+
+    px = cx;
+    py = cy;
+
+    if (map[py][px] == 1)
+        map[py][px] = 2;
+        count = count + 1;
+    end
+  
+    flush();
+    draw_map();
 end
+
