@@ -97,7 +97,10 @@ end
 int keypress (int key)
 
   if (starting == false)
-    starting = true;
+    if (key == 38)
+        starting = true;
+    end
+
     return 0;
   end
 
