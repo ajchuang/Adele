@@ -11,7 +11,7 @@ do
     java -cp ../lib/antlr-4.5-complete.jar:../lib/ST-4.0.8.jar:../build/ AdeleRunTime $file 2>> tmp.txt 1>> trans_phase_output.txt
 
     err_line=$(grep -n err $file | cut -d: -f1 | sort -n -u)  # err line number in test file
-    line_detected=$(grep line tmp.txt| cut -d: -f1 | cut -d" " -f3 | sort -n -u)  # err line number reported
+    line_detected=$(grep ERROR tmp.txt| grep line | cut -d: -f1 | cut -d" " -f3 | sort -n -u)  # err line number reported
 
     if [[ $err_line == $line_detected ]]
     then

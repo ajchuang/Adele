@@ -60,3 +60,32 @@
         return "\"";
     end
 
+####### Flow Control
+    bool if_pos_int()
+        int a = 4;
+        if(a + 5)
+            return true;
+        end
+    end
+
+    bool if_neg_int()
+        int a = -4;
+        if(a + 1)
+            return false;
+        end
+    end
+
+    int while_til_0()
+        int a = 5;
+        while(a > 0)
+            a = a - 1;
+        end
+        return a;
+    end
+
+####### Array
+    int array_access(int num)
+        int a[5];
+        a[0] = num;
+        return a[0];
+    end

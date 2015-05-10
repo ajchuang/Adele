@@ -28,6 +28,22 @@ exports.testSpecialChar = function(test) {
   test.done();
 }
 
+exports.testIf = function(test) {
+  test.ok(f.if_pos_int() == true, "if: evaluate pos int");
+  test.ok(f.if_neg_int() == false, "if: evaluate neg int");
+  test.done();
+}
+
+exports.testWhile = function(test) {
+  test.ok(f.while_til_0() == 0, "while");
+  test.done();
+}
+
+exports.testArray = function(test) {
+  test.ok(f.array_access(10) == 10, "array access");
+  test.done();
+}
+
 
 
 

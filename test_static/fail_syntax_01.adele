@@ -2,6 +2,7 @@
 
 int main()
     int 1ab;    # err
+    int _1ab;
 
     # case sensitive
     int ab;

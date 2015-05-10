@@ -1,0 +1,23 @@
+int main()
+
+    graph x = str2graph("Hell\no Wor\tld");
+
+    graph a = load("../samples/graphs/a.txt");
+    graph b = load("../samples/graphs/b.txt");
+    graph c = a | b;
+    c @ (0, 0);
+    a @ (7, 0);
+    b @ (15,0);
+    draw();
+
+    a = load("../samples/graphs/kifu.txt");
+    b = load("../samples/graphs/piece.txt");
+    b // a @ (6,2);
+    a @ (10,10);
+    b @ (20,20);
+    x @ (19, 19);
+    draw();
+
+
+
+end

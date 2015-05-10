@@ -4,7 +4,7 @@ void main()
   foo_int("s");       # err
   foo_str(1);         # err
 
-  group_foo(1);     # err
+  group_foo(1);       # err
   group x a;
   group_foo(a);
 
@@ -19,10 +19,11 @@ string foo_str(string s)
 end
 
 int ret_type_1()
-  return "s";     # err
+  return "s";         # err
 end
 
-int ret_type_2()
+void ret_type_2()
+  return 1;           # err
 end
 
 ###############
@@ -33,11 +34,11 @@ end
 
 group x group_foo(group x a)
   group y ret;
-  return ret;   # err
+  return ret;         # err
 end
 
 group x group_bar()
-  return 1;     # err
+  return 1;           # err
 end
 
 group y

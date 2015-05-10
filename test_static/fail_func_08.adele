@@ -8,7 +8,10 @@ void main()
     f + f;
     f + int_foo(i);
     int_foo(f);     # err (float can't be converted to int)
-    int a = float_foo(i);
+    float_foo(i);   # err (<== actually this should pass)
+
+    i = f;
+    f = i;
 end
 
 int int_foo(int i)

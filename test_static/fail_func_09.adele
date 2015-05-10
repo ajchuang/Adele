@@ -1,0 +1,8 @@
+# type conversion - int to bool
+void main()
+    int a = false;  # err
+    bool b = 1;     # err
+
+    if (1)      # coercion from int to bool
+    end
+end
