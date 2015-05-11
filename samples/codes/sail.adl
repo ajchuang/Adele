@@ -26,7 +26,7 @@ void main ()
 
     while (y <= 10) 
         flush();
-        title @ (y, 0);
+        title @ (y, 3);
         draw();
         sleep (100);
         y = y + 1;
