@@ -1,0 +1,40 @@
+
+void main ()
+
+    int x = 1;
+ 
+    graph boat = load("../samples/codes/boat.txt");
+    graph fish = load("../samples/codes/fish.txt");
+
+    while (x <= 50)
+        
+        flush();
+        int y = random(3);
+
+        fish @ (15, x);
+        boat @ (y,  35 - x);
+        draw();
+    
+        x = x + 1;
+        sleep(100);
+    end
+
+    flush();
+
+    graph title = load("../samples/codes/adele.txt");
+    int y = 1;
+
+    while (y <= 10) 
+        flush();
+        title @ (y, 0);
+        draw();
+        sleep (100);
+        y = y + 1;
+    end
+
+    graph slogan = str2graph("Meow");
+    graph cat = load("../samples/graphs/graph_cat.txt");
+    slogan @ (23, 15);
+    cat @ (20, 23);
+    draw();
+end
