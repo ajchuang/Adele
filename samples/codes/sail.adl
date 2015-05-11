@@ -16,7 +16,7 @@ void main ()
         draw();
     
         x = x + 1;
-        sleep(100);
+        sleep(50);
     end
 
     flush();
@@ -28,13 +28,24 @@ void main ()
         flush();
         title @ (y, 3);
         draw();
-        sleep (100);
         y = y + 1;
+        sleep(50);
     end
 
     graph slogan = str2graph("Meow");
     graph cat = load("../samples/graphs/graph_cat.txt");
+    
+    int c = 40; 
+    while (c >= 20)
+        flush();
+        title @ (10, 3);
+        cat @ (20, c);
+        draw();
+        sleep(50);
+        c = c - 1;
+    end
+
+
     slogan @ (23, 15);
-    cat @ (20, 23);
     draw();
 end
