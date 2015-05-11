@@ -22,7 +22,7 @@ void main ()
     flush();
 
     graph title = load("../samples/codes/adele.txt");
-    int y = 1;
+    int y = 0;
 
     while (y <= 10) 
         flush();
