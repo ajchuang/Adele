@@ -66,12 +66,22 @@ void draw_map()
     draw();
 end
 
-
 void start_menu()
     graph pac = load("../samples/codes/pac.txt");
-    pac @ (3, 3);
-
     graph man = load("../samples/codes/man.txt");
+    
+    int i = 1;
+    while (i <= 6) 
+        flush();
+        pac @ (i, i);
+        man @ (6 + i, 6 + i);
+        draw();
+        sleep(400);
+        i = i + 1;
+    end
+
+    flush();
+    pac @ (3, 3);
     man @ (9, 9);
 
     graph start0 = str2graph("***************************");
